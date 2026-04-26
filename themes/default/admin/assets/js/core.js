@@ -430,7 +430,7 @@ $(document)
     });
 
 $(document).ready(function () {
-    $('input[type="checkbox"],[type="radio"]').not('.skip').iCheck({
+    $('input[type="checkbox"],[type="radio"]').not('.skip').not('#template-customizer input').iCheck({
         checkboxClass: 'icheckbox_square-blue',
         radioClass: 'iradio_square-blue',
         increaseArea: '20%',
