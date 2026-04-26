@@ -38,15 +38,15 @@ function row_status($x) {
   <div class="col-sm-6 col-xl-3">
     <div class="card h-100">
       <div class="card-body">
-        <div class="d-flex justify-content-between align-items-start">
+        <div class="d-flex justify-content-between align-items-center">
           <div class="avatar">
             <div class="avatar-initial bg-label-success rounded-3">
               <i class="icon-base ri ri-money-dollar-circle-line icon-26px"></i>
             </div>
           </div>
+          <h4 class="mb-0"><?= $this->sma->formatMoney($total_sales ?? 0) ?></h4>
         </div>
-        <div class="mt-4">
-          <h4 class="mb-1"><?= $this->sma->formatMoney($total_sales ?? 0) ?></h4>
+        <div class="mt-3">
           <p class="mb-0 text-muted"><?= lang('total_sales') ?></p>
         </div>
       </div>
@@ -57,15 +57,15 @@ function row_status($x) {
   <div class="col-sm-6 col-xl-3">
     <div class="card h-100">
       <div class="card-body">
-        <div class="d-flex justify-content-between align-items-start">
+        <div class="d-flex justify-content-between align-items-center">
           <div class="avatar">
             <div class="avatar-initial bg-label-primary rounded-3">
               <i class="icon-base ri ri-shopping-cart-2-line icon-26px"></i>
             </div>
           </div>
+          <h4 class="mb-0"><?= $this->sma->formatMoney($total_purchases ?? 0) ?></h4>
         </div>
-        <div class="mt-4">
-          <h4 class="mb-1"><?= $this->sma->formatMoney($total_purchases ?? 0) ?></h4>
+        <div class="mt-3">
           <p class="mb-0 text-muted"><?= lang('total_purchases') ?></p>
         </div>
       </div>
@@ -76,15 +76,15 @@ function row_status($x) {
   <div class="col-sm-6 col-xl-3">
     <div class="card h-100">
       <div class="card-body">
-        <div class="d-flex justify-content-between align-items-start">
+        <div class="d-flex justify-content-between align-items-center">
           <div class="avatar">
             <div class="avatar-initial bg-label-warning rounded-3">
               <i class="icon-base ri ri-user-line icon-26px"></i>
             </div>
           </div>
+          <h4 class="mb-0"><?= $total_customers ?? 0 ?></h4>
         </div>
-        <div class="mt-4">
-          <h4 class="mb-1"><?= $total_customers ?? 0 ?></h4>
+        <div class="mt-3">
           <p class="mb-0 text-muted"><?= lang('customers') ?></p>
         </div>
       </div>
@@ -95,15 +95,15 @@ function row_status($x) {
   <div class="col-sm-6 col-xl-3">
     <div class="card h-100">
       <div class="card-body">
-        <div class="d-flex justify-content-between align-items-start">
+        <div class="d-flex justify-content-between align-items-center">
           <div class="avatar">
             <div class="avatar-initial bg-label-danger rounded-3">
               <i class="icon-base ri ri-archive-line icon-26px"></i>
             </div>
           </div>
+          <h4 class="mb-0"><?= $total_products ?? 0 ?></h4>
         </div>
-        <div class="mt-4">
-          <h4 class="mb-1"><?= $total_products ?? 0 ?></h4>
+        <div class="mt-3">
           <p class="mb-0 text-muted"><?= lang('products') ?></p>
         </div>
       </div>
