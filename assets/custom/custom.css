@@ -1,0 +1,704 @@
+/* ============================================================
+   Custom Styles — Adaptation Materialize (Pixinvent)
+   Thème : vertical-menu-template-semi-dark
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   1. TABLES — Pas de retour à la ligne (nowrap)
+      Toutes les lignes de tableau sur une seule ligne,
+      scroll horizontal si nécessaire.
+   ---------------------------------------------------------- */
+.table td,
+.table th,
+table td,
+table th {
+  white-space: nowrap;
+}
+
+/* Les cellules "no-wrap" avec scroll horizontal dans le wrapper */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* DataTables : largeur minimale pour forcer le scroll */
+.dataTables_wrapper .table {
+  min-width: max-content;
+}
+
+/* Exception : messages "colspan" vides peuvent wrapper */
+.dataTables_empty,
+td[colspan].text-center {
+  white-space: normal !important;
+}
+
+/* Taille de texte réduite dans tbody */
+table tbody td,
+.table tbody td {
+  font-size: 0.8rem;
+}
+
+/* Thead : fond primary + texte blanc + padding réduit */
+table thead th,
+.table thead th {
+  background-color: #7367f0 !important;
+  color: #fff !important;
+  border-color: #6254d4 !important;
+  padding-top: 0.4rem !important;
+  padding-bottom: 0.4rem !important;
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* ----------------------------------------------------------
+   1b. DATATABLES — Search, size, pagination améliorés
+   ---------------------------------------------------------- */
+
+/* Wrapper global : alignement flex propre */
+.dataTables_wrapper {
+  font-size: 0.8rem;
+}
+
+/* Ligne supérieure : length + filter côte à côte */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Label "Show X entries" */
+.dataTables_wrapper .dataTables_length label,
+.dataTables_wrapper .dataTables_filter label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-weight: 500;
+  color: #697a8d;
+  white-space: nowrap;
+}
+
+/* Select "nombre de lignes" */
+.dataTables_wrapper .dataTables_length select {
+  padding: 0.25rem 1.8rem 0.25rem 0.6rem;
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 0.375rem;
+  font-size: 0.8rem;
+  background-color: var(--bs-body-bg, #fff);
+  color: var(--bs-body-color, #697a8d);
+  appearance: auto;
+  height: 2rem;
+}
+.dataTables_wrapper .dataTables_length select:focus {
+  border-color: #7367f0;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(115,103,240,.15);
+}
+
+/* Champ de recherche */
+.dataTables_wrapper .dataTables_filter input {
+  margin-left: 0 !important;
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.7rem 0.25rem 2rem;
+  font-size: 0.8rem;
+  height: 2rem;
+  background-color: var(--bs-body-bg, #fff);
+  color: var(--bs-body-color, #697a8d);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23697a8d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 0.55rem center;
+  transition: border-color .15s, box-shadow .15s;
+}
+.dataTables_wrapper .dataTables_filter input:focus {
+  border-color: #7367f0;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(115,103,240,.15);
+}
+
+/* Info "Showing X of Y entries" */
+.dataTables_wrapper .dataTables_info {
+  font-size: 0.78rem;
+  color: #a1acb8;
+  padding-top: 0.5rem;
+}
+
+/* ----------------------------------------------------------
+   2. ANCIENNES CLASSES BOOTSTRAP 3 → STYLE MATERIALIZE
+      box-header / box-content / box-icon → card Materialize
+   ---------------------------------------------------------- */
+
+/* --- Conteneur global : la div.card enveloppe tout --- */
+.card > .box-header,
+div.box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--bs-border-color, rgba(0,0,0,.125));
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Titre dans box-header */
+.box-header h2,
+.box-header .h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--bs-heading-color, inherit);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1 1 auto;
+}
+
+.box-header h2 i,
+.box-header .h2 i {
+  font-size: 1.1rem;
+  opacity: .8;
+}
+
+/* Bouton d'icône dans la zone box-icon */
+.box-header .box-icon {
+  flex: 0 0 auto;
+}
+
+/* Liste d'actions (btn-tasks) */
+.box-header .box-icon .btn-tasks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.box-header .box-icon .btn-tasks > li {
+  display: flex;
+  align-items: center;
+}
+
+/* Icône dropdown dans btn-tasks */
+.box-header .box-icon .btn-tasks .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  color: var(--bs-body-color);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color .15s;
+}
+
+.box-header .box-icon .btn-tasks .icon:hover {
+  background-color: rgba(var(--bs-primary-rgb, 113,76,202), 0.1);
+  color: var(--bs-primary, #7b4dd5);
+}
+
+/* Lien dropdown toggle dans btn-tasks */
+.box-header .box-icon .btn-tasks a.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  color: var(--bs-body-color);
+  transition: background-color .15s;
+  text-decoration: none;
+}
+
+.box-header .box-icon .btn-tasks a.dropdown-toggle:hover {
+  background-color: rgba(var(--bs-primary-rgb, 113,76,202), 0.08);
+}
+
+/* Menus déroulants dans btn-tasks */
+.btn-tasks .dropdown-menu,
+.btn-tasks .tasks-menus {
+  min-width: 180px;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 24px 0 rgba(34,41,47,.1);
+  border: 1px solid var(--bs-border-color, rgba(0,0,0,.1));
+  padding: 0.35rem 0;
+}
+
+.btn-tasks .dropdown-menu li a,
+.btn-tasks .tasks-menus li a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.875rem;
+  color: var(--bs-body-color);
+  text-decoration: none;
+  transition: background-color .12s;
+}
+
+.btn-tasks .dropdown-menu li a:hover,
+.btn-tasks .tasks-menus li a:hover {
+  background-color: rgba(var(--bs-primary-rgb, 113,76,202), 0.08);
+  color: var(--bs-primary, #7b4dd5);
+}
+
+.btn-tasks .dropdown-menu .divider,
+.btn-tasks .tasks-menus .divider {
+  height: 1px;
+  margin: 0.35rem 0;
+  background-color: var(--bs-border-color, rgba(0,0,0,.1));
+}
+
+/* --- box-content → card-body --- */
+.card > .box-content,
+div.box-content {
+  padding: 1.5rem;
+}
+
+/* Quand box-content est dans une .card, garder le look cohérent */
+.card > .box-content .row > [class*="col-"] {
+  padding: 0;
+}
+
+/* --- Texte intro --- */
+.introtext {
+  font-size: 0.8125rem;
+  color: var(--bs-secondary-color, #6c757d);
+  margin-bottom: 1rem;
+}
+
+/* --- Lignes de tableau d'entête colorées (old Bootstrap 3 .primary) --- */
+.table thead tr.primary th,
+.table thead tr.primary td {
+  background-color: rgba(var(--bs-primary-rgb, 113,76,202), 0.06);
+  color: var(--bs-heading-color, inherit);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* --- Table condensée (Bootstrap 3) → table-sm (Bootstrap 5) --- */
+.table-condensed {
+  --bs-table-cell-padding-y: 0.35rem;
+  --bs-table-cell-padding-x: 0.65rem;
+}
+
+/* --- tfoot.dtFilter (filtre DataTables) --- */
+tfoot.dtFilter tr th input,
+tfoot.dtFilter tr th select {
+  width: 100%;
+  font-size: 0.78rem;
+  padding: 0.2rem 0.4rem;
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 0.25rem;
+  background-color: var(--bs-body-bg, #fff);
+  color: var(--bs-body-color);
+}
+
+/* tfoot.dtFilter .active hérite du header */
+tfoot.dtFilter tr.active th {
+  background-color: transparent;
+  padding: 0.4rem 0.5rem;
+}
+
+/* ----------------------------------------------------------
+   3. GRAPHIQUES — Présentation responsive
+   ---------------------------------------------------------- */
+#ov-chart,
+[id$="-chart"],
+.chart-container {
+  width: 100% !important;
+  min-height: 300px;
+}
+
+/* Highcharts / ApexCharts container */
+.highcharts-container,
+.apexcharts-canvas {
+  width: 100% !important;
+}
+
+/* ----------------------------------------------------------
+   4. FORMULAIRES — Compatibilité Bootstrap 3 → 5
+   ---------------------------------------------------------- */
+
+/* .form-group (supprimé en BS5) */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+/* .control-label (supprimé en BS5) */
+.control-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.375rem;
+  display: inline-block;
+  color: var(--bs-body-color);
+}
+
+/* Bootstrap 3 .help-block → form-text */
+.help-block {
+  font-size: 0.8rem;
+  color: var(--bs-secondary-color, #6c757d);
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Bootstrap 3 .input-group-addon → input-group-text */
+.input-group-addon {
+  display: flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--bs-body-color);
+  text-align: center;
+  white-space: nowrap;
+  background-color: var(--bs-tertiary-bg, #f8f9fa);
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 0.375rem;
+}
+
+/* Bootstrap 3 .btn-default → btn-outline-secondary */
+.btn-default {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.btn-default:hover {
+  background-color: var(--bs-tertiary-bg, #f8f9fa);
+}
+
+/* ----------------------------------------------------------
+   5. NAVIGATION TABS — Style Materialize
+   ---------------------------------------------------------- */
+.nav-tabs-bordered {
+  border-bottom: 1px solid var(--bs-border-color, rgba(0,0,0,.1));
+}
+
+.nav-tabs-bordered .nav-link {
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  color: var(--bs-secondary-color, #6c757d);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color .15s, border-color .15s;
+}
+
+.nav-tabs-bordered .nav-link:hover {
+  color: var(--bs-primary, #7b4dd5);
+  border-bottom-color: var(--bs-primary, #7b4dd5);
+}
+
+.nav-tabs-bordered .nav-link.active {
+  color: var(--bs-primary, #7b4dd5);
+  border-bottom-color: var(--bs-primary, #7b4dd5);
+  background: transparent;
+}
+
+/* ----------------------------------------------------------
+   6. BADGES DE STATUT — Style Materialize
+   ---------------------------------------------------------- */
+.badge.bg-label-success  { background-color: rgba(40,199,111,.16)  !important; color: #28c76f !important; }
+.badge.bg-label-danger   { background-color: rgba(234,84,85,.16)   !important; color: #ea5455 !important; }
+.badge.bg-label-warning  { background-color: rgba(255,159,67,.16)  !important; color: #ff9f43 !important; }
+.badge.bg-label-info     { background-color: rgba(0,207,232,.16)   !important; color: #00cfe8 !important; }
+.badge.bg-label-primary  { background-color: rgba(113,76,202,.16)  !important; color: #7b4dd5 !important; }
+.badge.bg-label-secondary{ background-color: rgba(130,134,139,.16) !important; color: #82868b !important; }
+
+/* ----------------------------------------------------------
+   7. LIENS RAPIDES (dashboard) — col-xl-1-5
+   ---------------------------------------------------------- */
+.col-xl-1-5 {
+  flex: 0 0 auto;
+  width: 20%;
+}
+@media (max-width: 1199.98px) { .col-xl-1-5 { width: 25%; } }
+@media (max-width: 991.98px)  { .col-xl-1-5 { width: 33.333%; } }
+@media (max-width: 767.98px)  { .col-xl-1-5 { width: 50%; } }
+
+.quick-link-item {
+  transition: box-shadow .15s, background-color .15s;
+}
+.quick-link-item:hover {
+  background-color: rgba(var(--bs-primary-rgb, 113,76,202), 0.04);
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+/* ----------------------------------------------------------
+   8. DIVERS CORRECTIONS
+   ---------------------------------------------------------- */
+
+/* Clearfix Bootstrap 3 */
+.clearfix::after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+/* Cursor pointer sur les lignes cliquables */
+.invoice_link,
+.receipt_link,
+.quote_link,
+.purchase_link,
+.transfer_link,
+.customer_link,
+.supplier_link,
+.product_link {
+  cursor: pointer;
+}
+
+/* Popover de confirmation (bpo) */
+.bpo { cursor: pointer; }
+
+/* Couleur d'accent "blue" Bootstrap 3 */
+h2.blue, .blue { color: var(--bs-primary, #7b4dd5) !important; }
+
+/* DataTables pagination Bootstrap 5 */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background: #7367f0 !important;
+  color: #fff !important;
+  border-color: #7367f0 !important;
+  border-radius: 0.375rem;
+}
+
+/* Suppression du style redondant — défini en section 1b */
+
+/* Sélection par ligne sur mobile */
+.table-responsive > .table {
+  table-layout: auto;
+}
+
+/* Barre de défilement horizontale toujours visible sur tableaux */
+.table-responsive::-webkit-scrollbar {
+  height: 4px;
+}
+.table-responsive::-webkit-scrollbar-track {
+  background: transparent;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: rgba(var(--bs-primary-rgb, 113,76,202), 0.25);
+  border-radius: 10px;
+}
+
+/* ----------------------------------------------------------
+   9. PANNEAUX / PAGES DE RAPPORT
+      (certaines vues ont une imbrication box dans box)
+   ---------------------------------------------------------- */
+.row-panel {
+  margin-bottom: 1.5rem;
+}
+
+/* Formulaire de recherche dans les rapports */
+#form,
+.report-form {
+  background-color: var(--bs-tertiary-bg, #f8f9fa);
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Bouton de toggle du formulaire de rapport */
+.toggle_down, .toggle_up {
+  font-size: 0.875rem;
+  color: var(--bs-primary, #7b4dd5);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+  text-decoration: none;
+}
+
+/* ----------------------------------------------------------
+   10. COMPATIBILITÉ MODE SOMBRE (data-bs-theme="dark")
+   ---------------------------------------------------------- */
+[data-bs-theme="dark"] .box-header,
+[data-bs-theme="dark"] .box-content {
+  --bs-border-color: rgba(255,255,255,.1);
+}
+
+[data-bs-theme="dark"] .table-responsive::-webkit-scrollbar-thumb {
+  background-color: rgba(255,255,255,.15);
+}
+
+[data-bs-theme="dark"] #form,
+[data-bs-theme="dark"] .report-form {
+  background-color: rgba(255,255,255,.04);
+  border-color: rgba(255,255,255,.1);
+}
+
+/* ----------------------------------------------------------
+   11. BOUTONS RAPIDES DE NAVIGATION (quick-button)
+       Utilisés dans rapports et autres vues
+   ---------------------------------------------------------- */
+.quick-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem 0.75rem;
+  border-radius: 0.5rem;
+  text-decoration: none !important;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  gap: 0.4rem;
+  transition: opacity .15s, box-shadow .15s;
+  margin-bottom: 0.5rem;
+  color: #fff !important;
+}
+
+.quick-button i {
+  font-size: 1.4rem;
+  margin-bottom: 0.25rem;
+}
+
+.quick-button p {
+  margin: 0;
+  line-height: 1.3;
+  word-break: break-word;
+  white-space: normal;
+}
+
+.quick-button:hover {
+  opacity: .88;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+}
+
+/* Couleurs des boutons rapides (mapping ancien thème → Materialize) */
+.bblue        { background-color: #7367f0 !important; }
+.bred         { background-color: #ea5455 !important; }
+.bgreen       { background-color: #28c76f !important; }
+.bdarkGreen   { background-color: #1a8a54 !important; }
+.blightGreen  { background-color: #55dd92 !important; color: #fff !important; }
+.borange      { background-color: #ff9f43 !important; }
+.blightOrange { background-color: #ffc085 !important; color: #fff !important; }
+.blightBlue   { background-color: #00cfe8 !important; }
+.bpurple      { background-color: #9b59b6 !important; }
+.bgrey,
+.bgray        { background-color: #82868b !important; }
+
+/* Padding utilitaire Bootstrap 3 */
+.padding1010 { padding: 5px 5px; }
+
+/* Bootstrap 3 .col-xs-* → Bootstrap 5 .col-* */
+.col-xs-4 { flex: 0 0 auto; width: 33.333%; }
+.col-xs-6 { flex: 0 0 auto; width: 50%; }
+.col-xs-12 { flex: 0 0 auto; width: 100%; }
+
+/* ----------------------------------------------------------
+   12. GRAPHIQUES DES RAPPORTS — style Materialize
+   ---------------------------------------------------------- */
+#chart {
+  width: 100% !important;
+  min-height: 350px;
+}
+
+/* Container Highcharts dans les rapports */
+.highcharts-container svg {
+  overflow: visible !important;
+}
+
+/* ----------------------------------------------------------
+   13. ÉLÉMENTS DIVERS LEGACY
+   ---------------------------------------------------------- */
+
+/* .well Bootstrap 3 → info box */
+.well {
+  background-color: var(--bs-tertiary-bg, #f8f9fa);
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.well.well-sm { padding: 0.5rem 0.75rem; }
+
+/* Bootstrap 3 nav-pills dans le header */
+.nav-pills .nav-link.active {
+  background-color: var(--bs-primary, #7b4dd5);
+}
+
+/* .label (Bootstrap 3) → .badge (Bootstrap 5) */
+.label {
+  display: inline-block;
+  padding: 0.15em 0.45em;
+  font-size: .75em;
+  font-weight: 600;
+  border-radius: 0.25rem;
+}
+.label-default  { background-color: #82868b; color: #fff; }
+.label-primary  { background-color: #7367f0; color: #fff; }
+.label-success  { background-color: #28c76f; color: #fff; }
+.label-info     { background-color: #00cfe8; color: #fff; }
+.label-warning  { background-color: #ff9f43; color: #fff; }
+.label-danger   { background-color: #ea5455; color: #fff; }
+
+/* Bootstrap 3 panel → card */
+.panel { border-radius: 0.5rem; margin-bottom: 1.5rem; }
+.panel-heading {
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--bs-border-color);
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.panel-body { padding: 1.25rem; }
+.panel-default > .panel-heading { background-color: var(--bs-tertiary-bg); }
+
+/* Bootstrap 3 .col-md-offset-* */
+@media (min-width: 768px) {
+  .col-md-offset-1 { margin-left: 8.333%; }
+  .col-md-offset-2 { margin-left: 16.666%; }
+  .col-md-offset-3 { margin-left: 25%; }
+}
+
+/* Bulle de comptage dans les menus */
+.bubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background-color: var(--bs-danger, #ea5455);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  vertical-align: middle;
+  margin-left: 0.25rem;
+}
+
+/* ----------------------------------------------------------
+   14. PAGE AUTH — login, register, etc.
+   ---------------------------------------------------------- */
+.authentication-wrapper .card {
+  box-shadow: 0 4px 24px 0 rgba(34,41,47,.1);
+}
+
+/* ----------------------------------------------------------
+   15. RESPONSIVE HELPERS
+   ---------------------------------------------------------- */
+@media (max-width: 575.98px) {
+  .box-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .box-header .box-icon {
+    align-self: flex-end;
+    margin-top: -2rem;
+  }
+  .quick-button { min-height: 70px; }
+}
