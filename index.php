@@ -2,6 +2,39 @@
 
 /*
  * --------------------------------------------------------------------
+ * LOAD ENVIRONMENT VARIABLES
+ * --------------------------------------------------------------------
+ * Parse the .env file and populate $_ENV / getenv() so that
+ * config files can read credentials without hard-coding them.
+ */
+    $envFile = __DIR__ . '/.env';
+    if (file_exists($envFile)) {
+        $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if ($line === '' || $line[0] === '#') {
+                continue;
+            }
+            if (strpos($line, '=') === false) {
+                continue;
+            }
+            [$name, $value] = explode('=', $line, 2);
+            $name  = trim($name);
+            $value = trim($value);
+            // Strip optional surrounding quotes
+            if (preg_match('/^(["\']).*\1$/', $value)) {
+                $value = substr($value, 1, -1);
+            }
+            if (!array_key_exists($name, $_ENV)) {
+                putenv("$name=$value");
+                $_ENV[$name]    = $value;
+                $_SERVER[$name] = $value;
+            }
+        }
+    }
+
+/*
+ * --------------------------------------------------------------------
  * SET YOUR TIMEZONE
  * --------------------------------------------------------------------
  *
