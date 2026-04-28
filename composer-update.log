@@ -1,0 +1,32 @@
+﻿
+Warning: Module "imagick" is already loaded in Unknown on line 0
+composer : Loading composer repositories with package information
+Au caractère Ligne:1 : 1
++ composer update --no-scripts --ignore-platform-req=php --ignore-platf ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Loading compose...age information 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Updating dependencies
+Nothing to modify in lock file
+Installing dependencies from lock file (including require-dev)
+Nothing to install, update or remove
+Generating autoload files
+
+In platform_check.php line 28:
+                                                                               
+  Composer detected issues in your platform: Your Composer dependencies requi  
+  re a PHP version ">= 8.2.0". You are running 8.1.10.                         
+                                                                               
+
+update [--with WITH] [--prefer-source] [--prefer-dist] [--prefer-install 
+PREFER-INSTALL] [--dry-run] [--dev] [--no-dev] [--lock] [--no-install] 
+[--no-audit] [--audit-format AUDIT-FORMAT] [--no-autoloader] [--no-suggest] 
+[--no-progress] [-w|--with-dependencies] [-W|--with-all-dependencies] 
+[-v|vv|vvv|--verbose] [-o|--optimize-autoloader] [-a|--classmap-authoritative] 
+[--apcu-autoloader] [--apcu-autoloader-prefix APCU-AUTOLOADER-PREFIX] 
+[--ignore-platform-req IGNORE-PLATFORM-REQ] [--ignore-platform-reqs] 
+[--prefer-stable] [--prefer-lowest] [-m|--minimal-changes] [-i|--interactive] 
+[--root-reqs] [--] [<packages>...]
+

@@ -4,20 +4,21 @@
     "description": "Stock Manager Advance",
     "type": "project",
     "require": {
-        "php": "^7.4|^8.0",
-        "dompdf/dompdf": "^1.0.2",
-        "hybridauth/hybridauth": "^3.6.0",
-        "mike42/escpos-php": "^1.5",
-        "mpdf/mpdf": "^8.0.4",
-        "phpmailer/phpmailer": "^6.0.5",
-        "stripe/stripe-php": "^5.1",
+        "php": "^8.2",
+        "dompdf/dompdf": "^3.0",
+        "hybridauth/hybridauth": "^3.10",
+        "mike42/escpos-php": "^4.0",
+        "mpdf/mpdf": "^8.2",
+        "phpmailer/phpmailer": "^6.9",
+        "stripe/stripe-php": "^7.128",
         "tecdiary/sms": "^1.0.2",
-        "league/oauth2-google": "^3.0",
-        "laminas/laminas-barcode": "^2.8",
-        "phpoffice/phpspreadsheet": "^1.11",
+        "league/oauth2-google": "^4.0",
+        "laminas/laminas-barcode": "^2.14",
+        "phpoffice/phpspreadsheet": "^2.3",
         "arutil/ar-php": "^0.1.1",
-        "salla/zatca": "^1.0",
-        "chillerlan/php-qrcode": "^4.3"
+        "salla/zatca": "^3.0",
+        "chillerlan/php-qrcode": "^4.4",
+        "nesbot/carbon": "^2.72.6"
     },
     "license": "Commercial License",
     "authors": [
@@ -26,9 +27,38 @@
             "email": "saleem@tecdiary.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "arutil/ar-php",
+                "version": "0.1.1",
+                "dist": {
+                    "url": "https://github.com/alhoqbani/ar-php/archive/refs/heads/master.zip",
+                    "type": "zip"
+                },
+                "require": {
+                    "php": ">=7.4",
+                    "nesbot/carbon": "^1.22 || ^2.0 || ^3.0"
+                },
+                "autoload": {
+                    "psr-4": {
+                        "ArUtil\\": "src/ArUtil"
+                    },
+                    "files": [
+                        "src/bootstrap.php"
+                    ]
+                }
+            }
+        }
+    ],
     "config": {
+        "platform": {
+            "php": "8.2"
+        },
         "allow-plugins": {
             "kylekatarnls/update-helper": true
-        }
+        },
+        "platform-check": false
     }
 }

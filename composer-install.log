@@ -1,0 +1,18 @@
+﻿
+Warning: Module "imagick" is already loaded in Unknown on line 0
+composer : Installing dependencies from lock file (including require-dev)
+Au caractère Ligne:1 : 39
++ ... heck false; composer install --no-scripts --ignore-platform-req=php - ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Installing depe...ng require-dev) 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Verifying lock file contents can be installed on current platform.
+Nothing to install, update or remove
+Generating autoload files
+Carbon 1 is deprecated, see how to migrate to Carbon 2.
+https://carbon.nesbot.com/docs/#api-carbon-2
+    You can run ".\vendor\bin\upgrade-carbon" to get help in updating carbon and other frameworks and libraries that depend on it.
+25 packages you are using are looking for funding.
+Use the `composer fund` command to find out more!

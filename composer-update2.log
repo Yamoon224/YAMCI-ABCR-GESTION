@@ -1,0 +1,24 @@
+﻿
+Warning: Module "imagick" is already loaded in Unknown on line 0
+composer : Loading composer repositories with package information
+Au caractère Ligne:1 : 1
++ composer update nesbot/carbon --no-scripts --ignore-platform-req=php  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Loading compose...age information 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Updating dependencies
+Your requirements could not be resolved to an installable set of packages.
+
+  Problem 1
+    - Root composer.json requires nesbot/carbon ^2.72.6, found 
+nesbot/carbon[2.72.6, 2.73.0] but these were not loaded, likely because it 
+conflicts with another require.
+  Problem 2
+    - arutil/ar-php is locked to version 0.1.1 and an update of this package 
+was not requested.
+    - arutil/ar-php 0.1.1 requires nesbot/carbon ^1.22 -> found 
+nesbot/carbon[1.22.0, ..., 1.39.1] but it conflicts with your root 
+composer.json require (^2.72.6).
+
