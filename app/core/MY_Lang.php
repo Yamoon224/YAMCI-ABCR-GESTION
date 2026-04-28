@@ -112,7 +112,7 @@ class MY_Lang extends CI_Lang
         $search = [];
         $cnt    = 1;
         foreach ($params as $param) {
-            $search[$cnt] = "/\\${$cnt}/";
+            $search[$cnt] = '/\$' . $cnt . '/';
             $cnt++;
         }
         unset($search[0]);
