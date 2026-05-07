@@ -22,8 +22,8 @@
     <link rel="stylesheet" href="<?= $assets ?>materialize/vendor/css/core.css" />
     <link rel="stylesheet" href="<?= $assets ?>materialize/css/demo.css" />
 
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+    <!-- DataTables 2.x CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.min.css" />
 
     <!-- Select2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
@@ -48,6 +48,15 @@
     <!-- Helpers + Template Customizer (requis par helpers.js getStoredTheme + mode sombre) -->
     <script src="<?= $assets ?>materialize/vendor/js/helpers.js"></script>
     <script src="<?= $assets ?>materialize/vendor/js/template-customizer.js"></script>
+    <!-- Nettoyage des anciens réglages de layout stockés dans localStorage (évite que le customizer
+         écrase les classes layout-navbar-fixed / layout-menu-fixed / layout-compact au chargement) -->
+    <script>
+    (function(){
+      var tpl = 'vertical-menu-template';
+      var dangerous = ['HeaderType','contentLayout','LayoutCollapsed','FixedNavbarOption','FixedFooter','ShowDropdownOnHover'];
+      dangerous.forEach(function(k){ try{ localStorage.removeItem('templateCustomizer-' + tpl + '--' + k); }catch(e){} });
+    })();
+    </script>
     <script src="<?= $assets ?>materialize/js/config.js"></script>
 </head>
 

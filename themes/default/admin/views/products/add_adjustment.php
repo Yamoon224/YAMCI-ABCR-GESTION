@@ -100,33 +100,29 @@
     });
 </script>
 
-<div class="card">
+<div class="card rounded-sm">
     <div class="box-header">
         <h2 class="blue"><i class="fa-fw fa fa-plus"></i><?= lang('add_adjustment'); ?></h2>
     </div>
     <div class="box-content">
         <div class="row">
             <div class="col-lg-12">
-
                 <p class="introtext"><?php echo lang('enter_info'); ?></p>
                 <?php
                 $attrib = ['data-toggle' => 'validator', 'role' => 'form'];
                 echo admin_form_open_multipart('products/add_adjustment' . ($count_id ? '/' . $count_id : ''), $attrib);
                 ?>
                 <div class="row">
-                    <div class="col-lg-12">
-                        <?php if ($Owner || $Admin) {
-                    ?>
-                            <div class="col-md-4">
+                        <?php if ($Owner || $Admin) { ?>
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <?= lang('date', 'qadate'); ?>
                                     <?php echo form_input('date', (isset($_POST['date']) ? $_POST['date'] : ''), 'class="form-control input-tip datetime" id="qadate" required="required"'); ?>
                                 </div>
                             </div>
-                        <?php
-                } ?>
+                        <?php } ?>
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <?= lang('reference_no', 'qaref'); ?>
                                 <?php echo form_input('reference_no', (isset($_POST['reference_no']) ? $_POST['reference_no'] : ''), 'class="form-control input-tip" id="qaref"'); ?>
@@ -134,9 +130,8 @@
                         </div>
                         <?= form_hidden('count_id', $count_id); ?>
 
-                        <?php if ($Owner || $Admin || !$this->session->userdata('warehouse_id')) {
-                    ?>
-                            <div class="col-md-4">
+                        <?php if ($Owner || $Admin || !$this->session->userdata('warehouse_id')) { ?>
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <?= lang('warehouse', 'qawarehouse'); ?>
                                     <?php
@@ -158,7 +153,7 @@
 
                     echo form_input($warehouse_input);
                 } ?>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <?= lang('document', 'document') ?>
                                 <input id="document" type="file" data-browse-label="<?= lang('browse'); ?>" name="document" data-show-upload="false"
@@ -187,7 +182,7 @@
                                 <label class="table-label"><?= lang('products'); ?> *</label>
 
                                 <div class="controls table-controls">
-                                    <table id="qaTable" class="table items table-striped table-bordered table-condensed table-hover">
+                                    <table id="qaTable" class="table items table-striped table-bordered table-sm table-hover">
                                         <thead>
                                         <tr>
                                             <th><?= lang('product_name') . ' (' . lang('product_code') . ')'; ?></th>
@@ -196,7 +191,7 @@
                                             <th class="col-md-1"><?= lang('quantity'); ?></th>
                                             <?php
                                             if ($Settings->product_serial) {
-                                                echo '<th class="col-md-4">' . lang('serial_no') . '</th>';
+                                                echo '<th class="col-md-6">' . lang('serial_no') . '</th>';
                                             }
                                             ?>
                                             <th style="max-width: 30px !important; text-align: center;">

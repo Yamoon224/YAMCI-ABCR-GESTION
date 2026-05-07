@@ -32,7 +32,7 @@
                     <?= admin_form_open('products/print_barcodes', 'id="barcode-print-form" data-toggle="validator"'); ?>
                     <div class="controls table-controls">
                         <table id="bcTable"
-                               class="table items table-striped table-bordered table-condensed table-hover">
+                               class="table items table-striped table-bordered table-sm table-hover">
                             <thead>
                             <tr>
                                 <th class="col-xs-4"><?= lang('product_name') . ' (' . $this->lang->line('product_code') . ')'; ?></th>

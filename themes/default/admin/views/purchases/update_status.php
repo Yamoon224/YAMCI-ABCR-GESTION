@@ -15,7 +15,7 @@
                     <?= lang('purchase_details'); ?>
                 </div>
                 <div class="card-body">
-                    <table class="table table-condensed table-striped table-borderless" style="margin-bottom:0;">
+                    <table class="table table-sm table-striped table-borderless" style="margin-bottom:0;">
                         <tbody>
                             <tr>
                                 <td><?= lang('reference_no'); ?></td>

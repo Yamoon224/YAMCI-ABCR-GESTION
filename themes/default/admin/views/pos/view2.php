@@ -155,7 +155,7 @@
                 ?>
 
                 <div style="clear:both;"></div>
-                <table class="table table-condensed">
+                <table class="table table-sm">
                     <thead>
                         <tr>
                             <th colspan="2" class="text-center"><?= lang('desc'); ?></th>
@@ -272,7 +272,7 @@
                 </table>
                 <?php
                 if ($payments) {
-                    echo '<table class="table table-striped table-condensed"><tbody>';
+                    echo '<table class="table table-striped table-sm"><tbody>';
                     foreach ($payments as $payment) {
                         echo '<tr>';
                         if (($payment->paid_by == 'cash' || $payment->paid_by == 'deposit') && $payment->pos_paid) {
@@ -304,7 +304,7 @@
                 }
 
                 if ($return_payments) {
-                    echo '<strong>' . lang('return_payments') . '</strong><table class="table table-striped table-condensed"><tbody>';
+                    echo '<strong>' . lang('return_payments') . '</strong><table class="table table-striped table-sm"><tbody>';
                     foreach ($return_payments as $payment) {
                         $payment->amount = (0 - $payment->amount);
                         echo '<tr>';

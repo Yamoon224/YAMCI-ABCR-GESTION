@@ -272,7 +272,7 @@
 
                             <div class="table-responsive">
                                 <table id="SlRData"
-                                class="table table-bordered table-hover table-striped table-condensed reports-table reports-table">
+                                class="table table-bordered table-hover table-striped table-sm reports-table reports-table">
                                 <thead>
                                     <tr>
                                         <th><?= lang('date'); ?></th>
@@ -479,7 +479,7 @@
 
                         <div class="table-responsive">
                             <table id="PayRData"
-                            class="table table-bordered table-hover table-striped table-condensed reports-table reports-table">
+                            class="table table-bordered table-hover table-striped table-sm reports-table reports-table">
 
                             <thead>
                                 <tr>
@@ -583,7 +583,7 @@
                     <p class="introtext"><?php echo lang('list_results'); ?></p>
 
                     <div class="table-responsive">
-                        <table id="QuRData" class="table table-bordered table-hover table-striped table-condensed reports-table">
+                        <table id="QuRData" class="table table-bordered table-hover table-striped table-sm reports-table">
                             <thead>
                                 <tr>
                                     <th><?= lang('date'); ?></th>
@@ -676,7 +676,7 @@
                     <p class="introtext"><?php echo lang('list_results'); ?></p>
 
                     <div class="table-responsive">
-                        <table id="DepData" class="table table-bordered table-condensed table-hover table-striped reports-table">
+                        <table id="DepData" class="table table-bordered table-sm table-hover table-striped reports-table">
                             <thead>
                             <tr class="primary">
                                 <th class="col-xs-2"><?= lang('date'); ?></th>

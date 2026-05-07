@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed'); ?><!DOCTYPE html>
+﻿<?php defined('BASEPATH') or exit('No direct script access allowed'); ?><!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -42,7 +42,7 @@
 <div class="wrap">
     <div class="bill" id="bill">
         <div id="product-list">
-            <table style="margin-bottom: 0;" id="billTable" class="table table-striped table-condensed">
+            <table style="margin-bottom: 0;" id="billTable" class="table table-striped table-sm">
                 <thead>
                 <tr>
                     <th width="50%" class="text-center"><?= lang('product'); ?></th>

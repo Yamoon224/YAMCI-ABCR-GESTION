@@ -276,7 +276,7 @@ if (!empty($variants)) {
                             <?php
                             if ($product_options) {
                                 ?>
-                            <table class="table table-bordered table-condensed table-striped"
+                            <table class="table table-bordered table-sm table-striped"
                                    style="<?= $this->input->post('attributes') || $product_options ? '' : 'display:none;'; ?> margin-top: 10px;">
                                 <thead>
                                 <tr class="active">
@@ -298,7 +298,7 @@ if (!empty($variants)) {
                             if ($product_variants) {
                                 ?>
                                 <h3 class="bold"><?=lang('update_variants'); ?></h3>
-                                <table class="table table-bordered table-condensed table-striped" style="margin-top: 10px;">
+                                <table class="table table-bordered table-sm table-striped" style="margin-top: 10px;">
                                 <thead>
                                 <tr class="active">
                                     <th class="col-xs-8"><?= lang('name') ?></th>
@@ -335,7 +335,7 @@ if (!empty($variants)) {
                                     <div style="clear:both;"></div>
                                 </div>
                                 <div class="table-responsive">
-                                    <table id="attrTable" class="table table-bordered table-condensed table-striped" style="margin-bottom: 0; margin-top: 10px;">
+                                    <table id="attrTable" class="table table-bordered table-sm table-striped" style="margin-bottom: 0; margin-top: 10px;">
                                         <thead>
                                             <tr class="active">
                                                 <th><?= lang('name') ?></th>
@@ -379,7 +379,7 @@ if (!empty($variants)) {
                             <div class="ccol-md-2 col-sm-2 col-xs-2"><div class="form-group no-help-block" style="margin-bottom: 0;"><input type="text" name="combo" id="combo" value="" data-bv-notEmpty-message="" class="form-control" /></div></div></div>-->
                             <div class="controls table-controls">
                                 <table id="prTable"
-                                       class="table items table-striped table-bordered table-condensed table-hover">
+                                       class="table items table-striped table-bordered table-sm table-hover">
                                     <thead>
                                     <tr>
                                         <th class="col-md-5 col-sm-5 col-xs-5"><?= lang('product') . ' (' . lang('code') . ' - ' . lang('name') . ')'; ?></th>

@@ -81,7 +81,7 @@
 
                 <div class="table-responsive">
                     <table id="PQData" cellpadding="0" cellspacing="0" border="0"
-                           class="table table-bordered table-condensed table-hover table-striped dfTable reports-table">
+                           class="table table-bordered table-sm table-hover table-striped dfTable reports-table">
                         <thead>
                         <tr class="active">
                             <th style="min-width:40px; width: 40px; text-align: center;"><?php echo $this->lang->line('image'); ?></th>

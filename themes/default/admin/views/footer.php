@@ -79,9 +79,9 @@ $s2_file_date = $this->parser->parse_string($s2_lang_file, $s2_data, true);
 <script src="<?= $assets ?>materialize/vendor/js/menu.js"></script>
 <script src="<?= $assets ?>materialize/js/main.js"></script>
 
-<!-- DataTables -->
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<!-- DataTables 2.x + Bootstrap 5 -->
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
 
 <!-- Select2 -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -128,7 +128,15 @@ $s2_file_date = $this->parser->parse_string($s2_lang_file, $s2_data, true);
 var oTable = '', r_u_sure = "<?= lang('r_u_sure') ?>";
 <?= $s2_file_date ?>
 if ($.fn.dataTable) {
+    // Langue DataTables
     $.extend(true, $.fn.dataTable.defaults, {"oLanguage": dt_lang});
+
+    // Classes Bootstrap 5 appliquées à toutes les tables DataTables
+    $(document).on('init.dt', function (e, settings) {
+        var $tbl = $(settings.nTable);
+        $tbl.addClass('table table-hover table-striped table-sm table-bordered');
+        $tbl.closest('.dataTables_wrapper').addClass('dt-materialize');
+    });
 }
 if ($.fn.datetimepicker && $.fn.datetimepicker.dates) {
     $.fn.datetimepicker.dates['sma'] = dp_lang;
@@ -152,8 +160,43 @@ $(document).ready(function () {
     $(document).on('click', '[data-bs-dismiss="alert"]', function() {
         $(this).closest('.alert').remove();
     });
+
+    // Fermer le customizer en cliquant en dehors du panneau
+    function initCustBackdrop() {
+        var panel = document.getElementById('template-customizer');
+        if (!panel) return false;
+        var justOpened = false;
+        var docHandler = null;
+
+        new MutationObserver(function(mutations) {
+            mutations.forEach(function(m) {
+                if (m.attributeName !== 'class') return;
+                if (panel.classList.contains('template-customizer-open')) {
+                    // Panneau ouvert : poser un flag pour ignorer ce même clic
+                    justOpened = true;
+                    if (docHandler) document.removeEventListener('click', docHandler, true);
+                    docHandler = function(e) {
+                        if (justOpened) { justOpened = false; return; }
+                        if (!panel.contains(e.target)) {
+                            panel.classList.remove('template-customizer-open');
+                        }
+                    };
+                    document.addEventListener('click', docHandler, true);
+                } else {
+                    // Panneau fermé : nettoyer
+                    if (docHandler) {
+                        document.removeEventListener('click', docHandler, true);
+                        docHandler = null;
+                    }
+                }
+            });
+        }).observe(panel, { attributes: true });
+        return true;
+    }
+    if (!initCustBackdrop()) {
+        var _cw = setInterval(function() { if (initCustBackdrop()) clearInterval(_cw); }, 100);
+    }
 });
-</script>
 
 <?= (DEMO) ? '<script src="' . $assets . 'js/ppp_ad.min.js"></script>' : '' ?>
 <script src="<?= base_url('assets/custom/custom.js') ?>"></script>

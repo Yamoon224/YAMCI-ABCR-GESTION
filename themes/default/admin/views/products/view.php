@@ -193,7 +193,7 @@
                                             <h3 class="bold"><?= lang('custom_fields') ?></h3>
                                             <div class="table-responsive">
                                                 <table
-                                                    class="table table-bordered table-striped table-condensed dfTable two-columns">
+                                                    class="table table-bordered table-striped table-sm dfTable two-columns">
                                                     <thead>
                                                     <tr>
                                                         <th><?= lang('custom_field') ?></th>
@@ -231,7 +231,7 @@
                                             <h3 class="bold"><?= lang('warehouse_quantity') ?></h3>
                                             <div class="table-responsive">
                                                 <table
-                                                    class="table table-bordered table-striped table-condensed dfTable three-columns">
+                                                    class="table table-bordered table-striped table-sm dfTable three-columns">
                                                     <thead>
                                                     <tr>
                                                         <th><?= lang('warehouse_name') ?></th>
@@ -260,7 +260,7 @@
                                             <h3 class="bold"><?= lang('combo_items') ?></h3>
                                             <div class="table-responsive">
                                                 <table
-                                                    class="table table-bordered table-striped table-condensed dfTable two-columns">
+                                                    class="table table-bordered table-striped table-sm dfTable two-columns">
                                                     <thead>
                                                     <tr>
                                                         <th><?= lang('product_name') ?></th>
@@ -281,7 +281,7 @@
                                             <h3 class="bold"><?= lang('product_variants_quantity'); ?></h3>
                                             <div class="table-responsive">
                                                 <table
-                                                    class="table table-bordered table-striped table-condensed dfTable">
+                                                    class="table table-bordered table-striped table-sm dfTable">
                                                     <thead>
                                                     <tr>
                                                         <th><?= lang('warehouse_name') ?></th>
@@ -622,7 +622,7 @@
                         <p class="introtext"><?php echo lang('list_results'); ?></p>
 
                         <div class="table-responsive">
-                            <table id="SlRData" class="table table-bordered table-hover table-striped table-condensed">
+                            <table id="SlRData" class="table table-bordered table-hover table-striped table-sm">
                                 <thead>
                                 <tr>
                                     <th><?= lang('date'); ?></th>
@@ -729,7 +729,7 @@
                         <p class="introtext"><?php echo lang('list_results'); ?></p>
 
                         <div class="table-responsive">
-                            <table id="QuRData" class="table table-bordered table-hover table-striped table-condensed">
+                            <table id="QuRData" class="table table-bordered table-hover table-striped table-sm">
                                 <thead>
                                 <tr>
                                     <th><?= lang('date'); ?></th>
@@ -842,7 +842,7 @@
                         <p class="introtext"><?php echo lang('list_results'); ?></p>
 
                         <div class="table-responsive">
-                            <table id="PoRData" class="table table-bordered table-hover table-striped table-condensed">
+                            <table id="PoRData" class="table table-bordered table-hover table-striped table-sm">
                                 <thead>
                                 <tr>
                                     <th><?= lang('date'); ?></th>
@@ -957,7 +957,7 @@
                         <p class="introtext"><?php echo lang('list_results'); ?></p>
 
                         <div class="table-responsive">
-                            <table id="TrRData" class="table table-bordered table-hover table-striped table-condensed">
+                            <table id="TrRData" class="table table-bordered table-hover table-striped table-sm">
                                 <thead>
                                 <tr>
                                     <th><?= lang('date'); ?></th>
@@ -1052,7 +1052,7 @@
                         <p class="introtext"><?= lang('list_results'); ?></p>
 
                         <div class="table-responsive">
-                            <table id="dmpData" class="table table-bordered table-condensed table-hover table-striped">
+                            <table id="dmpData" class="table table-bordered table-sm table-hover table-striped">
                                 <thead>
                                 <tr>
                                     <th class="col-xs-2"><?= lang('date'); ?></th>

@@ -464,7 +464,7 @@ echo admin_form_open('module=sales&view=add', $attrib); ?>
     <label class="control-label"><?php echo $this->lang->line('invoice_items'); ?></label>
 
     <div class="controls">
-        <table id="dyTable" class="table items table-striped table-bordered table-condensed table-hover">
+        <table id="dyTable" class="table items table-striped table-bordered table-sm table-hover">
             <thead>
             <th class="span5"><?php echo $this->lang->line('product_name') . ' (' . $this->lang->line('product_code') . ')'; ?></th>
             <?php if (PRODUCT_SERIAL) {

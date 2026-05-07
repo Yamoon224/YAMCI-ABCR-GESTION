@@ -78,7 +78,7 @@
             if ($topups) {
                 echo '<div class="no-print">';
                 echo '<h2>' . lang('last_topups') . '</h2>';
-                echo '<table class="table table-striped table-condensed">';
+                echo '<table class="table table-striped table-sm">';
                 echo '<thead>';
                 echo '<tr><th>' . lang('date') . '</th><th>' . lang('amount') . '</th><th>' . lang('created_by') . '</th></tr>';
                 echo '</thead>';

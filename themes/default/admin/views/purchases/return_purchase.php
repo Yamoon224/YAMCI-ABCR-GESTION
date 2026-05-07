@@ -353,7 +353,7 @@
 
                                 <div class="controls table-controls">
                                     <table id="reTable"
-                                           class="table items table-striped table-bordered table-condensed table-hover">
+                                           class="table items table-striped table-bordered table-sm table-hover">
                                         <thead>
                                         <tr>
                                             <th class="col-md-4"><?= lang('product_name') . ' (' . $this->lang->line('product_code') . ')'; ?></th>
@@ -389,7 +389,7 @@
                                 </div>
                             </div>
                             <div id="bottom-total" class="well well-sm" style="margin-bottom: 0;">
-                                <table class="table table-bordered table-condensed totals" style="margin-bottom:0;">
+                                <table class="table table-bordered table-sm totals" style="margin-bottom:0;">
                                     <tr class="warning">
                                         <td>
                                             <?= lang('items') ?>

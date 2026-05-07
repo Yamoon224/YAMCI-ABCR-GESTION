@@ -160,7 +160,7 @@
                                 <label class="table-label"><?= lang('products'); ?> *</label>
 
                                 <div class="controls table-controls">
-                                    <table id="qaTable" class="table items table-striped table-bordered table-condensed table-hover">
+                                    <table id="qaTable" class="table items table-striped table-bordered table-sm table-hover">
                                         <thead>
                                         <tr>
                                             <th><?= lang('product_name') . ' (' . lang('product_code') . ')'; ?></th>

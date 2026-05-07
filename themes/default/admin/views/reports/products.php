@@ -351,7 +351,7 @@ if ($this->input->post('cf6')) {
 
                 <div class="table-responsive">
                     <table id="PrRData"
-                           class="table table-striped table-bordered table-condensed table-hover dfTable reports-table"
+                           class="table table-striped table-bordered table-sm table-hover dfTable reports-table"
                            style="margin-bottom:5px;">
                         <thead>
                         <tr class="active">

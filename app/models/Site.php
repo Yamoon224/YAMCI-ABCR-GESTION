@@ -336,110 +336,56 @@ class Site extends CI_Model
     public function getAllBaseUnits()
     {
         $q = $this->db->get_where('units', ['base_unit' => null]);
-        if ($q->num_rows() > 0) {
-            foreach (($q->result()) as $row) {
-                $data[] = $row;
-            }
-            return $data;
-        }
-        return false;
+        return $q->num_rows() > 0 ? $q->result() : [];
     }
 
     public function getAllBrands()
     {
         $q = $this->db->get('brands');
-        if ($q->num_rows() > 0) {
-            foreach (($q->result()) as $row) {
-                $data[] = $row;
-            }
-            return $data;
-        }
-        return false;
+        return $q->num_rows() > 0 ? $q->result() : [];
     }
 
     public function getAllCategories()
     {
         $this->db->where('parent_id', null)->or_where('parent_id', 0)->order_by('name');
         $q = $this->db->get('categories');
-        if ($q->num_rows() > 0) {
-            foreach (($q->result()) as $row) {
-                $data[] = $row;
-            }
-            return $data;
-        }
-        return false;
+        return $q->num_rows() > 0 ? $q->result() : [];
     }
 
     public function getAllCompanies($group_name)
     {
         $q = $this->db->get_where('companies', ['group_name' => $group_name]);
-        if ($q->num_rows() > 0) {
-            foreach (($q->result()) as $row) {
-                $data[] = $row;
-            }
-            return $data;
-        }
-        return false;
+        return $q->num_rows() > 0 ? $q->result() : [];
     }
 
     public function getAllCurrencies()
     {
         $q = $this->db->get('currencies');
-        if ($q->num_rows() > 0) {
-            foreach (($q->result()) as $row) {
-                $data[] = $row;
-            }
-            return $data;
-        }
-        return false;
+        return $q->num_rows() > 0 ? $q->result() : [];
     }
 
     public function getAllPurchaseItems($purchase_id)
     {
         $q = $this->db->get_where('purchase_items', ['purchase_id' => $purchase_id]);
-        if ($q->num_rows() > 0) {
-            foreach (($q->result()) as $row) {
-                $data[] = $row;
-            }
-            return $data;
-        }
-        return false;
+        return $q->num_rows() > 0 ? $q->result() : [];
     }
 
     public function getAllSaleItems($sale_id)
     {
         $q = $this->db->get_where('sale_items', ['sale_id' => $sale_id]);
-        if ($q->num_rows() > 0) {
-            foreach (($q->result()) as $row) {
-                $data[] = $row;
-            }
-            return $data;
-        }
-        return false;
+        return $q->num_rows() > 0 ? $q->result() : [];
     }
 
     public function getAllTaxRates()
     {
         $q = $this->db->get('tax_rates');
-        if ($q->num_rows() > 0) {
-            foreach (($q->result()) as $row) {
-                $data[] = $row;
-            }
-            return $data;
-        }
-        return false;
+        return $q->num_rows() > 0 ? $q->result() : [];
     }
 
     public function getAllWarehouses()
     {
         $q = $this->db->get('warehouses');
-        if ($q->num_rows() > 0) {
-            foreach (($q->result()) as $row) {
-                $data[] = $row;
-            }
-            return $data;
-        }
-        return false;
+        return $q->num_rows() > 0 ? $q->result() : [];
     }
 
     public function getAttachments($id, $type)

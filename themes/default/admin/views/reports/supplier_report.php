@@ -221,7 +221,7 @@
 
                         <div class="table-responsive">
                             <table id="PoRData"
-                            class="table table-bordered table-hover table-striped table-condensed reports-table">
+                            class="table table-bordered table-hover table-striped table-sm reports-table">
                             <thead>
                                 <tr>
                                     <th><?= lang('date'); ?></th>
@@ -423,7 +423,7 @@
 
                     <div class="table-responsive">
                         <table id="PayRData"
-                        class="table table-bordered table-hover table-striped table-condensed reports-table">
+                        class="table table-bordered table-hover table-striped table-sm reports-table">
 
                         <thead>
                             <tr>

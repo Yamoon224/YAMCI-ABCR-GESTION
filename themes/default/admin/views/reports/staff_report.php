@@ -196,7 +196,7 @@
                                     <?php
                                     if (!empty($msales)) {
                                         foreach ($msales as $value) {
-                                            $array[$value->date] = "<table class='table table-bordered table-hover table-striped table-condensed reports-table data' style='margin:0;'><tr><td>" . lang('product_tax') . '</td></tr><tr><td>' . $this->sma->formatMoney($value->tax1) . '</td></tr><tr><td>' . lang('order_tax') . '</td></tr><tr><td>' . $this->sma->formatMoney($value->tax2) . '</td></tr><tr><td>' . lang('total') . '</td></tr><tr><td>' . $this->sma->formatMoney($value->total) . '</td></tr></table>';
+                                            $array[$value->date] = "<table class='table table-bordered table-hover table-striped table-sm reports-table data' style='margin:0;'><tr><td>" . lang('product_tax') . '</td></tr><tr><td>' . $this->sma->formatMoney($value->tax1) . '</td></tr><tr><td>' . lang('order_tax') . '</td></tr><tr><td>' . $this->sma->formatMoney($value->tax2) . '</td></tr><tr><td>' . lang('total') . '</td></tr><tr><td>' . $this->sma->formatMoney($value->total) . '</td></tr></table>';
                                         }
 
                                         for ($i = 1; $i <= 12; $i++) {
@@ -415,7 +415,7 @@
 
                         <div class="table-responsive">
                             <table id="SlRData"
-                                   class="table table-bordered table-hover table-striped table-condensed reports-table">
+                                   class="table table-bordered table-hover table-striped table-sm reports-table">
                                 <thead>
                                 <tr>
                                     <th><?= lang('date'); ?></th>
@@ -620,7 +620,7 @@
 
                         <div class="table-responsive">
                             <table id="PoRData"
-                                   class="table table-bordered table-hover table-striped table-condensed reports-table">
+                                   class="table table-bordered table-hover table-striped table-sm reports-table">
                                 <thead>
                                 <tr>
                                     <th><?= lang('date'); ?></th>
@@ -834,7 +834,7 @@
 
                         <div class="table-responsive">
                             <table id="PayRData"
-                                   class="table table-bordered table-hover table-striped table-condensed reports-table">
+                                   class="table table-bordered table-hover table-striped table-sm reports-table">
 
                                 <thead>
                                 <tr>

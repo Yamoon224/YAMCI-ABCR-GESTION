@@ -1,5 +1,104 @@
 ﻿<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <style type="text/css" media="screen">
+    .card-header {
+        padding: 6px 12px !important;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .card-header h2 {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.4;
+    }
+    .card-icon .btn-tasks {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+    }
+    .card-icon .btn-tasks > li {
+        margin: 0;
+    }
+    /* Boutons dropdowns modernes */
+    .card-icon .btn-modern {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        font-size: 0.82rem;
+        font-weight: 500;
+        border-radius: 6px;
+        border: 1px solid rgba(0,0,0,.12);
+        background: #fff;
+        color: #444;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background .15s, box-shadow .15s;
+        white-space: nowrap;
+        box-shadow: 0 1px 2px rgba(0,0,0,.06);
+    }
+    .card-icon .btn-modern:hover,
+    .card-icon .btn-modern.show {
+        background: #f0f4ff;
+        border-color: #4a6cf7;
+        color: #4a6cf7;
+        box-shadow: 0 2px 6px rgba(74,108,247,.15);
+        text-decoration: none;
+    }
+    .card-icon .btn-modern i {
+        font-size: 0.85rem;
+    }
+    .card-icon .btn-modern .caret-icon {
+        font-size: 0.65rem;
+        opacity: .6;
+    }
+    /* Dropdown menu moderne */
+    .card-icon .dropdown-menu {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.12);
+        padding: 6px 4px;
+        min-width: 200px;
+        margin-top: 4px;
+    }
+    .card-icon .dropdown-menu li a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 14px;
+        font-size: 0.83rem;
+        color: #333;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: background .12s;
+    }
+    .card-icon .dropdown-menu li a:hover {
+        background: #f0f4ff;
+        color: #4a6cf7;
+    }
+    .card-icon .dropdown-menu li a i {
+        width: 16px;
+        text-align: center;
+        color: #888;
+    }
+    .card-icon .dropdown-menu li a:hover i {
+        color: #4a6cf7;
+    }
+    .card-icon .dropdown-menu .divider {
+        border-top: 1px solid #eee;
+        margin: 4px 8px;
+    }
+    .card-icon .dropdown-menu li a.text-danger i {
+        color: #dc3545;
+    }
+    .card-icon .dropdown-menu li a.text-danger:hover {
+        background: #fff0f0;
+        color: #dc3545;
+    }
+
     #PRData td:nth-child(7) {
         text-align: right;
     }
@@ -94,32 +193,33 @@
                 echo admin_form_open('products/product_actions' . ($warehouse_id ? '/' . $warehouse_id : ''), 'id="action-form"');
 } ?>
 <div class="card">
-    <div class="box-header">
+    <div class="card-header">
         <h2 class="blue"><i
                 class="fa-fw fa fa-barcode"></i><?= lang('products') . ' (' . ($warehouse_id ? $warehouse->name : lang('all_warehouses')) . ')' . ($supplier ? ' (' . lang('supplier') . ': ' . ($supplier->company && $supplier->company != '-' ? $supplier->company : $supplier->name) . ')' : ''); ?>
         </h2>
 
-        <div class="box-icon">
+        <div class="card-icon">
             <ul class="btn-tasks">
-                <li class="dropdown">
-                    <a data-bs-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <i class="icon fa fa-tasks tip" data-placement="left" title="<?= lang('actions') ?>"></i>
+                <!-- Bouton Ajouter rapide -->
+                <li>
+                    <a href="<?= admin_url('products/add') ?>" class="btn-modern">
+                        <i class="fa fa-plus-circle"></i> <?= lang('add_product') ?>
                     </a>
-                    <ul class="dropdown-menu float-end tasks-menus" role="menu" aria-labelledby="dLabel">
-                        <li>
-                            <a href="<?= admin_url('products/add') ?>">
-                                <i class="fa fa-plus-circle"></i> <?= lang('add_product') ?>
-                            </a>
-                        </li>
-                        <?php if (!$warehouse_id) {
-                            ?>
+                </li>
+
+                <!-- Dropdown Actions -->
+                <li class="dropdown">
+                    <a data-bs-toggle="dropdown" class="btn-modern dropdown-toggle" href="#">
+                        <i class="fa fa-cog"></i> <?= lang('actions') ?> <i class="fa fa-chevron-down caret-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" role="menu">
+                        <?php if (!$warehouse_id) { ?>
                         <li>
                             <a href="<?= admin_url('products/update_price') ?>" data-bs-toggle="modal" data-bs-target="#myModal">
                                 <i class="fa fa-file-excel-o"></i> <?= lang('update_price') ?>
                             </a>
                         </li>
-                            <?php
-                        } ?>
+                        <?php } ?>
                         <li>
                             <a href="#" id="labelProducts" data-action="labels">
                                 <i class="fa fa-print"></i> <?= lang('print_barcode_label') ?>
@@ -127,12 +227,12 @@
                         </li>
                         <li>
                             <a href="#" id="sync_quantity" data-action="sync_quantity">
-                                <i class="fa fa-arrows-v"></i> <?= lang('sync_quantity') ?>
+                                <i class="fa fa-refresh"></i> <?= lang('sync_quantity') ?>
                             </a>
                         </li>
                         <li>
                             <a href="#" id="set_avg_cost" data-action="set_avg_cost">
-                                <i class="fa fa-dollar"></i> <?= lang('set_avg_cost') ?>
+                                <i class="fa fa-balance-scale"></i> <?= lang('set_avg_cost') ?>
                             </a>
                         </li>
                         <li>
@@ -142,39 +242,41 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#" class="bpo" title="<b><?= $this->lang->line('delete_products') ?></b>"
+                            <a href="#" class="bpo text-danger"
+                                title="<b><?= $this->lang->line('delete_products') ?></b>"
                                 data-content="<p><?= lang('r_u_sure') ?></p><button type='button' class='btn btn-danger' id='delete' data-action='delete'><?= lang('i_m_sure') ?></a> <button class='btn bpo-close'><?= lang('no') ?></button>"
                                 data-html="true" data-placement="left">
-                            <i class="fa fa-trash-o"></i> <?= lang('delete_products') ?>
-                             </a>
-                         </li>
+                                <i class="fa fa-trash-o"></i> <?= lang('delete_products') ?>
+                            </a>
+                        </li>
                     </ul>
                 </li>
-                <?php if (!empty($warehouses)) {
-                    ?>
-                    <li class="dropdown">
-                        <a data-bs-toggle="dropdown" class="dropdown-toggle" href="#"><i class="icon fa fa-building-o tip" data-placement="left" title="<?= lang('warehouses') ?>"></i></a>
-                        <ul class="dropdown-menu float-end tasks-menus" role="menu" aria-labelledby="dLabel">
-                            <li><a href="<?= admin_url('products') ?>"><i class="fa fa-building-o"></i> <?= lang('all_warehouses') ?></a></li>
-                            <li class="divider"></li>
-                            <?php
-                            foreach ($warehouses as $warehouse) {
-                                echo '<li><a href="' . admin_url('products/' . $warehouse->id) . '"><i class="fa fa-building"></i>' . $warehouse->name . '</a></li>';
-                            } ?>
-                        </ul>
-                    </li>
-                    <?php
-                } ?>
+
+                <!-- Dropdown Entrepôts -->
+                <?php if (!empty($warehouses)) { ?>
+                <li class="dropdown">
+                    <a data-bs-toggle="dropdown" class="btn-modern dropdown-toggle" href="#">
+                        <i class="fa fa-building-o"></i> <?= lang('warehouses') ?> <i class="fa fa-chevron-down caret-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" role="menu">
+                        <li><a href="<?= admin_url('products') ?>"><i class="fa fa-th-large"></i> <?= lang('all_warehouses') ?></a></li>
+                        <li class="divider"></li>
+                        <?php foreach ($warehouses as $warehouse) {
+                            echo '<li><a href="' . admin_url('products/' . $warehouse->id) . '"><i class="fa fa-building"></i> ' . $warehouse->name . '</a></li>';
+                        } ?>
+                    </ul>
+                </li>
+                <?php } ?>
             </ul>
         </div>
     </div>
-    <div class="box-content">
+    <div class="card-body">
         <div class="row">
             <div class="col-lg-12">
                 <p class="introtext"><?= lang('list_results'); ?></p>
 
                 <div class="table-responsive">
-                    <table id="PRData" class="table table-bordered table-condensed table-hover table-striped">
+                    <table id="PRData" class="table table-bordered table-sm table-hover table-striped">
                         <thead>
                         <tr class="primary">
                             <th style="min-width:30px; width: 30px; text-align: center;">

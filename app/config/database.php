@@ -63,21 +63,28 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $active_group  = 'default';
 $query_builder = true;
 
+// Fallback: read from .env via $_ENV if getenv() is unavailable (putenv disabled)
+$_db_env = function(string $key, string $default = ''): string {
+    $v = getenv($key);
+    if ($v !== false && $v !== '') { return $v; }
+    return $_ENV[$key] ?? $_SERVER[$key] ?? $default;
+};
+
 $db['default'] = [
-    'dsn'          => getenv('DB_DSN') ?: '',
-    'hostname'     => getenv('DB_HOSTNAME') ?: 'localhost',
-    'username'     => getenv('DB_USERNAME') ?: '',
-    'password'     => getenv('DB_PASSWORD') ?: '',
-    'database'     => getenv('DB_DATABASE') ?: '',
-    'dbdriver'     => getenv('DB_DRIVER')   ?: 'mysqli',
-    'dbprefix'     => getenv('DB_PREFIX')   ?: '',
+    'dsn'          => $_db_env('DB_DSN', ''),
+    'hostname'     => $_db_env('DB_HOSTNAME', 'localhost'),
+    'username'     => $_db_env('DB_USERNAME', 'root'),
+    'password'     => $_db_env('DB_PASSWORD', ''),
+    'database'     => $_db_env('DB_DATABASE', 'yamci'),
+    'dbdriver'     => $_db_env('DB_DRIVER', 'mysqli'),
+    'dbprefix'     => $_db_env('DB_PREFIX', 'sma_'),
     'pconnect'     => false,
     'db_debug'     => false,
     'cache_on'     => false,
-    'cachedir'     => getenv('DB_CACHEDIR') ?: '',
-    'char_set'     => getenv('DB_CHARSET')  ?: 'utf8',
-    'dbcollat'     => getenv('DB_COLLAT')   ?: 'utf8_general_ci',
-    'swap_pre'     => getenv('DB_SWAP_PRE') ?: '',
+    'cachedir'     => $_db_env('DB_CACHEDIR', ''),
+    'char_set'     => $_db_env('DB_CHARSET', 'utf8'),
+    'dbcollat'     => $_db_env('DB_COLLAT', 'utf8_general_ci'),
+    'swap_pre'     => $_db_env('DB_SWAP_PRE', ''),
     'encrypt'      => false,
     'compress'     => false,
     'stricton'     => false,

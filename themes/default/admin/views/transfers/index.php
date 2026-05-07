@@ -100,7 +100,7 @@
 
                 <div class="table-responsive">
                     <table id="TOData" cellpadding="0" cellspacing="0" border="0"
-                           class="table table-bordered table-condensed table-hover table-striped">
+                           class="table table-bordered table-sm table-hover table-striped">
                         <thead>
                         <tr class="active">
                             <th style="min-width:30px; width: 30px; text-align: center;">

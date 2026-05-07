@@ -134,7 +134,7 @@
                 <p class="introtext"><?= lang('list_results'); ?></p>
 
                 <div class="table-responsive">
-                    <table id="dmpData" class="table table-bordered table-condensed table-hover table-striped">
+                    <table id="dmpData" class="table table-bordered table-sm table-hover table-striped">
                         <thead>
                         <tr>
                             <th style="min-width:30px; width: 30px; text-align: center;">

@@ -598,7 +598,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-condensed print-table">
+                                <table class="table table-bordered table-striped table-sm print-table">
                                     <thead>
                                     <tr>
                                         <th><?= lang('date') ?></th>

@@ -283,7 +283,7 @@
                         <div id="print">
                             <div id="left-middle">
                                 <div id="product-list">
-                                    <table class="table items table-striped table-bordered table-condensed table-hover sortable_table"
+                                    <table class="table items table-striped table-bordered table-sm table-hover sortable_table"
                                            id="posTable" style="margin-bottom: 0;">
                                         <thead>
                                         <tr>
@@ -681,7 +681,7 @@
                                 class="fa fa-plus"></i> <?=lang('add_more_payments')?></button>
                         <div style="clear:both; height:15px;"></div>
                         <div class="font16">
-                            <table class="table table-bordered table-condensed table-striped" style="margin-bottom: 0;">
+                            <table class="table table-bordered table-sm table-striped" style="margin-bottom: 0;">
                                 <tbody>
                                 <tr>
                                     <td width="25%"><?=lang('total_items');?></td>
@@ -1014,7 +1014,7 @@
                 <h4 class="modal-title" id="mModalLabel"><?=lang('shortcut_keys')?></h4>
             </div>
             <div class="modal-body" id="pr_popover_content">
-                <table class="table table-bordered table-striped table-condensed table-hover"
+                <table class="table table-bordered table-striped table-sm table-hover"
                        style="margin-bottom: 0px;">
                     <thead>
                     <tr>

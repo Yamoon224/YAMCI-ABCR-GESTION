@@ -76,7 +76,7 @@
             <div class="col-lg-12">
                 <p class="introtext"><?= lang('list_results'); ?></p>
 
-                <table id="DOData" class="table table-bordered table-hover table-striped table-condensed">
+                <table id="DOData" class="table table-bordered table-hover table-striped table-sm">
                     <thead>
                     <tr>
                         <th style="min-width:30px; width: 30px; text-align: center;">

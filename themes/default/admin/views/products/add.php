@@ -8,40 +8,112 @@ if (!empty($variants)) {
     $vars = [];
 }
 ?>
+<style>
+    /* === Select2 : taille identique aux form-control (Bootstrap 5 standard) === */
+    .select2-container .select2-selection--single {
+        height: calc(1.5em + 0.75rem + 2px) !important;
+        padding: 0.375rem 0.75rem !important;
+        font-size: 1rem !important;
+        line-height: 1.5 !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 0.375rem !important;
+    }
+
+    .select2-container .select2-selection--single .select2-selection__rendered {
+        line-height: 1.5 !important;
+        padding: 0 !important;
+        font-size: 1rem !important;
+        color: #212529;
+    }
+
+    .select2-container .select2-selection--single .select2-selection__arrow {
+        height: calc(1.5em + 0.75rem) !important;
+        top: 0 !important;
+    }
+
+    .select2-container .select2-selection--single .select2-selection__clear {
+        margin-top: 0 !important;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .select2-dropdown {
+        font-size: 1rem !important;
+        border-color: #ced4da !important;
+    }
+
+    .select2-search--dropdown .select2-search__field {
+        font-size: 1rem !important;
+        padding: 0.375rem 0.75rem !important;
+        border-color: #ced4da !important;
+        border-radius: 0.375rem;
+    }
+
+    .select2-results__option {
+        padding: 0.375rem 0.75rem !important;
+        font-size: 1rem !important;
+    }
+
+    .select2-container--default .select2-selection--single {
+        background-color: #fff;
+    }
+
+    .select2-container--default.select2-container--focus .select2-selection--single,
+    .select2-container--default.select2-container--open .select2-selection--single {
+        border-color: #86b7fe !important;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, .25) !important;
+        outline: none !important;
+    }
+</style>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('.gen_slug').change(function(e) {
+        $('.gen_slug').change(function (e) {
             console.log($(this).val());
             getSlug($(this).val(), 'products');
         });
-        $("#subcategory").select2("destroy").empty().attr("placeholder", "<?= lang('select_category_to_load') ?>").select2({
-            placeholder: "<?= lang('select_category_to_load') ?>", minimumResultsForSearch: 7, data: [
-                {id: '', text: '<?= lang('select_category_to_load') ?>'}
-            ]
-        });
-        $('#category').change(function () {
+
+        // Options select2 globales : recherche toujours visible, taille sm
+        var s2opts = { minimumResultsForSearch: 0, width: '100%' };
+        var s2clear = $.extend({}, s2opts, { allowClear: true, placeholder: ' ' });
+
+        // Init tous les selects
+        $('#type').select2(s2opts);
+        $('#barcode_symbology').select2(s2opts);
+        $('#brand').select2(s2clear);
+        $('#category').select2(s2clear);
+        $('#unit').select2(s2clear);
+        $('#default_sale_unit').select2(s2opts);
+        $('#default_purchase_unit').select2(s2opts);
+        $('#tax_rate').select2(s2clear);
+        $('#tax_method').select2(s2opts);
+        $('#awarehouse').select2(s2opts);
+
+        // Subcategory (chargé dynamiquement)
+        $("#subcategory").select2("destroy").empty().select2($.extend({}, s2opts, {
+            placeholder: "<?= lang('select_category_to_load') ?>",
+            data: [{ id: '', text: '<?= lang('select_category_to_load') ?>' }]
+        }));
+
+        $('#category').on('change', function () {
             var v = $(this).val();
             $('#modal-loading').show();
             if (v) {
                 $.ajax({
-                    type: "get",
-                    async: false,
+                    type: "get", async: false,
                     url: "<?= admin_url('products/getSubCategories') ?>/" + v,
                     dataType: "json",
                     success: function (scdata) {
                         if (scdata != null) {
-                            scdata.push({id: '', text: '<?= lang('select_subcategory') ?>'});
-                            $("#subcategory").select2("destroy").empty().attr("placeholder", "<?= lang('select_subcategory') ?>").select2({
-                                placeholder: "<?= lang('select_category_to_load') ?>",
-                                minimumResultsForSearch: 7,
+                            scdata.push({ id: '', text: '<?= lang('select_subcategory') ?>' });
+                            $("#subcategory").select2("destroy").empty().select2($.extend({}, s2opts, {
+                                placeholder: "<?= lang('select_subcategory') ?>",
                                 data: scdata
-                            });
+                            }));
                         } else {
-                            $("#subcategory").select2("destroy").empty().attr("placeholder", "<?= lang('no_subcategory') ?>").select2({
+                            $("#subcategory").select2("destroy").empty().select2($.extend({}, s2opts, {
                                 placeholder: "<?= lang('no_subcategory') ?>",
-                                minimumResultsForSearch: 7,
-                                data: [{id: '', text: '<?= lang('no_subcategory') ?>'}]
-                            });
+                                data: [{ id: '', text: '<?= lang('no_subcategory') ?>' }]
+                            }));
                         }
                     },
                     error: function () {
@@ -50,14 +122,14 @@ if (!empty($variants)) {
                     }
                 });
             } else {
-                $("#subcategory").select2("destroy").empty().attr("placeholder", "<?= lang('select_category_to_load') ?>").select2({
+                $("#subcategory").select2("destroy").empty().select2($.extend({}, s2opts, {
                     placeholder: "<?= lang('select_category_to_load') ?>",
-                    minimumResultsForSearch: 7,
-                    data: [{id: '', text: '<?= lang('select_category_to_load') ?>'}]
-                });
+                    data: [{ id: '', text: '<?= lang('select_category_to_load') ?>' }]
+                }));
             }
             $('#modal-loading').hide();
         });
+
         $('#code').bind('keypress', function (e) {
             if (e.keyCode == 13) {
                 e.preventDefault();
@@ -66,449 +138,493 @@ if (!empty($variants)) {
         });
     });
 </script>
-<div class="card">
-    <div class="box-header">
-        <h2 class="blue"><i class="fa-fw fa fa-plus"></i><?= lang('add_product'); ?></h2>
+<div class="card border-0 shadow-sm rounded-3">
+    <div class="card-header d-flex align-items-center gap-2 py-3 border-bottom bg-white rounded-top-3">
+        <span class="bg-primary bg-opacity-10 rounded-2 p-2 lh-1">
+            <i class="fa fa-plus text-primary"></i>
+        </span>
+        <h5 class="mb-0 fw-semibold"><?= lang('add_product') ?></h5>
     </div>
-    <div class="box-content">
-        <div class="row">
-            <div class="col-lg-12">
+    <div class="card-body p-4">
 
-                <p class="introtext"><?php echo lang('enter_info'); ?></p>
+        <?php
+        $attrib = ['data-toggle' => 'validator', 'role' => 'form'];
+        echo admin_form_open_multipart('products/add', $attrib);
+        ?>
 
-                <?php
-                $attrib = ['data-toggle' => 'validator', 'role' => 'form'];
-                echo admin_form_open_multipart('products/add', $attrib)
-                ?>
+        <div class="row g-3">
 
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <?= lang('product_type', 'type') ?>
-                        <?php
-                        $opts = ['standard' => lang('standard'), 'combo' => lang('combo'), 'digital' => lang('digital'), 'service' => lang('service')];
-                        echo form_dropdown('type', $opts, ($_POST['type'] ?? ($product ? $product->type : '')), 'class="form-control" id="type" required="required"');
-                        ?>
-                    </div>
-                    <div class="form-group all">
-                        <?= lang('product_name', 'name') ?>
-                        <?= form_input('name', ($_POST['name'] ?? ($product ? $product->name : '')), 'class="form-control' . ($Settings->use_code_for_slug ? '' : ' gen_slug') . '" id="name" required="required"'); ?>
-                    </div>
-                    <div class="form-group all">
-                        <?= lang('product_code', 'code') ?>
-                        <div class="input-group">
-                            <?= form_input('code', ($_POST['code'] ?? ($product ? $product->code : '')), 'class="form-control' . ($Settings->use_code_for_slug ? ' gen_slug' : '') . '" id="code"  required="required"') ?>
-                            <span class="input-group-addon pointer" id="random_num" style="padding: 1px 10px;">
-                                <i class="fa fa-random"></i>
-                            </span>
-                        </div>
-                        <span class="help-block"><?= lang('you_scan_your_barcode_too') ?></span>
-                    </div>
+            <!-- ══════════════════════════════
+                 COLONNE PRINCIPALE (col-lg-8)
+            ══════════════════════════════ -->
+            <div class="col-lg-8">
 
-                    <div class="form-group all">
-                        <?= lang('lien', 'slug'); ?>
-                        <?= form_input('slug', set_value('slug'), 'class="form-control tip" id="slug" required="required"'); ?>
+                <!-- ── Identification ── -->
+                <div class="card border shadow-none rounded-3 mb-3">
+                    <div class="card-header py-2 px-3 d-flex align-items-center gap-2 bg-white border-bottom border-primary border-opacity-25">
+                        <i class="fa fa-tag text-primary fs-6"></i>
+                        <span class="fw-bold small text-uppercase text-primary ls-1">Identification</span>
                     </div>
+                    <div class="card-body p-3">
+                        <div class="row g-2">
 
-                    <div class="form-group all">
-                        <?= lang('Autre nom', 'second_name'); ?>
-                        <?= form_input('second_name', set_value('second_name'), 'class="form-control tip" id="second_name"'); ?>
-                    </div>
-
-                    <div class="form-group standard_combo">
-                        <?= lang('Poids', 'weight'); ?>
-                        <?= form_input('weight', set_value('weight'), 'class="form-control tip" id="weight"'); ?>
-                    </div>
-                    <div class="form-group all">
-                        <?= lang('Code barre', 'barcode_symbology') ?>
-                        <?php
-                        $bs = ['code25' => 'Code25', 'code39' => 'Code39', 'code128' => 'Code128', 'ean8' => 'EAN8', 'ean13' => 'EAN13', 'upca' => 'UPC-A', 'upce' => 'UPC-E'];
-                        echo form_dropdown('barcode_symbology', $bs, ($_POST['barcode_symbology'] ?? ($product ? $product->barcode_symbology : 'code128')), 'class="form-control select" id="barcode_symbology" required="required" style="width:100%;"');
-                        ?>
-
-                    </div>
-                    <div class="form-group all">
-                        <?= lang('brand', 'brand') ?>
-                        <?php
-                        $br[''] = '';
-                        foreach ($brands as $brand) {
-                            $br[$brand->id] = $brand->name;
-                        }
-                        echo form_dropdown('brand', $br, ($_POST['brand'] ?? ($product ? $product->brand : '')), 'class="form-control select" id="brand" placeholder="' . lang('select') . ' ' . lang('brand') . '" style="width:100%"')
-                        ?>
-                    </div>
-                    <div class="form-group all">
-                        <?= lang('category', 'category') ?>
-                        <?php
-                        $cat[''] = '';
-                        foreach ($categories as $category) {
-                            $cat[$category->id] = $category->name;
-                        }
-                        echo form_dropdown('category', $cat, ($_POST['category'] ?? ($product ? $product->category_id : '')), 'class="form-control select" id="category" placeholder="' . lang('select') . ' ' . lang('category') . '" required="required" style="width:100%"')
-                        ?>
-                    </div>
-                    <div class="form-group all">
-                        <?= lang('subcategory', 'subcategory') ?>
-                        <div class="controls" id="subcat_data"> <?php
-                            echo form_input('subcategory', ($product ? $product->subcategory_id : ''), 'class="form-control" id="subcategory"  placeholder="' . lang('select_category_to_load') . '"');
-                        ?>
-                        </div>
-                    </div>
-                    <div class="form-group standard">
-                        <?= lang('product_unit', 'unit'); ?>
-                        <?php
-                        $pu[''] = lang('select') . ' ' . lang('unit');
-                        foreach ($base_units as $bu) {
-                            $pu[$bu->id] = $bu->name . ' (' . $bu->code . ')';
-                        }
-                        ?>
-                        <?= form_dropdown('unit', $pu, set_value('unit', ($product ? $product->unit : '')), 'class="form-control tip" id="unit" required="required" style="width:100%;"'); ?>
-                    </div>
-                    <div class="form-group standard">
-                        <?= lang('default_sale_unit', 'default_sale_unit'); ?>
-                        <?php $uopts[''] = lang('select_unit_first'); ?>
-                        <?= form_dropdown('default_sale_unit', $uopts, ($product ? $product->sale_unit : ''), 'class="form-control" id="default_sale_unit" style="width:100%;"'); ?>
-                    </div>
-                    <div class="form-group standard">
-                        <?= lang('default_purchase_unit', 'default_purchase_unit'); ?>
-                        <?= form_dropdown('default_purchase_unit', $uopts, ($product ? $product->purchase_unit : ''), 'class="form-control" id="default_purchase_unit" style="width:100%;"'); ?>
-                    </div>
-                    <div class="form-group standard">
-                        <?= lang('product_cost', 'cost') ?>
-                        <?= form_input('cost', ($_POST['cost'] ?? ($product ? $this->sma->formatDecimal($product->cost) : '')), 'class="form-control tip" id="cost" required="required"') ?>
-                    </div>
-                    <div class="form-group all">
-                        <?= lang('Prix de vente', 'price') ?>
-                        <?= form_input('price', ($_POST['price'] ?? ($product ? $this->sma->formatDecimal($product->price) : '')), 'class="form-control tip" id="price" required="required"') ?>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="checkbox" class="checkbox" value="1" name="promotion" id="promotion" <?= $this->input->post('promotion') ? 'checked="checked"' : ''; ?>>
-                        <label for="promotion" class="padding05">
-                            <?= lang('promotion'); ?>
-                        </label>
-                    </div>
-
-                    <div id="promo" style="display:none;">
-                        <div class="well well-sm">
-                            <div class="form-group">
-                                <?= lang('promo_price', 'promo_price'); ?>
-                                <?= form_input('promo_price', set_value('promo_price'), 'class="form-control tip" id="promo_price"'); ?>
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold small mb-1" for="name"><?= lang('product_name') ?> <span class="text-danger">*</span></label>
+                                <?= form_input('name', ($_POST['name'] ?? ($product ? $product->name : '')), 'class="form-control form-control-sm' . ($Settings->use_code_for_slug ? '' : ' gen_slug') . '" id="name" required="required"'); ?>
                             </div>
-                            <div class="form-group">
-                                <?= lang('start_date', 'start_date'); ?>
-                                <?= form_input('start_date', set_value('start_date'), 'class="form-control tip date" id="start_date"'); ?>
+
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold small mb-1" for="second_name"><?= lang('Autre nom') ?></label>
+                                <?= form_input('second_name', set_value('second_name'), 'class="form-control form-control-sm" id="second_name"'); ?>
                             </div>
-                            <div class="form-group">
-                                <?= lang('end_date', 'end_date'); ?>
-                                <?= form_input('end_date', set_value('end_date'), 'class="form-control tip date" id="end_date"'); ?>
-                            </div>
-                        </div>
-                    </div>
 
-                    <?php if ($Settings->invoice_view == 2) {
-                        ?>
-                        <div class="form-group">
-                            <?= lang('hsn_code', 'hsn_code'); ?>
-                            <?= form_input('hsn_code', set_value('hsn_code', ($product ? $product->hsn_code : '')), 'class="form-control" id="hsn_code"'); ?>
-                        </div>
-                        <?php
-                    } ?>
-
-                    <?php if ($Settings->tax1) {
-                        ?>
-                        <div class="form-group all">
-                            <?= lang('product_tax', 'tax_rate') ?>
-                            <?php
-                            $tr[''] = '';
-                            foreach ($tax_rates as $tax) {
-                                $tr[$tax->id] = $tax->name;
-                            }
-                            echo form_dropdown('tax_rate', $tr, ($_POST['tax_rate'] ?? ($product ? $product->tax_rate : $Settings->default_tax_rate)), 'class="form-control select" id="tax_rate" placeholder="' . lang('select') . ' ' . lang('product_tax') . '" style="width:100%"')
-                            ?>
-                        </div>
-                        <div class="form-group all">
-                            <?= lang('tax_method', 'tax_method') ?>
-                            <?php
-                            $tm = ['1' => lang('exclusive'), '0' => lang('inclusive')];
-                            echo form_dropdown('tax_method', $tm, ($_POST['tax_method'] ?? ($product ? $product->tax_method : '')), 'class="form-control select" id="tax_method" placeholder="' . lang('select') . ' ' . lang('tax_method') . '" style="width:100%"'); ?>
-                        </div>
-                        <?php
-                    } ?>
-                    <div class="form-group standard">
-                        <?= lang('alert_quantity', 'alert_quantity') ?>
-                        <div
-                            class="input-group"> <?= form_input('alert_quantity', ($_POST['alert_quantity'] ?? ($product ? $this->sma->formatQuantityDecimal($product->alert_quantity) : '')), 'class="form-control tip" id="alert_quantity"') ?>
-                            <span class="input-group-addon">
-                            <input type="checkbox" name="track_quantity" id="track_quantity"
-                                   value="1" <?= ($product ? (isset($product->track_quantity) ? 'checked="checked"' : '') : 'checked="checked"') ?>>
-                        </span>
-                        </div>
-                    </div>
-
-                    <div class="form-group all">
-                        <?= lang('product_image', 'product_image') ?>
-                        <input id="product_image" type="file" data-browse-label="<?= lang('browse'); ?>" name="product_image" data-show-upload="false"
-                               data-show-preview="false" accept="image/*" class="form-control file">
-                    </div>
-
-                    <div class="form-group all">
-                        <?= lang('product_gallery_images', 'images') ?>
-                        <input id="images" type="file" data-browse-label="<?= lang('browse'); ?>" name="userfile[]" multiple="true" data-show-upload="false"
-                               data-show-preview="false" class="form-control file" accept="image/*">
-                    </div>
-                    <div id="img-details"></div>
-                </div>
-                <div class="col-md-6 col-md-offset-1">
-                    <div class="standard">
-
-                        <div id="attrs"></div>
-
-                        <div class="form-group">
-                            <input type="checkbox" class="checkbox" name="attributes"
-                                   id="attributes" <?= $this->input->post('attributes') || $product_options ? 'checked="checked"' : ''; ?>><label
-                                for="attributes"
-                                class="padding05"><?= lang('product_has_attributes'); ?></label> <?= lang('eg_sizes_colors'); ?>
-                        </div>
-                        <div class="well well-sm" id="attr-con"
-                             style="<?= $this->input->post('attributes') || $product_options ? '' : 'display:none;'; ?>">
-                            <div class="form-group" id="ui" style="margin-bottom: 0;">
-                                <div class="input-group">
-                                    <?php echo form_input('attributesInput', '', 'class="form-control select-tags" id="attributesInput" placeholder="' . $this->lang->line('enter_attributes') . '"'); ?>
-                                    <div class="input-group-addon" style="padding: 2px 5px;">
-                                        <a href="#" id="addAttributes">
-                                            <i class="fa fa-2x fa-plus-circle" id="addIcon"></i>
-                                        </a>
-                                    </div>
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold small mb-1" for="code"><?= lang('product_code') ?> <span class="text-danger">*</span></label>
+                                <div class="input-group input-group-sm">
+                                    <?= form_input('code', ($_POST['code'] ?? ($product ? $product->code : '')), 'class="form-control form-control-sm' . ($Settings->use_code_for_slug ? ' gen_slug' : '') . '" id="code" required="required"') ?>
+                                    <span class="input-group-text" id="random_num" style="cursor:pointer;" title="<?= lang('generate') ?>">
+                                        <i class="fa fa-random"></i>
+                                    </span>
                                 </div>
-                                <div style="clear:both;"></div>
+                                <div class="form-text small"><?= lang('you_scan_your_barcode_too') ?></div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold small mb-1" for="slug"><?= lang('lien') ?> <span class="text-danger">*</span></label>
+                                <?= form_input('slug', set_value('slug'), 'class="form-control form-control-sm" id="slug" required="required"'); ?>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold small mb-1" for="barcode_symbology"><?= lang('Code barre') ?> <span class="text-danger">*</span></label>
+                                <?php
+                                $bs = ['code25' => 'Code25', 'code39' => 'Code39', 'code128' => 'Code128', 'ean8' => 'EAN8', 'ean13' => 'EAN13', 'upca' => 'UPC-A', 'upce' => 'UPC-E'];
+                                echo form_dropdown('barcode_symbology', $bs, ($_POST['barcode_symbology'] ?? ($product ? $product->barcode_symbology : 'code128')), 'class="form-select form-select-sm" id="barcode_symbology" required="required"');
+                                ?>
+                            </div>
+
+                            <div class="col-sm-6 standard_combo">
+                                <label class="form-label fw-semibold small mb-1" for="weight"><?= lang('Poids') ?></label>
+                                <?= form_input('weight', set_value('weight'), 'class="form-control form-control-sm" id="weight"'); ?>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold small mb-1" for="brand"><?= lang('brand') ?></label>
+                                <?php
+                                $br[''] = '';
+                                foreach ($brands as $brand) {
+                                    $br[$brand->id] = $brand->name;
+                                }
+                                echo form_dropdown('brand', $br, ($_POST['brand'] ?? ($product ? $product->brand : '')), 'class="form-select form-select-sm" id="brand"')
+                                ?>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold small mb-1" for="category"><?= lang('category') ?> <span class="text-danger">*</span></label>
+                                <?php
+                                $cat[''] = '';
+                                foreach ($categories as $category) {
+                                    $cat[$category->id] = $category->name;
+                                }
+                                echo form_dropdown('category', $cat, ($_POST['category'] ?? ($product ? $product->category_id : '')), 'class="form-select form-select-sm" id="category" required="required"')
+                                ?>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold small mb-1" for="subcategory"><?= lang('subcategory') ?></label>
+                                <div id="subcat_data"><?php
+                                echo form_input('subcategory', ($product ? $product->subcategory_id : ''), 'class="form-control form-control-sm" id="subcategory" placeholder="' . lang('select_category_to_load') . '"');
+                                ?></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div><!-- /card identification -->
+
+                <!-- ── Variantes (standard) ── -->
+                <div class="card border shadow-none rounded-3 mb-3 standard">
+                    <div class="card-header py-2 px-3 d-flex align-items-center gap-2 bg-white border-bottom border-secondary border-opacity-25">
+                        <i class="fa fa-list-ul text-secondary fs-6"></i>
+                        <span class="fw-bold small text-uppercase text-secondary">Variantes</span>
+                    </div>
+                    <div class="card-body p-3">
+                        <div id="attrs"></div>
+                        <div class="d-flex align-items-center justify-content-between rounded-2 border px-3 py-2 mb-3" style="background:#f8f9fc;">
+                            <div>
+                                <div class="fw-semibold small"><?= lang('product_has_attributes') ?></div>
+                                <div class="text-muted" style="font-size:0.78rem;"><?= lang('eg_sizes_colors') ?></div>
+                            </div>
+                            <div class="form-check form-switch mb-0 ms-3">
+                                <input type="checkbox" class="form-check-input" role="switch" name="attributes" id="attributes"
+                                    <?= $this->input->post('attributes') || $product_options ? 'checked' : ''; ?>>
+                                <label class="form-check-label" for="attributes"></label>
+                            </div>
+                        </div>
+                        <div id="attr-con" style="<?= $this->input->post('attributes') || $product_options ? '' : 'display:none;'; ?>">
+                            <div class="mb-2" id="ui">
+                                <div class="input-group input-group-sm">
+                                    <?php echo form_input('attributesInput', '', 'class="form-control form-control-sm select-tags" id="attributesInput" placeholder="' . $this->lang->line('enter_attributes') . '"'); ?>
+                                    <button type="button" class="btn btn-outline-primary btn-sm" id="addAttributes">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
                             </div>
                             <div class="table-responsive">
-                                <table id="attrTable" class="table table-bordered table-condensed table-striped"
-                                       style="<?= $this->input->post('attributes') || $product_options ? '' : 'display:none;'; ?>margin-bottom: 0; margin-top: 10px;">
+                                <table id="attrTable" class="table table-bordered table-sm table-striped mb-0"
+                                    style="<?= $this->input->post('attributes') || $product_options ? '' : 'display:none;'; ?>margin-top:8px;">
                                     <thead>
-                                    <tr class="active">
-                                        <th><?= lang('name') ?></th>
-                                        <th><?= lang('warehouse') ?></th>
-                                        <th><?= lang('price_addition') ?></th>
-                                        <th><i class="fa fa-times attr-remove-all"></i></th>
-                                    </tr>
+                                        <tr>
+                                            <th><?= lang('name') ?></th>
+                                            <th><?= lang('warehouse') ?></th>
+                                            <th><?= lang('price_addition') ?></th>
+                                            <th><i class="fa fa-times attr-remove-all" style="cursor:pointer;"></i></th>
+                                        </tr>
                                     </thead>
                                     <tbody><?php
                                     if ($this->input->post('attributes')) {
                                         $a = sizeof($_POST['attr_name']);
                                         for ($r = 0; $r <= $a; $r++) {
                                             if (isset($_POST['attr_name'][$r]) && (isset($_POST['attr_warehouse'][$r]) || isset($_POST['attr_quantity'][$r]))) {
-                                                echo '<tr class="attr"><td><input type="hidden" name="attr_name[]" value="' . $_POST['attr_name'][$r] . '"><span>' . $_POST['attr_name'][$r] . '</span></td><td class="code text-center"><input type="hidden" name="attr_warehouse[]" value="' . $_POST['attr_warehouse'][$r] . '"><input type="hidden" name="attr_wh_name[]" value="' . $_POST['attr_wh_name'][$r] . '"><span>' . $_POST['attr_wh_name'][$r] . '</span></td><td class="price text-right"><input type="hidden" name="attr_price[]" value="' . $_POST['attr_price'][$r] . '"><span>' . $_POST['attr_price'][$r] . '</span></span></td><td class="text-center"><i class="fa fa-times delAttr"></i></td></tr>';
-                                                // echo '<tr class="attr"><td><input type="hidden" name="attr_name[]" value="' . $_POST['attr_name'][$r] . '"><span>' . $_POST['attr_name'][$r] . '</span></td><td class="code text-center"><input type="hidden" name="attr_warehouse[]" value="' . $_POST['attr_warehouse'][$r] . '"><input type="hidden" name="attr_wh_name[]" value="' . $_POST['attr_wh_name'][$r] . '"><span>' . $_POST['attr_wh_name'][$r] . '</span></td><td class="quantity text-center"><input type="hidden" name="attr_quantity[]" value="' . $this->sma->formatQuantityDecimal($_POST['attr_quantity'][$r]) . '"><span>' . $this->sma->formatQuantity($_POST['attr_quantity'][$r]) . '</span></td><td class="price text-right"><input type="hidden" name="attr_price[]" value="' . $_POST['attr_price'][$r] . '"><span>' . $_POST['attr_price'][$r] . '</span></span></td><td class="text-center"><i class="fa fa-times delAttr"></i></td></tr>';
+                                                echo '<tr class="attr"><td><input type="hidden" name="attr_name[]" value="' . $_POST['attr_name'][$r] . '"><span>' . $_POST['attr_name'][$r] . '</span></td><td class="code text-center"><input type="hidden" name="attr_warehouse[]" value="' . $_POST['attr_warehouse'][$r] . '"><input type="hidden" name="attr_wh_name[]" value="' . $_POST['attr_wh_name'][$r] . '"><span>' . $_POST['attr_wh_name'][$r] . '</span></td><td class="price text-right"><input type="hidden" name="attr_price[]" value="' . $_POST['attr_price'][$r] . '"><span>' . $_POST['attr_price'][$r] . '</span></td><td class="text-center"><i class="fa fa-times delAttr"></i></td></tr>';
                                             }
                                         }
                                     } elseif ($product_options) {
                                         foreach ($product_options as $option) {
-                                            echo '<tr class="attr"><td><input type="hidden" name="attr_name[]" value="' . $option->name . '"><span>' . $option->name . '</span></td><td class="code text-center"><input type="hidden" name="attr_warehouse[]" value="' . $option->warehouse_id . '"><input type="hidden" name="attr_wh_name[]" value="' . $option->wh_name . '"><span>' . $option->wh_name . '</span></td><td class="quantity text-center"><input type="hidden" name="attr_quantity[]" value="' . $this->sma->formatQuantityDecimal($option->wh_qty) . '"><span>' . $this->sma->formatQuantity($option->wh_qty) . '</span></td><td class="price text-right"><input type="hidden" name="attr_price[]" value="' . $this->sma->formatMoney($option->price) . '"><span>' . $this->sma->formatMoney($option->price) . '</span></span></td><td class="text-center"><i class="fa fa-times delAttr"></i></td></tr>';
+                                            echo '<tr class="attr"><td><input type="hidden" name="attr_name[]" value="' . $option->name . '"><span>' . $option->name . '</span></td><td class="code text-center"><input type="hidden" name="attr_warehouse[]" value="' . $option->warehouse_id . '"><input type="hidden" name="attr_wh_name[]" value="' . $option->wh_name . '"><span>' . $option->wh_name . '</span></td><td class="quantity text-center"><input type="hidden" name="attr_quantity[]" value="' . $this->sma->formatQuantityDecimal($option->wh_qty) . '"><span>' . $this->sma->formatQuantity($option->wh_qty) . '</span></td><td class="price text-right"><input type="hidden" name="attr_price[]" value="' . $this->sma->formatMoney($option->price) . '"><span>' . $this->sma->formatMoney($option->price) . '</span></td><td class="text-center"><i class="fa fa-times delAttr"></i></td></tr>';
                                         }
                                     }
                                     ?></tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="clearfix"></div>
-
-                        <!-- <div class="<?= $product ? 'text-warning' : '' ?>">
-                            <strong><?= lang('warehouse_quantity') ?></strong><br>
-                            <?php
-                            if (!empty($warehouses)) {
-                                if ($product) {
-                                    echo '<div class="row"><div class="col-md-12"><div class="well"><div id="show_wh_edit">';
-                                    if (!empty($warehouses_products)) {
-                                        echo '<div style="display:none;">';
-                                        foreach ($warehouses_products as $wh_pr) {
-                                            echo '<span class="bold text-info">' . $wh_pr->name . ': <span class="padding05" id="rwh_qty_' . $wh_pr->id . '">' . $this->sma->formatQuantity($wh_pr->quantity) . '</span>' . ($wh_pr->rack ? ' (<span class="padding05" id="rrack_' . $wh_pr->id . '">' . $wh_pr->rack . '</span>)' : '') . '</span><br>';
-                                        }
-                                        echo '</div>';
-                                    }
-                                    foreach ($warehouses as $warehouse) {
-                                        //$whs[$warehouse->id] = $warehouse->name;
-                                        echo '<div class="col-md-6 col-sm-6 col-xs-6" style="padding-bottom:15px;">' . $warehouse->name . '<br><div class="form-group">' . form_hidden('wh_' . $warehouse->id, $warehouse->id) . form_input('wh_qty_' . $warehouse->id, (isset($_POST['wh_qty_' . $warehouse->id]) ? $_POST['wh_qty_' . $warehouse->id] : (isset($warehouse->quantity) ? $warehouse->quantity : '')), 'class="form-control wh" id="wh_qty_' . $warehouse->id . '" placeholder="' . lang('quantity') . '"') . '</div>';
-                                        if ($Settings->racks) {
-                                            echo '<div class="form-group">' . form_input('rack_' . $warehouse->id, (isset($_POST['rack_' . $warehouse->id]) ? $_POST['rack_' . $warehouse->id] : (isset($warehouse->rack) ? $warehouse->rack : '')), 'class="form-control wh" id="rack_' . $warehouse->id . '" placeholder="' . lang('rack') . '"') . '</div>';
-                                        }
-                                        echo '</div>';
-                                    }
-                                    echo '</div><div class="clearfix"></div></div></div></div>';
-                                } else {
-                                    echo '<div class="row"><div class="col-md-12"><div class="well">';
-                                    foreach ($warehouses as $warehouse) {
-                                        //$whs[$warehouse->id] = $warehouse->name;
-                                        echo '<div class="col-md-6 col-sm-6 col-xs-6" style="padding-bottom:15px;">' . $warehouse->name . '<br><div class="form-group">' . form_hidden('wh_' . $warehouse->id, $warehouse->id) . form_input('wh_qty_' . $warehouse->id, (isset($_POST['wh_qty_' . $warehouse->id]) ? $_POST['wh_qty_' . $warehouse->id] : ''), 'class="form-control" id="wh_qty_' . $warehouse->id . '" placeholder="' . lang('quantity') . '"') . '</div>';
-                                        if ($Settings->racks) {
-                                            echo '<div class="form-group">' . form_input('rack_' . $warehouse->id, (isset($_POST['rack_' . $warehouse->id]) ? $_POST['rack_' . $warehouse->id] : ''), 'class="form-control" id="rack_' . $warehouse->id . '" placeholder="' . lang('rack') . '"') . '</div>';
-                                        }
-                                        echo '</div>';
-                                    }
-                                    echo '<div class="clearfix"></div></div></div></div>';
-                                }
-                            }
-                            ?>
-                        </div>
-                        <div class="clearfix"></div> -->
-
                     </div>
-                    <div class="combo" style="display:none;">
+                </div><!-- /card variantes -->
 
-                        <div class="form-group">
-                            <?= lang('add_product', 'add_item') . ' (' . lang('not_with_variants') . ')'; ?>
-                            <?php echo form_input('add_item', '', 'class="form-control ttip" id="add_item" data-placement="top" data-trigger="focus" data-bv-notEmpty-message="' . lang('please_add_items_below') . '" placeholder="' . $this->lang->line('add_item') . '"'); ?>
+                <!-- ── Combo ── -->
+                <div class="card border shadow-none rounded-3 mb-3 combo" style="display:none;">
+                    <div class="card-header py-2 px-3 d-flex align-items-center gap-2 bg-white border-bottom border-warning border-opacity-25">
+                        <i class="fa fa-cubes text-warning fs-6"></i>
+                        <span class="fw-bold small text-uppercase text-warning">Combo</span>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small mb-1" for="add_item"><?= lang('add_product') . ' (' . lang('not_with_variants') . ')' ?></label>
+                            <?= form_input('add_item', '', 'class="form-control form-control-sm" id="add_item" placeholder="' . $this->lang->line('add_item') . '"') ?>
                         </div>
-                        <div class="control-group table-group">
-                            <label class="table-label" for="combo"><?= lang('combo_products'); ?></label>
-
-                            <div class="controls table-controls">
-                                <table id="prTable"
-                                       class="table items table-striped table-bordered table-condensed table-hover">
-                                    <thead>
+                        <label class="form-label fw-semibold small"><?= lang('combo_products') ?></label>
+                        <div class="table-responsive">
+                            <table id="prTable" class="table items table-striped table-bordered table-sm table-hover">
+                                <thead>
                                     <tr>
-                                        <th class="col-md-5 col-sm-5 col-xs-5"><?= lang('product') . ' (' . lang('code') . ' - ' . lang('name') . ')'; ?></th>
-                                        <th class="col-md-2 col-sm-2 col-xs-2"><?= lang('quantity'); ?></th>
-                                        <th class="col-md-3 col-sm-3 col-xs-3"><?= lang('unit_price'); ?></th>
-                                        <th class="col-md-1 col-sm-1 col-xs-1 text-center">
-                                            <i class="fa fa-trash-o" style="opacity:0.5; filter:alpha(opacity=50);"></i>
-                                        </th>
+                                        <th><?= lang('product') . ' (' . lang('code') . ' - ' . lang('name') . ')'; ?></th>
+                                        <th><?= lang('quantity'); ?></th>
+                                        <th><?= lang('unit_price'); ?></th>
+                                        <th class="text-center"><i class="fa fa-trash-o" style="opacity:0.5;"></i></th>
                                     </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="digital" style="display:none;">
-                        <div class="form-group digital">
-                            <?= lang('digital_file', 'digital_file') ?>
-                            <input id="digital_file" type="file" data-browse-label="<?= lang('browse'); ?>" name="digital_file" data-show-upload="false"
-                                   data-show-preview="false" class="form-control file">
-                        </div>
-                        <div class="form-group">
-                            <?= lang('file_link', 'file_link'); ?>
-                            <?= form_input('file_link', set_value('file_link'), 'class="form-control" id="file_link"'); ?>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                         </div>
                     </div>
+                </div><!-- /card combo -->
 
-                <div class="form-group standard">
-                    <div class="form-group">
-                        <?= lang('supplier', 'supplier') ?>
-                        <button type="button" class="btn btn-primary btn-xs" id="addSupplier"><i class="fa fa-plus"></i>
+                <!-- ── Digital ── -->
+                <div class="card border shadow-none rounded-3 mb-3 digital" style="display:none;">
+                    <div class="card-header py-2 px-3 d-flex align-items-center gap-2 bg-white border-bottom border-info border-opacity-25">
+                        <i class="fa fa-download text-info fs-6"></i>
+                        <span class="fw-bold small text-uppercase text-info">Digital</span>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small mb-1" for="digital_file"><?= lang('digital_file') ?></label>
+                            <input id="digital_file" type="file" data-browse-label="<?= lang('browse'); ?>"
+                                name="digital_file" data-show-upload="false" data-show-preview="false"
+                                class="form-control form-control-sm file">
+                        </div>
+                        <div class="mb-0">
+                            <label class="form-label fw-semibold small mb-1" for="file_link"><?= lang('file_link') ?></label>
+                            <?= form_input('file_link', set_value('file_link'), 'class="form-control form-control-sm" id="file_link"'); ?>
+                        </div>
+                    </div>
+                </div><!-- /card digital -->
+
+                <!-- ── Fournisseur (standard) ── -->
+                <div class="card border shadow-none rounded-3 mb-3 standard">
+                    <div class="card-header py-2 px-3 d-flex align-items-center gap-2 bg-white border-bottom border-secondary border-opacity-25">
+                        <i class="fa fa-truck text-secondary fs-6"></i>
+                        <span class="fw-bold small text-uppercase text-secondary"><?= lang('supplier') ?></span>
+                        <button type="button" class="btn btn-sm btn-outline-primary ms-auto py-0 px-2" id="addSupplier">
+                            <i class="fa fa-plus me-1"></i><?= lang('add') ?>
                         </button>
                     </div>
-                    <div class="row" id="supplier-con">
-                        <div class="col-xs-12">
-                            <div class="form-group">
+                    <div class="card-body p-3">
+                        <div id="supplier-con">
+                            <div class="mb-2">
                                 <?php
-                                echo form_input('supplier', ($_POST['supplier'] ?? ''), 'class="form-control ' . ($product ? '' : 'suppliers') . '" id="' . ($product && !empty($product->supplier1) ? 'supplier1' : 'supplier') . '" placeholder="' . lang('select') . ' ' . lang('supplier') . '" style="width:100%;"');
+                                echo form_input('supplier', ($_POST['supplier'] ?? ''), 'class="form-control form-control-sm ' . ($product ? '' : 'suppliers') . '" id="' . ($product && !empty($product->supplier1) ? 'supplier1' : 'supplier') . '" placeholder="' . lang('select') . ' ' . lang('supplier') . '" style="width:100%;"');
                                 ?>
                             </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <?= form_input('supplier_part_no', ($_POST['supplier_part_no'] ?? ''), 'class="form-control tip" id="supplier_part_no" placeholder="' . lang('supplier_part_no') . '"'); ?>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <?= form_input('supplier_part_no', ($_POST['supplier_part_no'] ?? ''), 'class="form-control form-control-sm" id="supplier_part_no" placeholder="' . lang('supplier_part_no') . '"'); ?>
+                                </div>
+                                <div class="col-6">
+                                    <?= form_input('supplier_price', ($_POST['supplier_price'] ?? ''), 'class="form-control form-control-sm" id="supplier_price" placeholder="' . lang('supplier_price') . '"'); ?>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                            <?= form_input('supplier_price', ($_POST['supplier_price'] ?? ''), 'class="form-control tip" id="supplier_price" placeholder="' . lang('supplier_price') . '"'); ?>
+                        <div id="ex-suppliers"></div>
+                    </div>
+                </div><!-- /card fournisseur -->
+
+                <!-- ── Descriptions ── -->
+                <div class="card border shadow-none rounded-3 mb-3">
+                    <div class="card-header py-2 px-3 d-flex align-items-center gap-2 bg-white border-bottom border-secondary border-opacity-25">
+                        <i class="fa fa-align-left text-secondary fs-6"></i>
+                        <span class="fw-bold small text-uppercase text-secondary">Descriptions</span>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="row g-2">
+                            <div class="col-lg-6 all">
+                                <label class="form-label fw-semibold small mb-1" for="product_details"><?= lang('product_details') ?></label>
+                                <?= form_textarea('product_details', ($_POST['product_details'] ?? ($product ? $product->product_details : '')), 'class="form-control form-control-sm" id="product_details" rows="4"'); ?>
+                            </div>
+                            <div class="col-lg-6 all">
+                                <label class="form-label fw-semibold small mb-1" for="details"><?= lang('product_details_for_invoice') ?></label>
+                                <?= form_textarea('details', ($_POST['details'] ?? ($product ? $product->details : '')), 'class="form-control form-control-sm" id="details" rows="4"'); ?>
                             </div>
                         </div>
                     </div>
-                    <div id="ex-suppliers"></div>
+                </div><!-- /card descriptions -->
+
+            </div><!-- /col-lg-8 -->
+
+            <!-- ══════════════════════════════
+                 SIDEBAR (col-lg-4)
+            ══════════════════════════════ -->
+            <div class="col-lg-4">
+
+                <!-- ── Type de produit ── -->
+                <div class="card border shadow-none rounded-3 mb-3">
+                    <div class="card-header py-2 px-3 d-flex align-items-center gap-2 bg-white border-bottom border-primary border-opacity-25">
+                        <i class="fa fa-tag text-primary fs-6"></i>
+                        <span class="fw-bold small text-uppercase text-primary"><?= lang('product_type') ?></span>
+                    </div>
+                    <div class="card-body p-3">
+                        <?php
+                        $opts = ['standard' => lang('standard'), 'combo' => lang('combo'), 'digital' => lang('digital'), 'service' => lang('service')];
+                        echo form_dropdown('type', $opts, ($_POST['type'] ?? ($product ? $product->type : '')), 'class="form-select form-select-sm" id="type" required="required"');
+                        ?>
+                    </div>
+                </div><!-- /card type -->
+
+                <!-- ── Tarification ── -->
+                <div class="card border shadow-none rounded-3 mb-3">
+                    <div class="card-header py-2 px-3 d-flex align-items-center gap-2 bg-white border-bottom border-success border-opacity-25">
+                        <i class="fa fa-dollar text-success fs-6"></i>
+                        <span class="fw-bold small text-uppercase text-success">Tarification</span>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="row g-2">
+
+                            <div class="col-12 standard">
+                                <label class="form-label fw-semibold small mb-1" for="unit"><?= lang('product_unit') ?> <span class="text-danger">*</span></label>
+                                <?php
+                                $pu[''] = lang('select') . ' ' . lang('unit');
+                                foreach ($base_units as $bu) {
+                                    $pu[$bu->id] = $bu->name . ' (' . $bu->code . ')';
+                                }
+                                ?>
+                                <?= form_dropdown('unit', $pu, set_value('unit', ($product ? $product->unit : '')), 'class="form-select form-select-sm" id="unit" required="required"'); ?>
+                            </div>
+
+                            <div class="col-6 standard">
+                                <label class="form-label fw-semibold small mb-1" for="default_sale_unit"><?= lang('default_sale_unit') ?></label>
+                                <?php $uopts[''] = lang('select_unit_first'); ?>
+                                <?= form_dropdown('default_sale_unit', $uopts, ($product ? $product->sale_unit : ''), 'class="form-select form-select-sm" id="default_sale_unit"'); ?>
+                            </div>
+
+                            <div class="col-6 standard">
+                                <label class="form-label fw-semibold small mb-1" for="default_purchase_unit"><?= lang('default_purchase_unit') ?></label>
+                                <?= form_dropdown('default_purchase_unit', $uopts, ($product ? $product->purchase_unit : ''), 'class="form-select form-select-sm" id="default_purchase_unit"'); ?>
+                            </div>
+
+                            <div class="col-6 standard">
+                                <label class="form-label fw-semibold small mb-1" for="cost"><?= lang('product_cost') ?> <span class="text-danger">*</span></label>
+                                <?= form_input('cost', ($_POST['cost'] ?? ($product ? $this->sma->formatDecimal($product->cost) : '')), 'class="form-control form-control-sm" id="cost" required="required"') ?>
+                            </div>
+
+                            <div class="col-6 all">
+                                <label class="form-label fw-semibold small mb-1" for="price"><?= lang('Prix de vente') ?> <span class="text-danger">*</span></label>
+                                <?= form_input('price', ($_POST['price'] ?? ($product ? $this->sma->formatDecimal($product->price) : '')), 'class="form-control form-control-sm" id="price" required="required"') ?>
+                            </div>
+
+                            <div class="col-12 standard">
+                                <label class="form-label fw-semibold small mb-1" for="alert_quantity"><?= lang('alert_quantity') ?></label>
+                                <div class="input-group input-group-sm">
+                                    <?= form_input('alert_quantity', ($_POST['alert_quantity'] ?? ($product ? $this->sma->formatQuantityDecimal($product->alert_quantity) : '')), 'class="form-control form-control-sm" id="alert_quantity"') ?>
+                                    <span class="input-group-text">
+                                        <input type="checkbox" class="form-check-input mt-0" name="track_quantity"
+                                            id="track_quantity" value="1" <?= ($product ? (isset($product->track_quantity) ? 'checked' : '') : 'checked') ?>>
+                                        <label class="form-check-label ms-1 small" for="track_quantity"><?= lang('track') ?></label>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <?php if ($Settings->tax1) { ?>
+                                <div class="col-6 all">
+                                    <label class="form-label fw-semibold small mb-1" for="tax_rate"><?= lang('product_tax') ?></label>
+                                    <?php
+                                    $tr[''] = '';
+                                    foreach ($tax_rates as $tax) {
+                                        $tr[$tax->id] = $tax->name;
+                                    }
+                                    echo form_dropdown('tax_rate', $tr, ($_POST['tax_rate'] ?? ($product ? $product->tax_rate : $Settings->default_tax_rate)), 'class="form-select form-select-sm" id="tax_rate"')
+                                    ?>
+                                </div>
+                                <div class="col-6 all">
+                                    <label class="form-label fw-semibold small mb-1" for="tax_method"><?= lang('tax_method') ?></label>
+                                    <?php
+                                    $tm = ['1' => lang('exclusive'), '0' => lang('inclusive')];
+                                    echo form_dropdown('tax_method', $tm, ($_POST['tax_method'] ?? ($product ? $product->tax_method : '')), 'class="form-select form-select-sm" id="tax_method"'); ?>
+                                </div>
+                            <?php } ?>
+
+                            <?php if ($Settings->invoice_view == 2) { ?>
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold small mb-1" for="hsn_code"><?= lang('hsn_code') ?></label>
+                                    <?= form_input('hsn_code', set_value('hsn_code', ($product ? $product->hsn_code : '')), 'class="form-control form-control-sm" id="hsn_code"'); ?>
+                                </div>
+                            <?php } ?>
+
+                        </div>
+
+                        <!-- Promotion -->
+                        <div class="border-top mt-3 pt-3">
+                            <div class="d-flex align-items-center justify-content-between rounded-2 border px-3 py-2 mb-2" style="background:#f8f9fc;">
+                                <div class="fw-semibold small"><?= lang('promotion') ?></div>
+                                <div class="form-check form-switch mb-0 ms-3">
+                                    <input type="checkbox" class="form-check-input" role="switch" value="1" name="promotion"
+                                        id="promotion" <?= $this->input->post('promotion') ? 'checked' : ''; ?>>
+                                    <label class="form-check-label" for="promotion"></label>
+                                </div>
+                            </div>
+                            <div id="promo" class="rounded-2 bg-light p-2" style="display:none;">
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold small mb-1" for="promo_price"><?= lang('promo_price') ?></label>
+                                        <?= form_input('promo_price', set_value('promo_price'), 'class="form-control form-control-sm" id="promo_price"'); ?>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label fw-semibold small mb-1" for="start_date"><?= lang('start_date') ?></label>
+                                        <?= form_input('start_date', set_value('start_date'), 'class="form-control form-control-sm tip date" id="start_date"'); ?>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label fw-semibold small mb-1" for="end_date"><?= lang('end_date') ?></label>
+                                        <?= form_input('end_date', set_value('end_date'), 'class="form-control form-control-sm tip date" id="end_date"'); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div><!-- /card tarification -->
+
+                <!-- ── Images ── -->
+                <div class="card border shadow-none rounded-3 mb-3">
+                    <div class="card-header py-2 px-3 d-flex align-items-center gap-2 bg-white border-bottom border-info border-opacity-25">
+                        <i class="fa fa-image text-info fs-6"></i>
+                        <span class="fw-bold small text-uppercase text-info">Images</span>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="mb-2 all">
+                            <label class="form-label fw-semibold small mb-1" for="product_image"><?= lang('product_image') ?></label>
+                            <input id="product_image" type="file" data-browse-label="<?= lang('browse'); ?>"
+                                name="product_image" data-show-upload="false" data-show-preview="false"
+                                accept="image/*" class="form-control form-control-sm file">
+                        </div>
+                        <div class="mb-2 all">
+                            <label class="form-label fw-semibold small mb-1" for="images"><?= lang('product_gallery_images') ?></label>
+                            <input id="images" type="file" data-browse-label="<?= lang('browse'); ?>"
+                                name="userfile[]" multiple="true" data-show-upload="false" data-show-preview="false"
+                                class="form-control form-control-sm file" accept="image/*">
+                        </div>
+                        <div id="img-details"></div>
+                    </div>
+                </div><!-- /card images -->
+
+                <!-- ── Options ── -->
+                <div class="card border shadow-none rounded-3 mb-3">
+                    <div class="card-header py-2 px-3 d-flex align-items-center gap-2 bg-white border-bottom border-secondary border-opacity-25">
+                        <i class="fa fa-cogs text-secondary fs-6"></i>
+                        <span class="fw-bold small text-uppercase text-secondary">Options</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush rounded-bottom-3">
+                            <li class="list-group-item d-flex align-items-center justify-content-between px-3 py-2">
+                                <label class="form-check-label small fw-semibold mb-0" for="featured"><?= lang('Sponorisé') ?></label>
+                                <div class="form-check form-switch mb-0">
+                                    <input class="form-check-input" type="checkbox" role="switch" name="featured" id="featured" value="1"
+                                        <?= isset($_POST['featured']) ? 'checked' : '' ?>>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center justify-content-between px-3 py-2">
+                                <label class="form-check-label small fw-semibold mb-0" for="hide_pos"><?= lang('Masquer en POS') ?></label>
+                                <div class="form-check form-switch mb-0">
+                                    <input class="form-check-input" type="checkbox" role="switch" name="hide_pos" id="hide_pos" value="1"
+                                        <?= isset($_POST['hide_pos']) ? 'checked' : '' ?>>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center justify-content-between px-3 py-2">
+                                <label class="form-check-label small fw-semibold mb-0" for="hide"><?= lang('Masquer dans shop') ?></label>
+                                <div class="form-check form-switch mb-0">
+                                    <input class="form-check-input" type="checkbox" role="switch" name="hide" id="hide" value="1"
+                                        <?= isset($_POST['hide']) ? 'checked' : '' ?>>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center justify-content-between px-3 py-2">
+                                <label class="form-check-label small fw-semibold mb-0" for="extras"><?= lang('custom_fields') ?></label>
+                                <div class="form-check form-switch mb-0">
+                                    <input class="form-check-input" type="checkbox" role="switch" name="cf" id="extras" value=""
+                                        <?= isset($_POST['cf']) ? 'checked' : '' ?>>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div><!-- /card options -->
+
+                <!-- ── Champs personnalisés ── -->
+                <div class="card border shadow-none rounded-3 mb-3" id="extras-con" style="display:none;">
+                    <div class="card-header py-2 px-3 d-flex align-items-center gap-2 bg-white border-bottom border-secondary border-opacity-25">
+                        <i class="fa fa-sliders text-secondary fs-6"></i>
+                        <span class="fw-bold small text-uppercase text-secondary"><?= lang('custom_fields') ?></span>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="row g-2">
+                            <?php foreach (['cf1','cf2','cf3','cf4','cf5','cf6'] as $cf): $cfn = str_replace('cf','pcf',$cf); ?>
+                            <div class="col-6 all">
+                                <label class="form-label fw-semibold small mb-1" for="<?= $cf ?>"><?= lang($cfn) ?></label>
+                                <?= form_input($cf, ($_POST[$cf] ?? ($product ? $product->$cf : '')), 'class="form-control form-control-sm" id="' . $cf . '"') ?>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div><!-- /card custom fields -->
+
+                <!-- ── Bouton submit ── -->
+                <div class="d-grid">
+                    <button type="submit" name="add_product" class="btn btn-primary">
+                        <i class="fa fa-check me-1"></i><?= lang('add_product') ?>
+                    </button>
                 </div>
 
-                </div>
+            </div><!-- /col-lg-4 sidebar -->
 
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <input name="featured" type="checkbox" class="checkbox" id="featured" value="1" <?= isset($_POST['featured']) ? 'checked="checked"' : '' ?>/>
-                        <label for="featured" class="padding05"><?= lang('Sponorisé') ?></label>
-                    </div>
-                    <div class="form-group">
-                        <input name="hide_pos" type="checkbox" class="checkbox" id="hide_pos" value="1" <?= isset($_POST['hide_pos']) ? 'checked="checked"' : '' ?>/>
-                        <label for="hide_pos" class="padding05"><?= lang('Masquer en POS') ?></label>
-                    </div>
-                    <div class="form-group">
-                        <input name="hide" type="checkbox" class="checkbox" id="hide" value="1" <?= isset($_POST['hide']) ? 'checked="checked"' : '' ?>/>
-                        <label for="hide" class="padding05"><?= lang('Masquer dans shop') ?></label>
-                    </div>
+        </div><!-- /row g-3 -->
 
-                    <div class="form-group">
-                        <input name="cf" type="checkbox" class="checkbox" id="extras" value="" <?= isset($_POST['cf']) ? 'checked="checked"' : '' ?>/>
-                        <label for="extras" class="padding05"><?= lang('custom_fields') ?></label>
-                    </div>
-                    <div class="row" id="extras-con" style="display: none;">
+        <?= form_close() ?>
 
-                        <div class="col-md-4">
-                            <div class="form-group all">
-                                <?= lang('pcf1', 'cf1') ?>
-                                <?= form_input('cf1', ($_POST['cf1'] ?? ($product ? $product->cf1 : '')), 'class="form-control tip" id="cf1"') ?>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group all">
-                                <?= lang('pcf2', 'cf2') ?>
-                                <?= form_input('cf2', ($_POST['cf2'] ?? ($product ? $product->cf2 : '')), 'class="form-control tip" id="cf2"') ?>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group all">
-                                <?= lang('pcf3', 'cf3') ?>
-                                <?= form_input('cf3', ($_POST['cf3'] ?? ($product ? $product->cf3 : '')), 'class="form-control tip" id="cf3"') ?>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group all">
-                                <?= lang('pcf4', 'cf4') ?>
-                                <?= form_input('cf4', ($_POST['cf4'] ?? ($product ? $product->cf4 : '')), 'class="form-control tip" id="cf4"') ?>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group all">
-                                <?= lang('pcf5', 'cf5') ?>
-                                <?= form_input('cf5', ($_POST['cf5'] ?? ($product ? $product->cf5 : '')), 'class="form-control tip" id="cf5"') ?>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group all">
-                                <?= lang('pcf6', 'cf6') ?>
-                                <?= form_input('cf6', ($_POST['cf6'] ?? ($product ? $product->cf6 : '')), 'class="form-control tip" id="cf6"') ?>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="form-group all">
-                        <?= lang('product_details', 'product_details') ?>
-                        <?= form_textarea('product_details', ($_POST['product_details'] ?? ($product ? $product->product_details : '')), 'class="form-control" id="product_details"'); ?>
-                    </div>
-                    <div class="form-group all">
-                        <?= lang('product_details_for_invoice', 'details') ?>
-                        <?= form_textarea('details', ($_POST['details'] ?? ($product ? $product->details : '')), 'class="form-control" id="details"'); ?>
-                    </div>
-
-                    <div class="form-group">
-                        <?php echo form_submit('add_product', $this->lang->line('add_product'), 'class="btn btn-primary"'); ?>
-                    </div>
-
-                </div>
-                <?= form_close(); ?>
-
-            </div>
-
-        </div>
-    </div>
-</div>
+    </div><!-- /card-body main -->
+</div><!-- /card main -->
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -526,12 +642,16 @@ if (!empty($variants)) {
             }
         }
         ?>
-        <?=isset($_POST['cf']) ? '$("#extras").iCheck("check");' : '' ?>
+        <?= isset($_POST['cf']) ? '$("#extras").iCheck("check");' : '' ?>
         $('#extras').on('ifChecked', function () {
             $('#extras-con').slideDown();
         });
         $('#extras').on('ifUnchecked', function () {
             $('#extras-con').slideUp();
+        });
+        // Bootstrap 5 form-switch fallback
+        $('#extras').on('change', function () {
+            $(this).is(':checked') ? $('#extras-con').slideDown() : $('#extras-con').slideUp();
         });
 
         <?= isset($_POST['promotion']) ? '$("#promotion").iCheck("check");' : '' ?>
@@ -540,6 +660,10 @@ if (!empty($variants)) {
         });
         $('#promotion').on('ifUnchecked', function (e) {
             $('#promo').slideUp();
+        });
+        // Bootstrap 5 form-switch fallback
+        $('#promotion').on('change', function () {
+            $(this).is(':checked') ? $('#promo').slideDown() : $('#promo').slideUp();
         });
 
         $('.attributes').on('ifChecked', function (event) {
@@ -696,12 +820,12 @@ if (!empty($variants)) {
                 var row_no = this.id;
                 var newTr = $('<tr id="row_' + row_no + '" class="item_' + this.id + '" data-item-id="' + row_no + '"></tr>');
                 tr_html = '<td><input name="combo_item_id[]" type="hidden" value="' + this.id + '"><input name="combo_item_name[]" type="hidden" value="' + this.name + '"><input name="combo_item_code[]" type="hidden" value="' + this.code + '"><span id="name_' + row_no + '">' + this.code + ' - ' + this.name + '</span></td>';
-                tr_html += '<td><input class="form-control text-center rquantity" name="combo_item_quantity[]" type="text" value="' + formatDecimal(this.qty) + '" data-id="' + row_no + '" data-item="' + this.id + '" id="quantity_' + row_no + '" onClick="this.select();"></td>';
-                tr_html += '<td><input class="form-control text-center rprice" name="combo_item_price[]" type="text" value="' + formatDecimal(this.price) + '" data-id="' + row_no + '" data-item="' + this.id + '" id="combo_item_price_' + row_no + '" onClick="this.select();"></td>';
+                tr_html += '<td><input class="form-control-sm text-center rquantity" name="combo_item_quantity[]" type="text" value="' + formatDecimal(this.qty) + '" data-id="' + row_no + '" data-item="' + this.id + '" id="quantity_' + row_no + '" onClick="this.select();"></td>';
+                tr_html += '<td><input class="form-control-sm text-center rprice" name="combo_item_price[]" type="text" value="' + formatDecimal(this.price) + '" data-id="' + row_no + '" data-item="' + this.id + '" id="combo_item_price_' + row_no + '" onClick="this.select();"></td>';
                 tr_html += '<td class="text-center"><i class="fa fa-times tip del" id="' + row_no + '" title="Remove" style="cursor:pointer;"></i></td>';
                 newTr.html(tr_html);
                 newTr.prependTo("#prTable");
-                pp += formatDecimal(parseFloat(this.price)*parseFloat(this.qty));
+                pp += formatDecimal(parseFloat(this.price) * parseFloat(this.qty));
             });
             $('.item_' + item_id).addClass('warning');
             $('#price').val(pp);
@@ -712,7 +836,7 @@ if (!empty($variants)) {
             var rows = $('#prTable').children('tbody').children('tr');
             var pp = 0;
             $.each(rows, function () {
-                pp += formatDecimal(parseFloat($(this).find('.rprice').val())*parseFloat($(this).find('.rquantity').val()));
+                pp += formatDecimal(parseFloat($(this).find('.rprice').val()) * parseFloat($(this).find('.rquantity').val()));
             });
             $('#price').val(pp);
             return true;
@@ -732,7 +856,7 @@ if (!empty($variants)) {
         $('#addSupplier').click(function () {
             if (su <= 5) {
                 $('#supplier_1').select2('destroy');
-                var html = '<div style="clear:both;height:5px;"></div><div class="row"><div class="col-xs-12"><div class="form-group"><input type="hidden" name="supplier_' + su + '", class="form-control" id="supplier_' + su + '" placeholder="<?= lang('select') . ' ' . lang('supplier') ?>" style="width:100%;display: block !important;" /></div></div><div class="col-xs-6"><div class="form-group"><input type="text" name="supplier_' + su + '_part_no" class="form-control tip" id="supplier_' + su + '_part_no" placeholder="<?= lang('supplier_part_no') ?>" /></div></div><div class="col-xs-6"><div class="form-group"><input type="text" name="supplier_' + su + '_price" class="form-control tip" id="supplier_' + su + '_price" placeholder="<?= lang('supplier_price') ?>" /></div></div></div>';
+                var html = '<div style="clear:both;height:5px;"></div><div class="row"><div class="col-12"><div class="mb-3"><input type="hidden" name="supplier_' + su + '", class="form-control-sm" id="supplier_' + su + '" placeholder="<?= lang('select') . ' ' . lang('supplier') ?>" style="width:100%;display: block !important;" /></div></div><div class="col-6"><div class="mb-3"><input type="text" name="supplier_' + su + '_part_no" class="form-control-sm" id="supplier_' + su + '_part_no" placeholder="<?= lang('supplier_part_no') ?>" /></div></div><div class="col-6"><div class="mb-3"><input type="text" name="supplier_' + su + '_price" class="form-control-sm" id="supplier_' + su + '_price" placeholder="<?= lang('supplier_price') ?>" /></div></div></div>';
                 $('#ex-suppliers').append(html);
                 var sup = $('#supplier_' + su);
                 suppliers(sup);
@@ -761,7 +885,7 @@ if (!empty($variants)) {
                 }
             }
         });
-        var variants = <?=json_encode($vars);?>;
+        var variants = <?= json_encode($vars); ?>;
         $(".select-tags").select2({
             tags: variants,
             tokenSeparators: [","],
@@ -774,6 +898,16 @@ if (!empty($variants)) {
             $(".select-tags").select2("val", "");
             $('.attr-remove-all').trigger('click');
             $('#attr-con').slideUp();
+        });
+        // Bootstrap 5 form-switch fallback
+        $(document).on('change', '#attributes', function () {
+            if ($(this).is(':checked')) {
+                $('#attr-con').slideDown();
+            } else {
+                $(".select-tags").select2("val", "");
+                $('.attr-remove-all').trigger('click');
+                $('#attr-con').slideUp();
+            }
         });
         $('#addAttributes').click(function (e) {
             e.preventDefault();
@@ -790,14 +924,14 @@ if (!empty($variants)) {
                         ?>
                         $('#attrTable').show().append('<tr class="attr"><td><input type="hidden" name="attr_name[]" value="' + attrs[i] + '"><span>' + attrs[i] + '</span></td><td class="code text-center"><input type="hidden" name="attr_warehouse[]" value=""><span></span></td><td class="price text-right"><input type="hidden" name="attr_price[]" value="0"><span>0</span></span></td><td class="text-center"><i class="fa fa-times delAttr"></i></td></tr>');
                         // $('#attrTable').show().append('<tr class="attr"><td><input type="hidden" name="attr_name[]" value="' + attrs[i] + '"><span>' + attrs[i] + '</span></td><td class="code text-center"><input type="hidden" name="attr_warehouse[]" value=""><span></span></td><td class="quantity text-center"><input type="hidden" name="attr_quantity[]" value="0"><span></span></td><td class="price text-right"><input type="hidden" name="attr_price[]" value="0"><span>0</span></span></td><td class="text-center"><i class="fa fa-times delAttr"></i></td></tr>');
-                                <?php
+                        <?php
                     } ?>
                 }
             }
         });
-//$('#attributesInput').on('select2-blur', function(){
-//    $('#addAttributes').click();
-//});
+        //$('#attributesInput').on('select2-blur', function(){
+        //    $('#addAttributes').click();
+        //});
         $(document).on('click', '.delAttr', function () {
             $(this).closest("tr").remove();
         });
@@ -840,137 +974,137 @@ if (!empty($variants)) {
 
     <?php if ($product) {
         ?>
-    $(document).ready(function () {
-        var t = "<?=$product->type?>";
-        if (t !== 'standard') {
-            $('.standard').slideUp();
-            $('#cost').attr('required', 'required');
-            $('#track_quantity').iCheck('uncheck');
-            $('form[data-toggle="validator"]').bootstrapValidator('addField', 'cost');
-        } else {
-            $('.standard').slideDown();
-            $('#track_quantity').iCheck('check');
-            $('#cost').removeAttr('required');
-            $('form[data-toggle="validator"]').bootstrapValidator('removeField', 'cost');
-        }
-        if (t !== 'digital') {
-            $('.digital').slideUp();
-            $('#file_link').removeAttr('required');
-            $('form[data-toggle="validator"]').bootstrapValidator('removeField', 'file_link');
-        } else {
-            $('.digital').slideDown();
-            $('#file_link').attr('required', 'required');
-            $('form[data-toggle="validator"]').bootstrapValidator('addField', 'file_link');
-        }
-        if (t !== 'combo') {
-            $('.combo').slideUp();
-            //$('#add_item').removeAttr('required');
-            //$('form[data-toggle="validator"]').bootstrapValidator('removeField', 'add_item');
-        } else {
-            $('.combo').slideDown();
-            //$('#add_item').attr('required', 'required');
-            //$('form[data-toggle="validator"]').bootstrapValidator('addField', 'add_item');
-        }
-        $("#code").parent('.form-group').addClass("has-error");
-        $("#code").focus();
-        $("#product_image").parent('.form-group').addClass("text-warning");
-        $("#images").parent('.form-group').addClass("text-warning");
-        $.ajax({
-            type: "get", async: false,
-            url: "<?= admin_url('products/getSubCategories') ?>/" + <?= $product->category_id ?>,
-            dataType: "json",
-            success: function (scdata) {
-                if (scdata != null) {
-                    $("#subcategory").select2("destroy").empty().attr("placeholder", "<?= lang('select_subcategory') ?>").select2({
-                        placeholder: "<?= lang('select_category_to_load') ?>",
-                        data: scdata
-                    });
-                } else {
-                    $("#subcategory").select2("destroy").empty().attr("placeholder", "<?= lang('no_subcategory') ?>").select2({
-                        placeholder: "<?= lang('no_subcategory') ?>",
-                        data: [{id: '', text: '<?= lang('no_subcategory') ?>'}]
-                    });
-                }
+        $(document).ready(function () {
+            var t = "<?= $product->type ?>";
+            if (t !== 'standard') {
+                $('.standard').slideUp();
+                $('#cost').attr('required', 'required');
+                $('#track_quantity').iCheck('uncheck');
+                $('form[data-toggle="validator"]').bootstrapValidator('addField', 'cost');
+            } else {
+                $('.standard').slideDown();
+                $('#track_quantity').iCheck('check');
+                $('#cost').removeAttr('required');
+                $('form[data-toggle="validator"]').bootstrapValidator('removeField', 'cost');
             }
-        });
-        <?php if ($product->supplier1) {
-            ?>
-        select_supplier('supplier1', "<?= $product->supplier1; ?>");
-        $('#supplier_price').val("<?= $product->supplier1price == 0 ? '' : $this->sma->formatDecimal($product->supplier1price); ?>");
-            <?php
-        } ?>
-        <?php if ($product->supplier2) {
-            ?>
-        $('#addSupplier').click();
-        select_supplier('supplier_2', "<?= $product->supplier2; ?>");
-        $('#supplier_2_price').val("<?= $product->supplier2price == 0 ? '' : $this->sma->formatDecimal($product->supplier2price); ?>");
-            <?php
-        } ?>
-        <?php if ($product->supplier3) {
-            ?>
-        $('#addSupplier').click();
-        select_supplier('supplier_3', "<?= $product->supplier3; ?>");
-        $('#supplier_3_price').val("<?= $product->supplier3price == 0 ? '' : $this->sma->formatDecimal($product->supplier3price); ?>");
-            <?php
-        } ?>
-        <?php if ($product->supplier4) {
-            ?>
-        $('#addSupplier').click();
-        select_supplier('supplier_4', "<?= $product->supplier4; ?>");
-        $('#supplier_4_price').val("<?= $product->supplier4price == 0 ? '' : $this->sma->formatDecimal($product->supplier4price); ?>");
-            <?php
-        } ?>
-        <?php if ($product->supplier5) {
-            ?>
-        $('#addSupplier').click();
-        select_supplier('supplier_5', "<?= $product->supplier5; ?>");
-        $('#supplier_5_price').val("<?= $product->supplier5price == 0 ? '' : $this->sma->formatDecimal($product->supplier5price); ?>");
-            <?php
-        } ?>
-        function select_supplier(id, v) {
-            $('#' + id).val(v).select2({
-                minimumInputLength: 1,
-                data: [],
-                initSelection: function (element, callback) {
-                    $.ajax({
-                        type: "get", async: false,
-                        url: "<?= admin_url('suppliers/getSupplier') ?>/" + $(element).val(),
-                        dataType: "json",
-                        success: function (data) {
-                            callback(data[0]);
-                        }
-                    });
-                },
-                ajax: {
-                    url: site.base_url + "suppliers/suggestions",
-                    dataType: 'json',
-                    quietMillis: 15,
-                    data: function (term, page) {
-                        return {
-                            term: term,
-                            limit: 10
-                        };
-                    },
-                    results: function (data, page) {
-                        if (data.results != null) {
-                            return {results: data.results};
-                        } else {
-                            return {results: [{id: '', text: 'No Match Found'}]};
-                        }
+            if (t !== 'digital') {
+                $('.digital').slideUp();
+                $('#file_link').removeAttr('required');
+                $('form[data-toggle="validator"]').bootstrapValidator('removeField', 'file_link');
+            } else {
+                $('.digital').slideDown();
+                $('#file_link').attr('required', 'required');
+                $('form[data-toggle="validator"]').bootstrapValidator('addField', 'file_link');
+            }
+            if (t !== 'combo') {
+                $('.combo').slideUp();
+                //$('#add_item').removeAttr('required');
+                //$('form[data-toggle="validator"]').bootstrapValidator('removeField', 'add_item');
+            } else {
+                $('.combo').slideDown();
+                //$('#add_item').attr('required', 'required');
+                //$('form[data-toggle="validator"]').bootstrapValidator('addField', 'add_item');
+            }
+            $("#code").parent('.form-group').addClass("has-error");
+            $("#code").focus();
+            $("#product_image").parent('.form-group').addClass("text-warning");
+            $("#images").parent('.form-group').addClass("text-warning");
+            $.ajax({
+                type: "get", async: false,
+                url: "<?= admin_url('products/getSubCategories') ?>/" + <?= $product->category_id ?>,
+                dataType: "json",
+                success: function (scdata) {
+                    if (scdata != null) {
+                        $("#subcategory").select2("destroy").empty().attr("placeholder", "<?= lang('select_subcategory') ?>").select2({
+                            placeholder: "<?= lang('select_category_to_load') ?>",
+                            data: scdata
+                        });
+                    } else {
+                        $("#subcategory").select2("destroy").empty().attr("placeholder", "<?= lang('no_subcategory') ?>").select2({
+                            placeholder: "<?= lang('no_subcategory') ?>",
+                            data: [{ id: '', text: '<?= lang('no_subcategory') ?>' }]
+                        });
                     }
                 }
-            });//.select2("val", "<?= $product->supplier1; ?>");
-        }
+            });
+            <?php if ($product->supplier1) {
+                ?>
+                select_supplier('supplier1', "<?= $product->supplier1; ?>");
+                $('#supplier_price').val("<?= $product->supplier1price == 0 ? '' : $this->sma->formatDecimal($product->supplier1price); ?>");
+                <?php
+            } ?>
+            <?php if ($product->supplier2) {
+                ?>
+                $('#addSupplier').click();
+                select_supplier('supplier_2', "<?= $product->supplier2; ?>");
+                $('#supplier_2_price').val("<?= $product->supplier2price == 0 ? '' : $this->sma->formatDecimal($product->supplier2price); ?>");
+                <?php
+            } ?>
+            <?php if ($product->supplier3) {
+                ?>
+                $('#addSupplier').click();
+                select_supplier('supplier_3', "<?= $product->supplier3; ?>");
+                $('#supplier_3_price').val("<?= $product->supplier3price == 0 ? '' : $this->sma->formatDecimal($product->supplier3price); ?>");
+                <?php
+            } ?>
+            <?php if ($product->supplier4) {
+                ?>
+                $('#addSupplier').click();
+                select_supplier('supplier_4', "<?= $product->supplier4; ?>");
+                $('#supplier_4_price').val("<?= $product->supplier4price == 0 ? '' : $this->sma->formatDecimal($product->supplier4price); ?>");
+                <?php
+            } ?>
+            <?php if ($product->supplier5) {
+                ?>
+                $('#addSupplier').click();
+                select_supplier('supplier_5', "<?= $product->supplier5; ?>");
+                $('#supplier_5_price').val("<?= $product->supplier5price == 0 ? '' : $this->sma->formatDecimal($product->supplier5price); ?>");
+                <?php
+            } ?>
+            function select_supplier(id, v) {
+                $('#' + id).val(v).select2({
+                    minimumInputLength: 1,
+                    data: [],
+                    initSelection: function (element, callback) {
+                        $.ajax({
+                            type: "get", async: false,
+                            url: "<?= admin_url('suppliers/getSupplier') ?>/" + $(element).val(),
+                            dataType: "json",
+                            success: function (data) {
+                                callback(data[0]);
+                            }
+                        });
+                    },
+                    ajax: {
+                        url: site.base_url + "suppliers/suggestions",
+                        dataType: 'json',
+                        quietMillis: 15,
+                        data: function (term, page) {
+                            return {
+                                term: term,
+                                limit: 10
+                            };
+                        },
+                        results: function (data, page) {
+                            if (data.results != null) {
+                                return { results: data.results };
+                            } else {
+                                return { results: [{ id: '', text: 'No Match Found' }] };
+                            }
+                        }
+                    }
+                });//.select2("val", "<?= $product->supplier1; ?>");
+            }
 
-        var whs = $('.wh');
-        $.each(whs, function () {
-            $(this).val($('#r' + $(this).attr('id')).text());
+            var whs = $('.wh');
+            $.each(whs, function () {
+                $(this).val($('#r' + $(this).attr('id')).text());
+            });
         });
-    });
         <?php
     } ?>
-    $(document).ready(function() {
-        $('#unit').change(function(e) {
+    $(document).ready(function () {
+        $('#unit').change(function (e) {
             var v = $(this).val();
             if (v) {
                 $.ajax({
@@ -979,11 +1113,11 @@ if (!empty($variants)) {
                     url: "<?= admin_url('products/getSubUnits') ?>/" + v,
                     dataType: "json",
                     success: function (data) {
-                        $('#default_sale_unit').select2("destroy").empty().select2({minimumResultsForSearch: 7});
-                        $('#default_purchase_unit').select2("destroy").empty().select2({minimumResultsForSearch: 7});
+                        $('#default_sale_unit').select2("destroy").empty().select2({ minimumResultsForSearch: 7 });
+                        $('#default_purchase_unit').select2("destroy").empty().select2({ minimumResultsForSearch: 7 });
                         $.each(data, function () {
-                            $("<option />", {value: this.id, text: this.name+' ('+this.code+')'}).appendTo($('#default_sale_unit'));
-                            $("<option />", {value: this.id, text: this.name+' ('+this.code+')'}).appendTo($('#default_purchase_unit'));
+                            $("<option />", { value: this.id, text: this.name + ' (' + this.code + ')' }).appendTo($('#default_sale_unit'));
+                            $("<option />", { value: this.id, text: this.name + ' (' + this.code + ')' }).appendTo($('#default_purchase_unit'));
                         });
                         $('#default_sale_unit').select2('val', v);
                         $('#default_purchase_unit').select2('val', v);
@@ -995,55 +1129,42 @@ if (!empty($variants)) {
             } else {
                 $('#default_sale_unit').select2("destroy").empty();
                 $('#default_purchase_unit').select2("destroy").empty();
-                $("<option />", {value: '', text: '<?= lang('select_unit_first') ?>'}).appendTo($('#default_sale_unit'));
-                $("<option />", {value: '', text: '<?= lang('select_unit_first') ?>'}).appendTo($('#default_purchase_unit'));
-                $('#default_sale_unit').select2({minimumResultsForSearch: 7}).select2('val', '');
-                $('#default_purchase_unit').select2({minimumResultsForSearch: 7}).select2('val', '');
+                $("<option />", { value: '', text: '<?= lang('select_unit_first') ?>' }).appendTo($('#default_sale_unit'));
+                $("<option />", { value: '', text: '<?= lang('select_unit_first') ?>' }).appendTo($('#default_purchase_unit'));
+                $('#default_sale_unit').select2({ minimumResultsForSearch: 7 }).select2('val', '');
+                $('#default_purchase_unit').select2({ minimumResultsForSearch: 7 }).select2('val', '');
             }
         });
     });
 </script>
 
-<div class="modal" id="aModal" tabindex="-1" role="dialog" aria-labelledby="aModalLabel" aria-hidden="true">
+<div class="modal fade" id="aModal" tabindex="-1" aria-labelledby="aModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-bs-dismiss="modal"><span aria-hidden="true">
-                    <iclass="fa fa-2x">&times;</i></span><span class="sr-only">Close</span>
-                </button>
-                <h4 class="modal-title" id="aModalLabel"><?= lang('add_product_manually') ?></h4>
+                <h5 class="modal-title" id="aModalLabel"><?= lang('add_product_manually') ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="pr_popover_content">
-                <form class="form-horizontal" role="form">
-                    <div class="form-group">
-                        <label for="awarehouse" class="col-sm-4 control-label"><?= lang('warehouse') ?></label>
-                        <div class="col-sm-8">
-                            <?php
-                            $wh[''] = '';
-                            foreach ($warehouses as $warehouse) {
-                                $wh[$warehouse->id] = $warehouse->name;
-                            }
-                            echo form_dropdown('warehouse', $wh, '', 'id="awarehouse" class="form-control"');
-                            ?>
-                        </div>
-                    </div>
-                    <!-- <div class="form-group">
-                        <label for="aquantity" class="col-sm-4 control-label"><?= lang('quantity') ?></label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="aquantity">
-                        </div>
-                    </div> -->
-                    <input type="hidden" id="aquantity" value="0">
-                    <div class="form-group">
-                        <label for="aprice" class="col-sm-4 control-label"><?= lang('price_addition') ?></label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="aprice">
-                        </div>
-                    </div>
-
-                </form>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" for="awarehouse"><?= lang('warehouse') ?></label>
+                    <?php
+                    $wh[''] = '';
+                    foreach ($warehouses as $warehouse) {
+                        $wh[$warehouse->id] = $warehouse->name;
+                    }
+                    echo form_dropdown('warehouse', $wh, '', 'id="awarehouse" class="form-select-sm"');
+                    ?>
+                </div>
+                <input type="hidden" id="aquantity" value="0">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" for="aprice"><?= lang('price_addition') ?></label>
+                    <input type="text" class="form-control-sm" id="aprice">
+                </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal"><?= lang('close') ?></button>
                 <button type="button" class="btn btn-primary" id="updateAttr"><?= lang('submit') ?></button>
             </div>
         </div>

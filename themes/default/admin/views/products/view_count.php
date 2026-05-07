@@ -14,7 +14,7 @@
 
             <div class="row">
                 <div class="col-xs-12">
-                <table class="table table-bordered table-condensed">
+                <table class="table table-bordered table-sm">
                         <tbody>
                             <tr>
                                 <td><?= lang('warehouse'); ?></td>

@@ -270,7 +270,7 @@
 
                                 <div class="controls table-controls">
                                     <table id="toTable"
-                                           class="table items table-striped table-bordered table-condensed table-hover sortable_table">
+                                           class="table items table-striped table-bordered table-sm table-hover sortable_table">
                                         <thead>
                                         <tr>
                                             <th class="col-md-4"><?= lang('product') . ' (' . lang('code') . ' - ' . lang('name') . ')'; ?></th>
@@ -314,7 +314,7 @@
                 </div>
 
                 <div id="bottom-total" class="well well-sm" style="margin-bottom: 0;">
-                    <table class="table table-bordered table-condensed totals" style="margin-bottom:0;">
+                    <table class="table table-bordered table-sm totals" style="margin-bottom:0;">
                         <tr class="warning">
                             <td><?= lang('items') ?> <span class="totals_val float-end" id="titems">0</span></td>
                             <td><?= lang('total') ?> <span class="totals_val float-end" id="total">0.00</span></td>

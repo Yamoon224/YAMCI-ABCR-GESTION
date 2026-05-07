@@ -141,7 +141,7 @@
                                 <h3 class="bold"><?= lang('custom_fields') ?></h3>
                                 <div class="table-responsive">
                                     <table
-                                    class="table table-bordered table-striped table-condensed dfTable two-columns">
+                                    class="table table-bordered table-striped table-sm dfTable two-columns">
                                     <thead>
                                         <tr>
                                             <th><?= lang('custom_field') ?></th>
@@ -179,7 +179,7 @@
                             <h3 class="bold"><?= lang('warehouse_quantity') ?></h3>
                             <div class="table-responsive">
                                 <table
-                                class="table table-bordered table-striped table-condensed dfTable three-columns">
+                                class="table table-bordered table-striped table-sm dfTable three-columns">
                                 <thead>
                                     <tr>
                                         <th><?= lang('warehouse_name') ?></th>
@@ -207,7 +207,7 @@
                         <h3 class="bold"><?= lang('combo_items') ?></h3>
                         <div class="table-responsive">
                             <table
-                            class="table table-bordered table-striped table-condensed dfTable two-columns">
+                            class="table table-bordered table-striped table-sm dfTable two-columns">
                             <thead>
                                 <tr>
                                     <th><?= lang('product_name') ?></th>
@@ -228,7 +228,7 @@
                     <h3 class="bold"><?= lang('product_variants_quantity'); ?></h3>
                     <div class="table-responsive">
                         <table
-                        class="table table-bordered table-striped table-condensed dfTable">
+                        class="table table-bordered table-striped table-sm dfTable">
                         <thead>
                             <tr>
                                 <th><?= lang('warehouse_name') ?></th>
