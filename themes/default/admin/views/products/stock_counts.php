@@ -44,90 +44,77 @@
 <?php if ($Owner || ($GP && $GP['bulk_actions'])) {
     echo admin_form_open('products/count_actions' . ($warehouse_id ? '/' . $warehouse_id : ''), 'id="action-form"');
 } ?>
-<div class="card">
-    <div class="box-header">
-        <h2 class="blue">
-            <i class="fa-fw fa fa-barcode"></i>
-            <?= lang('stock_counts') . ' (' . ($warehouse_id ? $warehouse->name : lang('all_warehouses')) . ')'; ?>
-        </h2>
-
-        <div class="box-icon">
-            <ul class="btn-tasks">
-                <li class="dropdown">
-                    <a href="<?= admin_url('products/count_stock') ?>" class="tip" data-placement="top" title="<?= lang('count_stock') ?>">
-                        <i class="icon fa fa-plus tip"></i>
-                    </a>
-                </li>
-                <?php if (!empty($warehouses)) {
-                    ?>
-                    <li class="dropdown">
-                        <a data-bs-toggle="dropdown" class="dropdown-toggle" href="#"><i class="icon fa fa-building-o tip" data-placement="left" title="<?= lang('warehouses') ?>"></i></a>
-                        <ul class="dropdown-menu float-end tasks-menus" role="menu" aria-labelledby="dLabel">
-                            <li><a href="<?= admin_url('products/stock_counts') ?>"><i class="fa fa-building-o"></i> <?= lang('all_warehouses') ?></a></li>
-                            <li class="divider"></li>
-                            <?php
-                            foreach ($warehouses as $warehouse) {
-                                echo '<li><a href="' . admin_url('products/stock_counts/' . $warehouse->id) . '"><i class="fa fa-building"></i>' . $warehouse->name . '</a></li>';
-                            } ?>
-                        </ul>
-                    </li>
-                    <?php
-                } ?>
-            </ul>
+<div class="card border-0 shadow-sm rounded-3">
+    <div class="card-header d-flex align-items-center justify-content-between py-2 px-3 bg-white border-bottom">
+        <div class="d-flex align-items-center gap-2">
+            <span class="bg-primary bg-opacity-10 rounded-2 p-2 lh-1">
+                <i class="fa fa-barcode text-primary"></i>
+            </span>
+            <h5 class="mb-0 fw-semibold"><?= lang('stock_counts') . ' <span class="text-muted fw-normal fs-6">(' . ($warehouse_id ? $warehouse->name : lang('all_warehouses')) . ')</span>'; ?></h5>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <a href="<?= admin_url('products/count_stock') ?>" class="btn btn-sm btn-success d-inline-flex align-items-center gap-1">
+                <i class="fa fa-plus"></i> <?= lang('count_stock') ?>
+            </a>
+            <?php if (!empty($warehouses)) { ?>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1" data-bs-toggle="dropdown">
+                    <i class="fa fa-building-o"></i> <?= lang('warehouses') ?>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="<?= admin_url('products/stock_counts') ?>"><i class="fa fa-building-o me-2"></i><?= lang('all_warehouses') ?></a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <?php foreach ($warehouses as $warehouse) { ?>
+                    <li><a class="dropdown-item" href="<?= admin_url('products/stock_counts/' . $warehouse->id) ?>"><i class="fa fa-building me-2"></i><?= $warehouse->name ?></a></li>
+                    <?php } ?>
+                </ul>
+            </div>
+            <?php } ?>
         </div>
     </div>
-    <div class="box-content">
-        <div class="row">
-            <div class="col-lg-12">
-                <p class="introtext"><?= lang('list_results'); ?></p>
-
-                <div class="table-responsive">
-                    <table id="STData" class="table table-bordered table-sm table-hover table-striped">
-                        <thead>
-                        <tr class="primary">
-                            <th style="min-width:30px; width: 30px; text-align: center;">
-                                <input class="checkbox checkth" type="checkbox" name="check"/>
-                            </th>
-                            <th class="col-xs-2"><?= lang('date') ?></th>
-                            <th class="col-xs-2"><?= lang('reference') ?></th>
-                            <th class="col-xs-2"><?= lang('warehouse') ?></th>
-                            <th class="col-xs-1"><?= lang('type') ?></th>
-                            <th class="col-xs-2"><?= lang('brands') ?></th>
-                            <th class="col-xs-2"><?= lang('categories') ?></th>
-                            <th style="max-width:30px; text-align:center;"><i class="fa fa-file-o"></i></th>
-                            <th style="max-width:30px; text-align:center;"><i class="fa fa-chain"></i></th>
-                            <th style="max-width:65px; text-align:center;"><?= lang('actions') ?></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td colspan="11" class="dataTables_empty"><?= lang('loading_data_from_server'); ?></td>
-                        </tr>
-                        </tbody>
-
-                        <tfoot class="dtFilter">
-                        <tr class="active">
-                            <th style="min-width:30px; width: 30px; text-align: center;">
-                                <input class="checkbox checkft" type="checkbox" name="check"/>
-                            </th>
-                            <th></th><th></th><th></th><th></th><th></th><th></th>
-                            <th style="max-width:30px; text-align:center;"><i class="fa fa-file-o"></i></th>
-                            <th style="max-width:30px; text-align:center;"><i class="fa fa-chain"></i></th>
-                            <th style="width:65px; text-align:center;"><?= lang('actions') ?></th>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
+    <div class="card-body p-2 p-lg-3">
+        <div class="table-responsive">
+            <table id="STData" class="table table-bordered table-sm table-hover table-striped">
+                <thead>
+                <tr>
+                    <th style="min-width:30px; width:30px; text-align:center;">
+                        <input class="checkbox checkth" type="checkbox" name="check"/>
+                    </th>
+                    <th><?= lang('date') ?></th>
+                    <th><?= lang('reference') ?></th>
+                    <th><?= lang('warehouse') ?></th>
+                    <th><?= lang('type') ?></th>
+                    <th><?= lang('brands') ?></th>
+                    <th><?= lang('categories') ?></th>
+                    <th style="max-width:30px; text-align:center;"><i class="fa fa-file-o"></i></th>
+                    <th style="max-width:30px; text-align:center;"><i class="fa fa-chain"></i></th>
+                    <th style="max-width:65px; text-align:center;"><?= lang('actions') ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="11" class="dataTables_empty"><?= lang('loading_data_from_server'); ?></td>
+                </tr>
+                </tbody>
+                <tfoot class="dtFilter">
+                <tr class="active">
+                    <th style="min-width:30px; width:30px; text-align:center;">
+                        <input class="checkbox checkft" type="checkbox" name="check"/>
+                    </th>
+                    <th></th><th></th><th></th><th></th><th></th><th></th>
+                    <th style="max-width:30px; text-align:center;"><i class="fa fa-file-o"></i></th>
+                    <th style="max-width:30px; text-align:center;"><i class="fa fa-chain"></i></th>
+                    <th style="width:65px; text-align:center;"><?= lang('actions') ?></th>
+                </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
 </div>
-<?php if ($Owner || ($GP && $GP['bulk_actions'])) {
-    ?>
-    <div style="display: none;">
+<?php if ($Owner || ($GP && $GP['bulk_actions'])) { ?>
+    <div style="display:none;">
         <input type="hidden" name="form_action" value="" id="form_action"/>
         <?= form_submit('performAction', 'performAction', 'id="action-form-submit"') ?>
     </div>
     <?= form_close() ?>
-    <?php
-} ?>
+<?php } ?>

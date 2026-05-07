@@ -79,9 +79,39 @@ $s2_file_date = $this->parser->parse_string($s2_lang_file, $s2_data, true);
 <script src="<?= $assets ?>materialize/vendor/js/menu.js"></script>
 <script src="<?= $assets ?>materialize/js/main.js"></script>
 
-<!-- DataTables 2.x + Bootstrap 5 -->
-<script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
+<!-- DataTables 1.13.8 + Bootstrap 5 -->
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+<script src="<?= $assets ?>js/jquery.dataTables.dtFilter.min.js"></script>
+<!-- accounting.js (requis par currencyFormat dans core.js) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+<!-- fnSetFilteringDelay plugin pour DataTables 1.x -->
+<script>
+(function($){
+    $.fn.dataTableExt.oApi.fnSetFilteringDelay = function(oSettings, iDelay) {
+        var _that = this;
+        iDelay = (typeof iDelay == 'undefined') ? 250 : iDelay;
+        this.each(function(i) {
+            $.fn.dataTableExt.iApiIndex = i;
+            var anControl = $('input', _that.fnSettings().aanFeatures.f);
+            var oTimerId = null;
+            var sPreviousSearch = null;
+            anControl.unbind('keyup search input').bind('keyup search input', function() {
+                if (sPreviousSearch === null || sPreviousSearch != anControl.val()) {
+                    window.clearTimeout(oTimerId);
+                    sPreviousSearch = anControl.val();
+                    oTimerId = window.setTimeout(function() {
+                        $.fn.dataTableExt.iApiIndex = i;
+                        _that.fnFilter(anControl.val());
+                    }, iDelay);
+                }
+            });
+            return this;
+        });
+        return this;
+    };
+})(jQuery);
+</script>
 
 <!-- Select2 -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>

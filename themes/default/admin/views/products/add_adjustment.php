@@ -100,133 +100,112 @@
     });
 </script>
 
-<div class="card rounded-sm">
-    <div class="box-header">
-        <h2 class="blue"><i class="fa-fw fa fa-plus"></i><?= lang('add_adjustment'); ?></h2>
+<div class="card border-0 shadow-sm rounded-3">
+    <div class="card-header d-flex align-items-center gap-2 py-2 px-3 bg-white border-bottom">
+        <span class="bg-success bg-opacity-10 rounded-2 p-2 lh-1">
+            <i class="fa fa-plus text-success"></i>
+        </span>
+        <h5 class="mb-0 fw-semibold"><?= lang('add_adjustment'); ?></h5>
     </div>
-    <div class="box-content">
-        <div class="row">
-            <div class="col-lg-12">
-                <p class="introtext"><?php echo lang('enter_info'); ?></p>
-                <?php
-                $attrib = ['data-toggle' => 'validator', 'role' => 'form'];
-                echo admin_form_open_multipart('products/add_adjustment' . ($count_id ? '/' . $count_id : ''), $attrib);
-                ?>
-                <div class="row">
-                        <?php if ($Owner || $Admin) { ?>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <?= lang('date', 'qadate'); ?>
-                                    <?php echo form_input('date', (isset($_POST['date']) ? $_POST['date'] : ''), 'class="form-control input-tip datetime" id="qadate" required="required"'); ?>
-                                </div>
+    <div class="card-body p-3 p-lg-4">
+        <?php
+        $attrib = ['role' => 'form'];
+        echo admin_form_open_multipart('products/add_adjustment' . ($count_id ? '/' . $count_id : ''), $attrib);
+        ?>
+        <div class="row g-3">
+
+            <!-- Identification -->
+            <div class="col-12">
+                <div class="card border shadow-none rounded-3">
+                    <div class="card-header py-2 px-3 d-flex align-items-center gap-2 bg-white border-bottom border-primary border-opacity-25">
+                        <i class="fa fa-info-circle text-primary fs-6"></i>
+                        <span class="fw-bold small text-uppercase text-primary"><?= lang('information') ?></span>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="row g-3">
+                            <?php if ($Owner || $Admin) { ?>
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold small mb-1" for="qadate"><?= lang('date') ?> <span class="text-danger">*</span></label>
+                                <?php echo form_input('date', (isset($_POST['date']) ? $_POST['date'] : ''), 'class="form-control form-control-sm datetime" id="qadate" required="required"'); ?>
                             </div>
-                        <?php } ?>
+                            <?php } ?>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <?= lang('reference_no', 'qaref'); ?>
-                                <?php echo form_input('reference_no', (isset($_POST['reference_no']) ? $_POST['reference_no'] : ''), 'class="form-control input-tip" id="qaref"'); ?>
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold small mb-1" for="qaref"><?= lang('reference_no') ?></label>
+                                <?php echo form_input('reference_no', (isset($_POST['reference_no']) ? $_POST['reference_no'] : ''), 'class="form-control form-control-sm" id="qaref"'); ?>
                             </div>
-                        </div>
-                        <?= form_hidden('count_id', $count_id); ?>
 
-                        <?php if ($Owner || $Admin || !$this->session->userdata('warehouse_id')) { ?>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <?= lang('warehouse', 'qawarehouse'); ?>
-                                    <?php
-                                    $wh[''] = '';
-                    foreach ($warehouses as $warehouse) {
-                        $wh[$warehouse->id] = $warehouse->name;
-                    }
-                    echo form_dropdown('warehouse', $wh, (isset($_POST['warehouse']) ? $_POST['warehouse'] : ($warehouse_id ? $warehouse_id : $Settings->default_warehouse)), 'id="qawarehouse" class="form-control input-tip select" data-placeholder="' . lang('select') . ' ' . lang('warehouse') . '" required="required" ' . ($warehouse_id ? 'readonly' : '') . ' style="width:100%;"'); ?>
-                                </div>
+                            <?php if ($Owner || $Admin || !$this->session->userdata('warehouse_id')) { ?>
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold small mb-1" for="qawarehouse"><?= lang('warehouse') ?> <span class="text-danger">*</span></label>
+                                <?php
+                                $wh[''] = '';
+                                foreach ($warehouses as $warehouse) {
+                                    $wh[$warehouse->id] = $warehouse->name;
+                                }
+                                echo form_dropdown('warehouse', $wh, (isset($_POST['warehouse']) ? $_POST['warehouse'] : ($warehouse_id ? $warehouse_id : $Settings->default_warehouse)), 'id="qawarehouse" class="form-control form-control-sm select" data-placeholder="' . lang('select') . ' ' . lang('warehouse') . '" required="required" ' . ($warehouse_id ? 'readonly' : '') . ' style="width:100%;"'); ?>
                             </div>
-                            <?php
-                } else {
-                    $warehouse_input = [
-                        'type'  => 'hidden',
-                        'name'  => 'warehouse',
-                        'id'    => 'qawarehouse',
-                        'value' => $this->session->userdata('warehouse_id'),
-                    ];
+                            <?php } else {
+                                $warehouse_input = ['type' => 'hidden', 'name' => 'warehouse', 'id' => 'qawarehouse', 'value' => $this->session->userdata('warehouse_id')];
+                                echo form_input($warehouse_input);
+                            } ?>
 
-                    echo form_input($warehouse_input);
-                } ?>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <?= lang('document', 'document') ?>
-                                <input id="document" type="file" data-browse-label="<?= lang('browse'); ?>" name="document" data-show-upload="false"
-                                       data-show-preview="false" class="form-control file">
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold small mb-1" for="document"><?= lang('document') ?></label>
+                                <input id="document" type="file" name="document" class="form-control form-control-sm">
                             </div>
-                        </div>
-
-                        <div class="clearfix"></div>
-
-
-                        <div class="col-md-12" id="sticker">
-                            <div class="well well-sm">
-                                <div class="form-group" style="margin-bottom:0;">
-                                    <div class="input-group wide-tip">
-                                        <div class="input-group-addon" style="padding-left: 10px; padding-right: 10px;">
-                                            <i class="fa fa-2x fa-barcode addIcon"></i></a></div>
-                                        <?php echo form_input('add_item', '', 'class="form-control input-lg" id="add_item" placeholder="' . lang('add_product_to_order') . '"'); ?>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="control-group table-group">
-                                <label class="table-label"><?= lang('products'); ?> *</label>
-
-                                <div class="controls table-controls">
-                                    <table id="qaTable" class="table items table-striped table-bordered table-sm table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th><?= lang('product_name') . ' (' . lang('product_code') . ')'; ?></th>
-                                            <th class="col-md-2"><?= lang('variant'); ?></th>
-                                            <th class="col-md-1"><?= lang('type'); ?></th>
-                                            <th class="col-md-1"><?= lang('quantity'); ?></th>
-                                            <?php
-                                            if ($Settings->product_serial) {
-                                                echo '<th class="col-md-6">' . lang('serial_no') . '</th>';
-                                            }
-                                            ?>
-                                            <th style="max-width: 30px !important; text-align: center;">
-                                                <i class="fa fa-trash-o" style="opacity:0.5; filter:alpha(opacity=50);"></i>
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                        <tfoot></tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="clearfix"></div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <?= lang('note', 'qanote'); ?>
-                                    <?php echo form_textarea('note', (isset($_POST['note']) ? $_POST['note'] : ''), 'class="form-control" id="qanote" style="margin-top: 10px; height: 100px;"'); ?>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-
-                        <div class="col-md-12">
-                            <div
-                                class="fprom-group"><?php echo form_submit('add_adjustment', lang('submit'), 'id="add_adjustment" class="btn btn-primary" style="padding: 6px 15px; margin:15px 0;"'); ?>
-                                <button type="button" class="btn btn-danger" id="reset"><?= lang('reset') ?></div>
                         </div>
                     </div>
                 </div>
-                <?php echo form_close(); ?>
+            </div>
 
+            <!-- Recherche produit -->
+            <div class="col-12">
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="fa fa-barcode fa-lg"></i></span>
+                    <?php echo form_input('add_item', '', 'class="form-control" id="add_item" placeholder="' . lang('add_product_to_order') . '"'); ?>
+                </div>
+            </div>
+
+            <!-- Tableau produits -->
+            <div class="col-12">
+                <label class="form-label fw-semibold small mb-1"><?= lang('products') ?> <span class="text-danger">*</span></label>
+                <div class="table-responsive">
+                    <table id="qaTable" class="table table-bordered table-sm table-hover table-striped">
+                        <thead class="table-light">
+                        <tr>
+                            <th><?= lang('product_name') . ' (' . lang('product_code') . ')'; ?></th>
+                            <th style="width:15%"><?= lang('variant'); ?></th>
+                            <th style="width:12%"><?= lang('type'); ?></th>
+                            <th style="width:10%"><?= lang('quantity'); ?></th>
+                            <?php if ($Settings->product_serial) { echo '<th>' . lang('serial_no') . '</th>'; } ?>
+                            <th style="width:36px; text-align:center;"><i class="fa fa-trash-o text-muted"></i></th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot></tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Note -->
+            <div class="col-12">
+                <label class="form-label fw-semibold small mb-1" for="qanote"><?= lang('note') ?></label>
+                <?php echo form_textarea('note', (isset($_POST['note']) ? $_POST['note'] : ''), 'class="form-control form-control-sm" id="qanote" rows="3"'); ?>
+            </div>
+
+            <!-- Boutons -->
+            <div class="col-12 d-flex gap-2">
+                <button type="submit" name="add_adjustment" value="1" class="btn btn-primary d-inline-flex align-items-center gap-2 px-4">
+                    <i class="fa fa-check"></i> <?= lang('submit') ?>
+                </button>
+                <button type="button" class="btn btn-outline-danger d-inline-flex align-items-center gap-2" id="reset">
+                    <i class="fa fa-times"></i> <?= lang('reset') ?>
+                </button>
             </div>
 
         </div>
+        <?= form_hidden('count_id', $count_id); ?>
+        <?php echo form_close(); ?>
     </div>
 </div>

@@ -130,7 +130,17 @@
                     "name": "<?= $this->security->get_csrf_token_name() ?>",
                     "value": "<?= $this->security->get_csrf_hash() ?>"
                 });
-                $.ajax({'dataType': 'json', 'type': 'POST', 'url': sSource, 'data': aoData, 'success': fnCallback});
+                $.ajax({
+                    'dataType': 'json',
+                    'type': 'POST',
+                    'url': sSource,
+                    'data': aoData,
+                    'success': fnCallback,
+                    'error': function(xhr, status, error) {
+                        console.error('DataTable AJAX error [' + xhr.status + ']:', error, xhr.responseText ? xhr.responseText.substring(0, 300) : '');
+                        fnCallback({sEcho: 0, iTotalRecords: 0, iTotalDisplayRecords: 0, aaData: []});
+                    }
+                });
             },
             'fnRowCallback': function (nRow, aData, iDisplayIndex) {
                 var oSettings = oTable.fnSettings();
@@ -172,7 +182,7 @@
                 }
                 if ($this->session->userdata('show_price')) {
                     $col++;
-                    echo '{column_number : ' . $col . ', filter_default_label: "[' . lang('price') . ']", filter_type: "text, data: []" },';
+                    echo '{column_number : ' . $col . ', filter_default_label: "[' . lang('price') . ']", filter_type: "text", data: [] },';
                 }
             }
             ?>

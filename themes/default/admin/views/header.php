@@ -22,8 +22,8 @@
     <link rel="stylesheet" href="<?= $assets ?>materialize/vendor/css/core.css" />
     <link rel="stylesheet" href="<?= $assets ?>materialize/css/demo.css" />
 
-    <!-- DataTables 2.x CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.min.css" />
+    <!-- DataTables 1.13.8 CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" />
 
     <!-- Select2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
