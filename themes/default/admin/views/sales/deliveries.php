@@ -46,88 +46,86 @@
 <?php if ($Owner) {
     ?><?= admin_form_open('sales/delivery_actions', 'id="action-form"') ?><?php
 } ?>
-<div class="card">
-    <div class="box-header">
-        <h2 class="blue"><i class="fa-fw fa fa-truck"></i><?= lang('deliveries'); ?></h2>
-
-        <div class="box-icon">
-            <ul class="btn-tasks">
-                <li class="dropdown">
-                    <a data-bs-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <i class="icon fa fa-tasks tip" data-placement="left" title="<?= lang('actions') ?>"></i>
-                    </a>
-                    <ul class="dropdown-menu float-end tasks-menus" role="menu" aria-labelledby="dLabel">
-                        <li><a href="#" id="excel" data-action="export_excel"><i class="fa fa-file-excel-o"></i> <?= lang('export_to_excel') ?></a></li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#" class="bpo" title="<b><?= $this->lang->line('delete_deliveries') ?></b>"
-                                data-content="<p><?= lang('r_u_sure') ?></p><button type='button' class='btn btn-danger' id='delete' data-action='delete'><?= lang('i_m_sure') ?></a> <button class='btn bpo-close'><?= lang('no') ?></button>"
-                                data-html="true" data-placement="left">
-                                <i class="fa fa-trash-o"></i> <?= lang('delete_deliveries') ?>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+<div class="card border-0 shadow-sm rounded-3">
+    <div class="card-header d-flex align-items-center justify-content-between py-2 px-3 bg-white border-bottom">
+        <div class="d-flex align-items-center gap-2">
+            <span class="bg-primary bg-opacity-10 rounded-2 p-2 lh-1">
+                <i class="fa fa-truck text-primary"></i>
+            </span>
+            <h5 class="mb-0 fw-semibold"><?= lang('deliveries') ?></h5>
         </div>
-    </div>
-    <div class="box-content">
-        <div class="row">
-            <div class="col-lg-12">
-                <p class="introtext"><?= lang('list_results'); ?></p>
-
-                <table id="DOData" class="table table-bordered table-hover table-striped table-sm">
-                    <thead>
-                    <tr>
-                        <th style="min-width:30px; width: 30px; text-align: center;">
-                            <input class="checkbox checkft" type="checkbox" name="check"/>
-                        </th>
-                        <th><?= lang('date'); ?></th>
-                        <th><?= lang('do_reference_no'); ?></th>
-                        <th><?= lang('sale_reference_no'); ?></th>
-                        <th><?= lang('customer'); ?></th>
-                        <th><?= lang('address'); ?></th>
-                        <th><?= lang('status'); ?></th>
-                        <th style="min-width:30px; width: 30px; text-align: center;"><i class="fa fa-chain"></i></th>
-                        <th style="width:100px; text-align:center;"><?= lang('actions'); ?></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td colspan="7" class="dataTables_empty"><?= lang('loading_data'); ?></td>
-                    </tr>
-                    </tbody>
-                    <tfoot class="dtFilter">
-                    <tr class="active">
-                        <th style="min-width:30px; width: 30px; text-align: center;">
-                            <input class="checkbox checkft" type="checkbox" name="check"/>
-                        </th>
-                        <th></th><th></th><th></th><th></th><th></th><th></th>
-                        <th style="min-width:30px; width: 30px; text-align: center;"><i class="fa fa-chain"></i></th>
-                        <th style="width:100px; text-align:center;"><?= lang('actions'); ?></th>
-                    </tr>
-                    </tfoot>
-                </table>
+        <div class="d-flex align-items-center gap-2">
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1" data-bs-toggle="dropdown">
+                    <i class="fa fa-tasks"></i> <?= lang('actions') ?>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#" id="excel" data-action="export_excel"><i class="fa fa-file-excel-o me-2 text-success"></i><?= lang('export_to_excel') ?></a></li>
+                    <?php if ($Owner) { ?>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item text-danger bpo" href="#"
+                            title="<b><?= $this->lang->line('delete_deliveries') ?></b>"
+                            data-content="<p><?= lang('r_u_sure') ?></p><button type='button' class='btn btn-danger btn-sm' id='delete' data-action='delete'><?= lang('i_m_sure') ?></button> <button class='btn btn-secondary btn-sm bpo-close'><?= lang('no') ?></button>"
+                            data-html="true" data-placement="left">
+                            <i class="fa fa-trash-o me-2"></i><?= lang('delete_deliveries') ?>
+                        </a>
+                    </li>
+                    <?php } ?>
+                </ul>
             </div>
         </div>
     </div>
-</div>
-<?php if ($Owner) {
-        ?>
-    <div style="display: none;">
-        <input type="hidden" name="form_action" value="" id="form_action"/>
-        <?= form_submit('perform_action', 'perform_action', 'id="action-form-submit"') ?>
+    <div class="card-body p-2 p-lg-3">
+        <div class="table-responsive">
+            <table id="DOData" class="table table-bordered table-sm table-hover table-striped">
+                <thead>
+                <tr>
+                    <th style="min-width:30px; width:30px; text-align:center;">
+                        <input class="checkbox checkft" type="checkbox" name="check"/>
+                    </th>
+                    <th><?= lang('date') ?></th>
+                    <th><?= lang('do_reference_no') ?></th>
+                    <th><?= lang('sale_reference_no') ?></th>
+                    <th><?= lang('customer') ?></th>
+                    <th><?= lang('address') ?></th>
+                    <th><?= lang('status') ?></th>
+                    <th style="min-width:30px; width:30px; text-align:center;"><i class="fa fa-chain"></i></th>
+                    <th style="width:100px; text-align:center;"><?= lang('actions') ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="9" class="dataTables_empty"><?= lang('loading_data') ?></td>
+                </tr>
+                </tbody>
+                <tfoot class="dtFilter">
+                <tr class="active">
+                    <th style="min-width:30px; width:30px; text-align:center;">
+                        <input class="checkbox checkft" type="checkbox" name="check"/>
+                    </th>
+                    <th></th><th></th><th></th><th></th><th></th><th></th>
+                    <th style="min-width:30px; width:30px; text-align:center;"><i class="fa fa-chain"></i></th>
+                    <th style="width:100px; text-align:center;"><?= lang('actions') ?></th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
-    <?= form_close() ?>
-    <script type="text/javascript" charset="utf-8">
-        $(document).ready(function() {
-            $(document).on('click', '#delete', function(e) {
-                e.preventDefault();
-                $('#form_action').val($(this).attr('data-action'));
-                //$('#action-form').submit();
-                $('#action-form-submit').click();
-            });
+</div>
+<?php if ($Owner) { ?>
+<div style="display:none;">
+    <input type="hidden" name="form_action" value="" id="form_action"/>
+    <?= form_submit('perform_action', 'perform_action', 'id="action-form-submit"') ?>
+</div>
+<?= form_close() ?>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $(document).on('click', '#delete', function(e) {
+            e.preventDefault();
+            $('#form_action').val($(this).attr('data-action'));
+            $('#action-form-submit').click();
         });
-    </script>
-<?php
-    } ?>
+    });
+</script>
+<?php } ?>

@@ -44,22 +44,19 @@
 </script>
 
 
-<div class="card">
-    <div class="box-header">
-        <h2 class="blue"><i class="fa-fw fa fa-plus"></i><?= lang('add_sale'); ?></h2>
+<div class="card border-0 shadow-sm rounded-3">
+    <div class="card-header d-flex align-items-center gap-2 py-2 px-3 bg-white border-bottom">
+        <span class="bg-primary bg-opacity-10 rounded-2 p-2 lh-1">
+            <i class="fa fa-upload text-primary"></i>
+        </span>
+        <h5 class="mb-0 fw-semibold"><?= lang('add_sale') ?></h5>
     </div>
-    <div class="box-content">
-        <div class="row">
-            <div class="col-lg-12">
-
-                <p class="introtext"><?php echo lang('enter_info'); ?></p>
-                <?php
+    <div class="card-body p-3">
+        <?php
                 $attrib = ['data-toggle' => 'validator', 'role' => 'form'];
                 echo admin_form_open_multipart('sales/sale_by_csv', $attrib);
-
                 ?>
-                <div class="row">
-                    <div class="col-lg-12">
+        <div class="row g-3">
                         <?php if ($Owner || $Admin) {
                     ?>
                             <div class="col-md-4">
@@ -134,25 +131,20 @@
                                                 <?php
                                                 echo form_input('customer', ($_POST['customer'] ?? ''), 'id="slcustomer" data-placeholder="' . $this->lang->line('select') . ' ' . $this->lang->line('customer') . '" required="required" class="form-control input-tip" style="width:100%;"');
                                                 ?>
-                                                <div class="input-group-addon no-print" style="padding: 2px 5px;"><a
-                                                        href="<?= admin_url('customers/add'); ?>" id="add-customer"
-                                                        class="external" data-bs-toggle="modal" data-bs-target="#myModal"><i
-                                                            class="fa fa-2x fa-plus-circle" id="addIcon"></i></a></div>
+                                                <a href="<?= admin_url('customers/add') ?>" id="add-customer" class="btn btn-outline-secondary no-print" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa fa-plus-circle"></i></a>
                                             </div>
                                         </div>
                                     </div>
 
 
-                        <div class="col-md-12">
-                            <div class="clearfix"></div>
-                            <div class="well well-sm">
-                                <a href="<?php echo $this->config->base_url(); ?>assets/csv/sample_sale_products.csv"
-                                   class="btn btn-primary float-end"><i class="fa fa-download"></i> Download Sample
-                                    File</a>
-                                <span class="text-warning"><?php echo $this->lang->line('csv1'); ?></span><br>
-                                <?php echo $this->lang->line('csv2'); ?> <span
-                                    class="text-info">( <?= lang('product_code') . ', ' . lang('net_unit_price') . ', ' . lang('quantity') . ', ' . lang('product_variant') . ', ' . lang('tax_rate_name') . ', ' . lang('discount') . ', ' . lang('serial_no'); ?> )</span> <?php echo $this->lang->line('csv3'); ?><br>
-                                <strong><?= sprintf(lang('x_col_required'), 3); ?></strong>
+                        <div class="col-12">
+                            <div class="alert alert-info d-flex align-items-start gap-3 rounded-3">
+                                <div class="flex-grow-1">
+                                    <span class="text-warning fw-semibold"><?php echo $this->lang->line('csv1'); ?></span><br>
+                                    <?php echo $this->lang->line('csv2'); ?> <span class="fw-semibold">( <?= lang('product_code') . ', ' . lang('net_unit_price') . ', ' . lang('quantity') . ', ' . lang('product_variant') . ', ' . lang('tax_rate_name') . ', ' . lang('discount') . ', ' . lang('serial_no'); ?> )</span> <?php echo $this->lang->line('csv3'); ?><br>
+                                    <strong><?= sprintf(lang('x_col_required'), 3); ?></strong>
+                                </div>
+                                <a href="<?php echo $this->config->base_url(); ?>assets/csv/sample_sale_products.csv" class="btn btn-sm btn-primary flex-shrink-0"><i class="fa fa-download me-1"></i> Download Sample</a>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -162,7 +154,6 @@
                                        data-show-upload="false" data-show-preview="false" class="form-control file">
                             </div>
                         </div>
-                        <div class="clearfix"></div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <?= lang('document', 'document') ?>
@@ -357,18 +348,15 @@
 
                         </div>
                         <div class="col-md-12">
-                            <div
-                                class="fprom-group"><?php echo form_submit('add_sale', $this->lang->line('submit'), 'id="add_sale" class="btn btn-primary" style="padding: 6px 15px; margin:15px 0;"'); ?>
-                                <button type="button" class="btn btn-danger" id="reset"><?= lang('reset') ?></div>
+                            <div class="d-flex gap-2 mt-3">
+                                <?php echo form_submit('add_sale', $this->lang->line('submit'), 'id="add_sale" class="btn btn-primary"'); ?>
+                                <button type="button" class="btn btn-outline-secondary" id="reset"><?= lang('reset') ?></button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <?php echo form_close(); ?>
-
-            </div>
-
-        </div>
     </div>
 </div>
 

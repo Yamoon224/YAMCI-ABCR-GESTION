@@ -230,133 +230,118 @@
             echo admin_form_open('sales/sale_actions', 'id="action-form"');
 }
 ?>
-<div class="card">
-    <div class="box-header">
-        <h2 class="blue"><i
-                class="fa-fw fa fa-heart"></i><?=lang('sales') . ' (' . ($warehouse_id ? $warehouse->name : lang('all_warehouses')) . ')';?>
-        </h2>
-
-        <div class="box-icon">
-            <ul class="btn-tasks">
-                <li class="dropdown">
-                    <a data-bs-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <i class="icon fa fa-tasks tip" data-placement="left" title="<?=lang('actions')?>"></i>
-                    </a>
-                    <ul class="dropdown-menu float-end tasks-menus" role="menu" aria-labelledby="dLabel">
-                        <li>
-                            <a href="<?=admin_url('sales/add')?>">
-                                <i class="fa fa-plus-circle"></i> <?=lang('add_sale')?>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" id="excel" data-action="export_excel">
-                                <i class="fa fa-file-excel-o"></i> <?=lang('export_to_excel')?>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" id="combine" data-action="combine">
-                                <i class="fa fa-file-pdf-o"></i> <?=lang('combine_to_pdf')?>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#" class="bpo" title="<b><?=lang('delete_sales')?></b>" data-content="<p><?=lang('r_u_sure')?></p><button type='button' class='btn btn-danger' id='delete' data-action='delete'><?=lang('i_m_sure')?></a> <button class='btn bpo-close'><?=lang('no')?></button>" data-html="true" data-placement="left">
-                                <i class="fa fa-trash-o"></i> <?=lang('delete_sales')?>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <?php if (!empty($warehouses)) {
-                    ?>
-                    <li class="dropdown">
-                        <a data-bs-toggle="dropdown" class="dropdown-toggle" href="#"><i class="icon fa fa-building-o tip" data-placement="left" title="<?=lang('warehouses')?>"></i></a>
-                        <ul class="dropdown-menu float-end tasks-menus" role="menu" aria-labelledby="dLabel">
-                            <li><a href="<?=admin_url('sales')?>"><i class="fa fa-building-o"></i> <?=lang('all_warehouses')?></a></li>
-                            <li class="divider"></li>
-                            <?php
-                            foreach ($warehouses as $warehouse) {
-                                echo '<li><a href="' . admin_url('sales/' . $warehouse->id) . '"><i class="fa fa-building"></i>' . $warehouse->name . '</a></li>';
-                            } ?>
-                        </ul>
+<div class="card border-0 shadow-sm rounded-3">
+    <div class="card-header d-flex align-items-center justify-content-between py-2 px-3 bg-white border-bottom">
+        <div class="d-flex align-items-center gap-2">
+            <span class="bg-primary bg-opacity-10 rounded-2 p-2 lh-1">
+                <i class="fa fa-heart text-primary"></i>
+            </span>
+            <h5 class="mb-0 fw-semibold"><?= lang('sales') ?> <span class="text-muted fw-normal fs-6">(<?= $warehouse_id ? $warehouse->name : lang('all_warehouses') ?>)</span></h5>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <!-- Actions -->
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1" data-bs-toggle="dropdown">
+                    <i class="fa fa-tasks"></i> <?= lang('actions') ?>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item sledit" href="<?= admin_url('sales/add') ?>"><i class="fa fa-plus-circle me-2 text-success"></i><?= lang('add_sale') ?></a></li>
+                    <li><a class="dropdown-item sledit" href="<?= admin_url('sales/sale_by_csv') ?>"><i class="fa fa-upload me-2 text-info"></i><?= lang('add_sale_by_csv') ?></a></li>
+                    <li><a class="dropdown-item" href="#" id="excel" data-action="export_excel"><i class="fa fa-file-excel-o me-2 text-success"></i><?= lang('export_to_excel') ?></a></li>
+                    <li><a class="dropdown-item" href="#" id="combine" data-action="combine"><i class="fa fa-file-pdf-o me-2 text-danger"></i><?= lang('combine_to_pdf') ?></a></li>
+                    <?php if ($Owner || ($GP && $GP['bulk_actions'])) { ?>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item text-danger bpo" href="#"
+                            title="<b><?= $this->lang->line('delete_sales') ?></b>"
+                            data-content="<p><?= lang('r_u_sure') ?></p><button type='button' class='btn btn-danger btn-sm' id='delete' data-action='delete'><?= lang('i_m_sure') ?></button> <button class='btn btn-secondary btn-sm bpo-close'><?= lang('no') ?></button>"
+                            data-html="true" data-placement="left">
+                            <i class="fa fa-trash-o me-2"></i><?= lang('delete_sales') ?>
+                        </a>
                     </li>
-                    <?php
-                }
-                ?>
-                <?php if (SHOP) {
-                    ?>
-                <li class="dropdown">
-                    <a data-bs-toggle="dropdown" class="dropdown-toggle" href="#"><i class="icon fa fa-list-alt tip" data-placement="left" title="<?=lang('sales')?>"></i></a>
-                    <ul class="dropdown-menu float-end tasks-menus" role="menu" aria-labelledby="dLabel">
-                        <li<?= $this->input->get('shop') == 'yes' ? ' class="active"' : ''; ?>><a href="<?=admin_url('sales?shop=yes')?>"><i class="fa fa-shopping-cart"></i> <?=lang('shop_sales')?></a></li>
-                        <li<?= $this->input->get('shop') == 'no' ? ' class="active"' : ''; ?>><a href="<?=admin_url('sales?shop=no')?>"><i class="fa fa-heart"></i> <?=lang('staff_sales')?></a></li>
-                        <li<?= !$this->input->get('shop') ? ' class="active"' : ''; ?>><a href="<?=admin_url('sales')?>"><i class="fa fa-list-alt"></i> <?=lang('all_sales')?></a></li>
-                    </ul>
-                </li>
-                    <?php
-                } ?>
-            </ul>
+                    <?php } ?>
+                </ul>
+            </div>
+            <!-- Entrepôts -->
+            <?php if (!empty($warehouses)) { ?>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1" data-bs-toggle="dropdown">
+                    <i class="fa fa-building-o"></i> <?= lang('warehouses') ?>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="<?= admin_url('sales') ?>"><i class="fa fa-building-o me-2"></i><?= lang('all_warehouses') ?></a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <?php foreach ($warehouses as $warehouse) { ?>
+                    <li><a class="dropdown-item" href="<?= admin_url('sales/' . $warehouse->id) ?>"><i class="fa fa-building me-2"></i><?= $warehouse->name ?></a></li>
+                    <?php } ?>
+                </ul>
+            </div>
+            <?php } ?>
+            <!-- Filtres ventes (shop/staff) -->
+            <?php if (SHOP) { ?>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1" data-bs-toggle="dropdown">
+                    <i class="fa fa-list-alt"></i> <?= lang('sales') ?>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item<?= $this->input->get('shop') == 'yes' ? ' active' : '' ?>" href="<?= admin_url('sales?shop=yes') ?>"><i class="fa fa-shopping-cart me-2"></i><?= lang('shop_sales') ?></a></li>
+                    <li><a class="dropdown-item<?= $this->input->get('shop') == 'no' ? ' active' : '' ?>" href="<?= admin_url('sales?shop=no') ?>"><i class="fa fa-heart me-2"></i><?= lang('staff_sales') ?></a></li>
+                    <li><a class="dropdown-item<?= !$this->input->get('shop') ? ' active' : '' ?>" href="<?= admin_url('sales') ?>"><i class="fa fa-list-alt me-2"></i><?= lang('all_sales') ?></a></li>
+                </ul>
+            </div>
+            <?php } ?>
         </div>
     </div>
-    <div class="box-content">
-        <div class="row">
-            <div class="col-lg-12">
-
-                <p class="introtext"><?=lang('list_results');?></p>
-
-                <div class="table-responsive">
-                    <table id="SLData" class="table table-bordered table-hover table-striped" cellpadding="0" cellspacing="0" border="0">
-                        <thead>
-                        <tr>
-                            <th style="min-width:30px; width: 30px; text-align: center;">
-                                <input class="checkbox checkft" type="checkbox" name="check"/>
-                            </th>
-                            <th><?= lang('date'); ?></th>
-                            <th><?= lang('reference_no'); ?></th>
-                            <th><?= lang('biller'); ?></th>
-                            <th><?= lang('customer'); ?></th>
-                            <th><?= lang('sale_status'); ?></th>
-                            <th><?= lang('grand_total'); ?></th>
-                            <th><?= lang('paid'); ?></th>
-                            <th><?= lang('Crédit'); ?></th>
-                            <th><?= lang('payment_status'); ?></th>
-                            <th style="min-width:30px; width: 30px; text-align: center;"><i class="fa fa-chain"></i></th>
-                            <th></th>
-                            <th style="width:80px; text-align:center;"><?= lang('actions'); ?></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td colspan="12" class="dataTables_empty"><?= lang('loading_data'); ?></td>
-                        </tr>
-                        </tbody>
-                        <tfoot class="dtFilter">
-                        <tr class="active">
-                            <th style="min-width:30px; width: 30px; text-align: center;">
-                                <input class="checkbox checkft" type="checkbox" name="check"/>
-                            </th>
-                            <th></th><th></th><th></th><th></th><th></th>
-                            <th><?= lang('grand_total'); ?></th>
-                            <th><?= lang('paid'); ?></th>
-                            <th><?= lang('balance'); ?></th>
-                            <th></th>
-                            <th style="min-width:30px; width: 30px; text-align: center;"><i class="fa fa-chain"></i></th>
-                            <th></th>
-                            <th style="width:80px; text-align:center;"><?= lang('actions'); ?></th>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
+    <div class="card-body p-2 p-lg-3">
+        <div class="table-responsive">
+            <table id="SLData" class="table table-bordered table-sm table-hover table-striped">
+                <thead>
+                <tr>
+                    <th style="min-width:30px; width:30px; text-align:center;">
+                        <input class="checkbox checkft" type="checkbox" name="check"/>
+                    </th>
+                    <th><?= lang('date') ?></th>
+                    <th><?= lang('reference_no') ?></th>
+                    <th><?= lang('biller') ?></th>
+                    <th><?= lang('customer') ?></th>
+                    <th><?= lang('sale_status') ?></th>
+                    <th><?= lang('grand_total') ?></th>
+                    <th><?= lang('paid') ?></th>
+                    <th><?= lang('Crédit') ?></th>
+                    <th><?= lang('payment_status') ?></th>
+                    <th style="min-width:30px; width:30px; text-align:center;"><i class="fa fa-chain"></i></th>
+                    <th></th>
+                    <th style="width:80px; text-align:center;"><?= lang('actions') ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="13" class="dataTables_empty"><?= lang('loading_data') ?></td>
+                </tr>
+                </tbody>
+                <tfoot class="dtFilter">
+                <tr class="active">
+                    <th style="min-width:30px; width:30px; text-align:center;">
+                        <input class="checkbox checkft" type="checkbox" name="check"/>
+                    </th>
+                    <th></th><th></th><th></th><th></th><th></th>
+                    <th><?= lang('grand_total') ?></th>
+                    <th><?= lang('paid') ?></th>
+                    <th><?= lang('balance') ?></th>
+                    <th></th>
+                    <th style="min-width:30px; width:30px; text-align:center;"><i class="fa fa-chain"></i></th>
+                    <th></th>
+                    <th style="width:80px; text-align:center;"><?= lang('actions') ?></th>
+                </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
 </div>
-<?php if ($Owner || ($GP && $GP['bulk_actions'])) {
-    ?>
-    <div style="display: none;">
-        <input type="hidden" name="form_action" value="" id="form_action"/>
-        <?=form_submit('performAction', 'performAction', 'id="action-form-submit"')?>
-    </div>
-    <?=form_close()?>
-    <?php
-}
-?>
+<?php if ($Owner || ($GP && $GP['bulk_actions'])) { ?>
+<div style="display:none;">
+    <input type="hidden" name="form_action" value="" id="form_action"/>
+    <?= form_submit('performAction', 'performAction', 'id="action-form-submit"') ?>
+</div>
+<?= form_close() ?>
+<?php } ?>

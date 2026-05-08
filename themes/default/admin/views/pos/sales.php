@@ -101,48 +101,48 @@
 <?php if ($Owner || ($GP && $GP['bulk_actions'])) {
     echo admin_form_open('sales/sale_actions', 'id="action-form"');
 } ?>
-<div class="card">
-    <div class="box-header">
-        <h2 class="blue"><i
-                class="fa-fw fa fa-barcode"></i><?= lang('pos_sales') . ' (' . ($warehouse_id ? $warehouse->name : lang('all_warehouses')) . ')'; ?>
-        </h2>
-
-        <div class="box-icon">
-            <ul class="btn-tasks">
-                <li class="dropdown">
-                    <a data-bs-toggle="dropdown" class="dropdown-toggle" href="#"><i class="icon fa fa-tasks tip"  data-placement="left" title="<?= lang('actions') ?>"></i></a>
-                    <ul class="dropdown-menu float-end tasks-menus" role="menu" aria-labelledby="dLabel">
-                        <li><a href="<?= admin_url('pos') ?>"><i class="fa fa-plus-circle"></i> <?= lang('add_sale') ?></a></li>
-                        <li><a href="#" id="excel" data-action="export_excel"><i class="fa fa-file-excel-o"></i> <?= lang('export_to_excel') ?></a></li>
-                        <li class="divider"></li>
-                        <li><a href="#" class="bpo" title="<b><?= $this->lang->line('delete_sales') ?></b>" data-content="<p><?= lang('r_u_sure') ?></p><button type='button' class='btn btn-danger' id='delete' data-action='delete'><?= lang('i_m_sure') ?></a> <button class='btn bpo-close'><?= lang('no') ?></button>" data-html="true" data-placement="left"><i class="fa fa-trash-o"></i> <?= lang('delete_sales') ?></a></li>
-                    </ul>
-                </li>
-                <?php if (!empty($warehouses)) {
-                    ?>
-                    <li class="dropdown">
-                        <a data-bs-toggle="dropdown" class="dropdown-toggle" href="#"><i class="icon fa fa-building-o tip" data-placement="left" title="<?= lang('warehouses') ?>"></i></a>
-                        <ul class="dropdown-menu float-end tasks-menus" role="menu" aria-labelledby="dLabel">
-                            <li><a href="<?= admin_url('pos/sales') ?>"><i class="fa fa-building-o"></i> <?= lang('all_warehouses') ?></a></li>
-                            <li class="divider"></li>
-                            <?php
-                            foreach ($warehouses as $warehouse) {
-                                echo '<li><a href="' . admin_url('pos/sales/' . $warehouse->id) . '"><i class="fa fa-building"></i>' . $warehouse->name . '</a></li>';
-                            } ?>
-                        </ul>
-                    </li>
-                    <?php
-                } ?>
-            </ul>
+<div class="card border-0 shadow-sm rounded-3">
+    <div class="card-header d-flex align-items-center justify-content-between py-2 px-3 bg-white border-bottom">
+        <div class="d-flex align-items-center gap-2">
+            <span class="bg-primary bg-opacity-10 rounded-2 p-2 lh-1">
+                <i class="fa fa-barcode text-primary"></i>
+            </span>
+            <h5 class="mb-0 fw-semibold">
+                <?= lang('pos_sales') . ' (' . ($warehouse_id ? $warehouse->name : lang('all_warehouses')) . ')' ?>
+            </h5>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1" data-bs-toggle="dropdown">
+                    <i class="fa fa-tasks"></i> <?= lang('actions') ?>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="<?= admin_url('pos') ?>"><i class="fa fa-plus-circle me-2 text-success"></i><?= lang('add_sale') ?></a></li>
+                    <li><a class="dropdown-item" href="#" id="excel" data-action="export_excel"><i class="fa fa-file-excel-o me-2 text-success"></i><?= lang('export_to_excel') ?></a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger bpo" href="#" title="<b><?= $this->lang->line('delete_sales') ?></b>" data-content="<p><?= lang('r_u_sure') ?></p><button type='button' class='btn btn-danger' id='delete' data-action='delete'><?= lang('i_m_sure') ?></button> <button class='btn btn-secondary bpo-close'><?= lang('no') ?></button>" data-html="true" data-placement="left"><i class="fa fa-trash-o me-2"></i><?= lang('delete_sales') ?></a></li>
+                </ul>
+            </div>
+            <?php if (!empty($warehouses)) { ?>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1" data-bs-toggle="dropdown">
+                    <i class="fa fa-building-o"></i> <?= lang('warehouses') ?>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="<?= admin_url('pos/sales') ?>"><i class="fa fa-building-o me-2"></i><?= lang('all_warehouses') ?></a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <?php foreach ($warehouses as $warehouse) {
+                        echo '<li><a class="dropdown-item" href="' . admin_url('pos/sales/' . $warehouse->id) . '"><i class="fa fa-building me-2"></i>' . $warehouse->name . '</a></li>';
+                    } ?>
+                </ul>
+            </div>
+            <?php } ?>
         </div>
     </div>
-    <div class="box-content">
-        <div class="row">
-            <div class="col-lg-12">
-                <p class="introtext"><?= lang('list_results'); ?></p>
-
-                <div class="table-responsive">
-                    <table id="POSData" class="table table-bordered table-hover table-striped">
+    <div class="card-body p-3">
+        <p class="mb-3 text-muted small"><?= lang('list_results'); ?></p>
+        <div class="table-responsive">
+            <table id="POSData" class="table table-bordered table-sm table-hover table-striped w-100">
                         <thead>
                         <tr>
                             <th style="min-width:30px; width: 30px; text-align: center;">
@@ -177,8 +177,8 @@
                             <th><?= lang('grand_total'); ?></th>
                             <th><?= lang('paid'); ?></th>
                             <th><?= lang('balance'); ?></th>
-                            <th class="defaul-color"></th>
-                            <th class="defaul-color"></th>
+                            <th></th>
+                            <th></th>
                             <th style="width:80px; text-align:center;"><?= lang('actions'); ?></th>
                         </tr>
                         </tfoot>

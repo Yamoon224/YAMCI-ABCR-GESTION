@@ -14,75 +14,44 @@
         });
     });
 </script>
-<div class="card">
-    <div class="box-header">
-        <h2 class="blue"><i class="fa-fw fa fa-file"></i><?= lang('sale_no') . ' ' . $inv->id; ?></h2>
-
-        <div class="box-icon">
-            <ul class="btn-tasks">
-                <li class="dropdown">
-                    <a data-bs-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <i class="icon fa fa-tasks tip" data-placement="left" title="<?= lang('actions') ?>">
-                        </i>
-                    </a>
-                    <ul class="dropdown-menu float-end tasks-menus" role="menu" aria-labelledby="dLabel">
-                        <li>
-                            <a href="<?= admin_url('sales/edit/' . $inv->id) ?>" class="sledit">
-                                <i class="fa fa-edit"></i> <?= lang('edit_sale') ?>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?= admin_url('sales/payments/' . $inv->id) ?>" data-bs-target="#myModal" data-bs-toggle="modal">
-                                <i class="fa fa-money"></i> <?= lang('view_payments') ?>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?= admin_url('sales/add_payment/' . $inv->id) ?>" data-bs-target="#myModal" data-bs-toggle="modal">
-                                <i class="fa fa-dollar"></i> <?= lang('add_payment') ?>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?= admin_url('sales/email/' . $inv->id) ?>" data-bs-target="#myModal" data-bs-toggle="modal">
-                                <i class="fa fa-envelope-o"></i> <?= lang('send_email') ?>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?= admin_url('sales/pdf/' . $inv->id) ?>">
-                                <i class="fa fa-file-pdf-o"></i> <?= lang('export_to_pdf') ?>
-                            </a>
-                        </li>
-                        <?php if (!$inv->sale_id) {
-                            ?>
-                        <li>
-                            <a href="<?= admin_url('sales/add_delivery/' . $inv->id) ?>" data-bs-target="#myModal" data-bs-toggle="modal">
-                                <i class="fa fa-truck"></i> <?= lang('add_delivery') ?>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?= admin_url('sales/return_sale/' . $inv->id) ?>">
-                                <i class="fa fa-angle-double-left"></i> <?= lang('return_sale') ?>
-                            </a>
-                        </li>
-                            <?php
-                        } ?>
-                    </ul>
-                </li>
-            </ul>
+<div class="card border-0 shadow-sm rounded-3">
+    <div class="card-header d-flex align-items-center justify-content-between py-2 px-3 bg-white border-bottom">
+        <div class="d-flex align-items-center gap-2">
+            <span class="bg-primary bg-opacity-10 rounded-2 p-2 lh-1">
+                <i class="fa fa-file text-primary"></i>
+            </span>
+            <h5 class="mb-0 fw-semibold"><?= lang('sale_no') . ' ' . $inv->id ?></h5>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1" data-bs-toggle="dropdown">
+                    <i class="fa fa-tasks"></i> <?= lang('actions') ?>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item sledit" href="<?= admin_url('sales/edit/' . $inv->id) ?>"><i class="fa fa-edit me-2 text-warning"></i><?= lang('edit_sale') ?></a></li>
+                    <li><a class="dropdown-item" href="<?= admin_url('sales/payments/' . $inv->id) ?>" data-bs-target="#myModal" data-bs-toggle="modal"><i class="fa fa-money me-2 text-info"></i><?= lang('view_payments') ?></a></li>
+                    <li><a class="dropdown-item" href="<?= admin_url('sales/add_payment/' . $inv->id) ?>" data-bs-target="#myModal" data-bs-toggle="modal"><i class="fa fa-dollar me-2 text-success"></i><?= lang('add_payment') ?></a></li>
+                    <li><a class="dropdown-item" href="<?= admin_url('sales/email/' . $inv->id) ?>" data-bs-target="#myModal" data-bs-toggle="modal"><i class="fa fa-envelope-o me-2"></i><?= lang('send_email') ?></a></li>
+                    <li><a class="dropdown-item" href="<?= admin_url('sales/pdf/' . $inv->id) ?>"><i class="fa fa-file-pdf-o me-2 text-danger"></i><?= lang('export_to_pdf') ?></a></li>
+                    <?php if (!$inv->sale_id) { ?>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="<?= admin_url('sales/add_delivery/' . $inv->id) ?>" data-bs-target="#myModal" data-bs-toggle="modal"><i class="fa fa-truck me-2"></i><?= lang('add_delivery') ?></a></li>
+                    <li><a class="dropdown-item" href="<?= admin_url('sales/return_sale/' . $inv->id) ?>"><i class="fa fa-angle-double-left me-2"></i><?= lang('return_sale') ?></a></li>
+                    <?php } ?>
+                </ul>
+            </div>
         </div>
     </div>
-    <div class="box-content">
-        <div class="row">
-            <div class="col-lg-12">
-                <?php if (!empty($inv->return_sale_ref) && $inv->return_id) {
+    <div class="card-body p-3">
+        <?php if (!empty($inv->return_sale_ref) && $inv->return_id) {
                     echo '<div class="alert alert-info no-print"><p>' . lang('sale_is_returned') . ': ' . $inv->return_sale_ref;
-                    echo ' <a data-bs-target="#myModal2" data-bs-toggle="modal" href="' . admin_url('sales/modal_view/' . $inv->return_id) . '"><i class="fa fa-external-link no-print"></i></a><br>';
+                    echo ' <a data-bs-target=\"#myModal2\" data-bs-toggle=\"modal\" href="' . admin_url('sales/modal_view/' . $inv->return_id) . '"><i class="fa fa-external-link no-print"></i></a><br>';
                     echo '</p></div>';
                 } ?>
                 <div class="print-only col-xs-12">
                     <img src="<?= base_url() . 'assets/uploads/logos/' . $biller->logo; ?>" alt="<?= $biller->company && $biller->company != '-' ? $biller->company : $biller->name; ?>">
                 </div>
-                <div class="well well-sm">
-
+                <div class="card card-body p-3 mb-3">
                     <div class="col-xs-4 border-right">
 
                         <div class="col-xs-2"><i class="fa fa-3x fa-user padding010 text-muted"></i></div>
@@ -466,7 +435,7 @@
                         <?php
                         if ($inv->note || $inv->note != '') {
                             ?>
-                            <div class="well well-sm">
+                            <div class="card card-body p-3 mb-2">
                                 <p class="bold"><?= lang('note'); ?>:</p>
 
                                 <div><?= $this->sma->decode_html($inv->note); ?></div>
@@ -475,7 +444,7 @@
                         }
                         if ($inv->staff_note || $inv->staff_note != '') {
                             ?>
-                            <div class="well well-sm staff_note">
+                            <div class="card card-body p-3 mb-2 staff_note">
                                 <p class="bold"><?= lang('staff_note'); ?>:</p>
 
                                 <div><?= $this->sma->decode_html($inv->staff_note); ?></div>
@@ -486,7 +455,7 @@
                         <?php if ($customer->award_points != 0 && $Settings->each_spent > 0) {
                             ?>
                         <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
-                            <div class="well well-sm">
+                            <div class="card card-body p-3 mb-2">
                                 <?=
                                 '<p>' . lang('this_sale') . ': ' . floor(($inv->grand_total / $Settings->each_spent) * $Settings->ca_point)
                                 . '<br>' .
@@ -499,7 +468,7 @@
 
                     <div class="col-xs-6">
                         <?= $Settings->invoice_view > 0 ? $this->gst->summary($rows, $return_rows, ($return_sale ? $inv->product_tax + $return_sale->product_tax : $inv->product_tax)) : ''; ?>
-                        <div class="well well-sm">
+                        <div class="card card-body p-3 mb-3">
                             <p><?= lang('created_by'); ?>: <?= $inv->created_by ? $created_by->first_name . ' ' . $created_by->last_name : $customer->name; ?> </p>
                             <p><?= lang('date'); ?>: <?= $this->sma->hrld($inv->date); ?></p>
                             <?php if ($inv->updated_by) {

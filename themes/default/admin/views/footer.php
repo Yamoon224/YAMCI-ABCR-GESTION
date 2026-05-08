@@ -161,11 +161,26 @@ if ($.fn.dataTable) {
     // Langue DataTables
     $.extend(true, $.fn.dataTable.defaults, {"oLanguage": dt_lang});
 
-    // Classes Bootstrap 5 appliquées à toutes les tables DataTables
+    // Icônes de pagination + placeholder de recherche dynamique
+    var _dtSearchLabel = (typeof dt_lang !== 'undefined' && dt_lang.sSearch) ? dt_lang.sSearch : 'Rechercher';
+    $.extend(true, $.fn.dataTable.defaults.oLanguage, {
+        sSearch: '',
+        sSearchPlaceholder: _dtSearchLabel,
+        oPaginate: {
+            sFirst:    '<i class="fa fa-angle-double-left"></i>',
+            sPrevious: '<i class="fa fa-angle-left"></i>',
+            sNext:     '<i class="fa fa-angle-right"></i>',
+            sLast:     '<i class="fa fa-angle-double-right"></i>'
+        }
+    });
+
+    // Classes Bootstrap 5 + placeholder sur l'input de recherche
     $(document).on('init.dt', function (e, settings) {
         var $tbl = $(settings.nTable);
         $tbl.addClass('table table-hover table-striped table-sm table-bordered');
-        $tbl.closest('.dataTables_wrapper').addClass('dt-materialize');
+        var $wrapper = $tbl.closest('.dataTables_wrapper');
+        $wrapper.addClass('dt-materialize');
+        $wrapper.find('.dataTables_filter input').attr('placeholder', _dtSearchLabel);
     });
 }
 if ($.fn.datetimepicker && $.fn.datetimepicker.dates) {
@@ -174,9 +189,25 @@ if ($.fn.datetimepicker && $.fn.datetimepicker.dates) {
 
 // Activer l'élément de menu courant
 $(document).ready(function () {
-    $('.mm_<?= $m ?>').addClass('active open');
-    $('.mm_<?= $m ?> > .menu-link').closest('li').addClass('active open');
-    $('#<?= $m ?>_<?= $v ?>').addClass('active');
+    // setTimeout(0) garantit l'exécution APRÈS new Menu() de main.js (DOMContentLoaded)
+    setTimeout(function () {
+        var m = '<?= $m ?>', v = '<?= $v ?>';
+        var parent = document.querySelector('.mm_' + m);
+        if (parent) {
+            parent.classList.add('active');
+            if (window.Helpers && window.Helpers.mainMenu) {
+                try {
+                    window.Helpers.mainMenu.open(parent, false);
+                } catch (e) {
+                    parent.classList.add('open');
+                }
+            } else {
+                parent.classList.add('open');
+            }
+        }
+        var sub = document.getElementById(m + '_' + v);
+        if (sub) sub.classList.add('active');
+    }, 0);
 
     // Bootstrap 3 → 5 compat: data-toggle → data-bs-toggle pour les modals
     $('[data-bs-toggle="modal"]').each(function() {

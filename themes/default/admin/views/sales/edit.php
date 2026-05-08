@@ -122,16 +122,15 @@ $allow_discount = ($Owner || $Admin || $this->session->userdata('allow_discount'
 </script>
 
 
-<div class="card">
-    <div class="box-header">
-        <h2 class="blue"><i class="fa-fw fa fa-plus"></i><?= lang('edit_sale'); ?></h2>
+<div class="card border-0 shadow-sm rounded-3">
+    <div class="card-header d-flex align-items-center gap-2 py-2 px-3 bg-white border-bottom">
+        <span class="bg-primary bg-opacity-10 rounded-2 p-2 lh-1">
+            <i class="fa fa-edit text-primary"></i>
+        </span>
+        <h5 class="mb-0 fw-semibold"><?= lang('edit_sale') ?></h5>
     </div>
-    <div class="box-content">
-        <div class="row">
-            <div class="col-lg-12">
-
-                <p class="introtext"><?php echo lang('enter_info'); ?></p>
-                <?php
+    <div class="card-body p-3">
+        <?php
                 $attrib = ['data-toggle' => 'validator', 'role' => 'form', 'class' => 'edit-so-form'];
                 echo admin_form_open_multipart('sales/edit/' . $inv->id, $attrib)
                 ?>
@@ -217,11 +216,9 @@ $allow_discount = ($Owner || $Admin || $this->session->userdata('allow_discount'
                                                 <?php
                                                     echo form_input('customer', ($_POST['customer'] ?? ''), 'id="slcustomer" data-placeholder="' . lang('select') . ' ' . lang('customer') . '" required="required" class="form-control input-tip" style="width:100%;"');
                                                 ?>
-                                                <div class="input-group-addon" style="padding-left: 10px; padding-right: 10px;">
-                                                    <a href="#" id="removeReadonly">
-                                                        <i class="fa fa-unlock" id="unLock"></i>
-                                                    </a>
-                                                </div>
+                                                <a href="#" id="removeReadonly" class="btn btn-outline-secondary">
+                                        <i class="fa fa-unlock" id="unLock"></i>
+                                    </a>
                                             </div>
                                         </div>
                                     </div>
@@ -232,22 +229,17 @@ $allow_discount = ($Owner || $Admin || $this->session->userdata('allow_discount'
 
 
                         <div class="col-md-12" id="sticker">
-                            <div class="well well-sm">
-                                <div class="form-group" style="margin-bottom:0;">
-                                    <div class="input-group wide-tip">
-                                        <div class="input-group-addon" style="padding-left: 10px; padding-right: 10px;">
-                                            <i class="fa fa-2x fa-barcode addIcon"></i></a></div>
+                            <div class="card card-body p-2 mb-2">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa fa-barcode"></i></span>
                                         <?php echo form_input('add_item', '', 'class="form-control input-lg" id="add_item" placeholder="' . lang('add_product_to_order') . '"'); ?>
                                         <?php if ($Owner || $Admin || $GP['products-add']) {
                                             ?>
-                                        <div class="input-group-addon" style="padding-left: 10px; padding-right: 10px;">
-                                            <a href="#" id="addManually">
-                                                <i class="fa fa-2x fa-plus-circle addIcon" id="addIcon"></i>
-                                            </a>
-                                        </div>
+                                        <a href="#" id="addManually" class="btn btn-outline-secondary">
+                                            <i class="fa fa-plus-circle"></i>
+                                        </a>
                                             <?php
                                         } ?>
-                                    </div>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -380,14 +372,14 @@ $allow_discount = ($Owner || $Admin || $this->session->userdata('allow_discount'
 
                         </div>
                         <div class="col-md-12">
-                            <div
-                                class="fprom-group"><?php echo form_submit('edit_sale', lang('submit'), 'id="edit_sale" class="btn btn-primary" style="padding: 6px 15px; margin:15px 0;"'); ?>
-                                <button type="button" class="btn btn-danger" id="reset"><?= lang('reset') ?></button>
+                            <div class="d-flex gap-2 mt-3">
+                                <?php echo form_submit('edit_sale', lang('submit'), 'id="edit_sale" class="btn btn-primary"'); ?>
+                                <button type="button" class="btn btn-outline-secondary" id="reset"><?= lang('reset') ?></button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div id="bottom-total" class="well well-sm" style="margin-bottom: 0;">
+                <div id="bottom-total" class="card card-body p-2" style="margin-bottom: 0;">
                     <table class="table table-bordered table-sm totals" style="margin-bottom:0;">
                         <tr class="warning">
                             <td><?= lang('items') ?> <span class="totals_val float-end" id="titems">0</span></td>
@@ -409,10 +401,6 @@ $allow_discount = ($Owner || $Admin || $this->session->userdata('allow_discount'
                 </div>
 
                 <?php echo form_close(); ?>
-
-            </div>
-
-        </div>
     </div>
 </div>
 
